@@ -1,0 +1,105 @@
+class Solution {
+public:
+    Solution(){
+        separator[0] = '+';
+        separator[1] = '-';
+        separator[2] = '(';
+        separator[3] = ')';
+        separator[4] = ' ';
+        nums = new int[15000];
+        op = new char[15000];
+    }
+    
+    ~Solution()
+    {
+        delete []nums;
+        delete []op;
+    }
+    
+    bool isSep(char temp)
+    {
+        for (int i=0; i<5; i++)
+            if (separator[i] == temp)
+                return true;
+        return false;
+    }
+    
+    int calc(int b, int a, char tmp)    //FILO
+    {
+        if (tmp == '+')
+            return (a+b);
+        return (a-b);
+    }
+    
+    int compute(string mid)
+    {
+        int pos=0, a, b, len=mid.length();
+        int indexN=-1, indexO=-1;
+        char num[10], tmp;
+        
+        for (int i=0; i<len; i++)
+        {
+            tmp = mid[i];
+            if (isSep(tmp))
+            {
+                if (pos > 0)
+                {
+                    num[pos] = 0;
+                    nums[++indexN] = atoi(num);
+                    pos = 0;
+                }
+                if (tmp == '(')
+                    op[++indexO] = tmp;
+                else if (tmp == ')')
+                {
+                    while (op[indexO] != '(')
+                    {
+                        b = nums[indexN];
+                        a = nums[indexN-1];
+                        nums[indexN-1] = calc(b, a, op[indexO]);
+                        --indexN;
+                        --indexO;
+                    }
+                    --indexO;
+                }
+                else if (tmp=='+' || tmp=='-')
+                {
+                    if (indexO>=0 && op[indexO] != '(')
+                    {
+                        b = nums[indexN];
+                        a = nums[indexN-1];
+                        nums[indexN-1] = calc(b, a, op[indexO]);
+                        --indexN;
+                        op[indexO] = tmp;
+                    }
+                    else
+                        op[++indexO] = tmp;
+                }
+            }
+            else
+                num[pos++] = tmp;
+        }
+        if (pos > 0)
+        {
+            num[pos] = 0;
+            nums[++indexN] = atoi(num);
+        }
+        while (indexO>=0)
+        {
+            b = nums[indexN];
+            a = nums[indexN-1];
+            nums[indexN-1] = calc(b, a, op[indexO]);
+            --indexN;
+            --indexO;
+        }
+        return nums[0];
+    }
+    
+    int calculate(string s) {
+        return compute(s);
+    }
+private:
+    char separator[5];
+    int* nums;
+    char* op;
+};

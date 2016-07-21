@@ -1,0 +1,66 @@
+class Solution
+{
+public:
+    int getSum(int a, int b)
+    {
+        int i = 0;
+        unsigned int oneK = 1, zeroK, addU = 0;
+        int getAnd = a & b, getOr = a | b;
+        for (; i < 32; i++)
+        {
+            if (getAnd & oneK)//1+1
+            {
+                if (addU == 0)//1+1+0
+                {
+                    //set the bit 0;
+                    zeroK = zeroKbit(i);
+                    getOr = getOr & zeroK;
+                }
+                addU = 1;
+            }
+            else//1+0 || 0+0
+            {
+                if (getOr&oneK)//1+0
+                {
+                    if (addU)//1+0+1
+                    {
+                        //set the bit 0;
+                        zeroK = zeroKbit(i);
+                        getOr = getOr & zeroK;
+                        addU = 1;
+                    }
+                    else//1+0+0
+                    {
+                        //set the bit 1;
+                        addU = 0;
+                    }
+                }
+                else//0+0
+                {
+                    if (addU)//0+0+1
+                    {
+                        //set the bit 1;
+                        getOr = getOr | oneK;
+                    }
+                    addU = 0;
+                }
+            }
+            oneK = oneK << 1;
+        }
+
+        return getOr;
+    }
+    unsigned int zeroKbit(int i)
+    {
+        unsigned int res1, res2;
+        if (i)
+            res1 = 0xFFFFFFFF >> (32 - i);
+        else
+            res1 = 0;
+        if (i == 31)
+            res2 = 0;
+        else
+            res2 = 0xFFFFFFFF << (i + 1);
+        return (res1 | res2);
+    }
+};

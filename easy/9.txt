@@ -1,0 +1,17 @@
+bool isPalindrome(int x) {
+    int len, i;
+    unsigned int container, headDivider;
+    container = (unsigned int)x;
+    len = (int)(log(container)/log(10))+1;
+    headDivider = 1;
+    for (i=1; i<len; i++)
+        headDivider *= 10;
+    for (i=0; i<len/2; i++)
+    {
+        if (container/headDivider != container%10)
+            return false;
+        container = container%headDivider/10;
+        headDivider = headDivider/100;
+    }
+    return true;
+}

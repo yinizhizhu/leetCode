@@ -1,0 +1,104 @@
+class Solution {
+public:
+    int myAtoi(string str) {
+        queue<char> container;
+        char temp;
+        int length = str.length();
+        for (int i=length-1; i>=0; i--)
+        {
+            temp = str.at(i);
+            if (temp == '.')
+            {
+                while (!container.empty())
+                    container.pop();
+            }
+            else
+                container.push(temp);
+        }
+        int result = 0, multi = 1, tag=0, neg=1, have = 0, counter = 0;
+        length = container.size();
+        for (int i=0; i<length; i++)
+        {
+            temp = container.front();
+            container.pop();
+            if (temp - '0' >= 0 && temp-'0'<=9)
+            {
+                if (have)
+                {
+                    result = 0;
+                    multi = 1;
+                    have = 0;
+                    neg = 1;
+                    tag = 0;
+                    counter = 0;
+                }
+                result -= (temp - '0')*multi;
+                multi *= 10;
+                counter ++;
+            }
+            else if (temp == ' ')
+            {
+                have = 1;
+                continue;
+            }
+            else if (temp == '-')
+            {
+                if (have)
+                {
+                    result = 0;
+                    multi = 1;
+                    have = 0;
+                    neg = 1;
+                    tag = 0;
+                    counter = 0;
+                }
+                tag++;
+                neg++;
+            }
+            else if (temp == '+')
+            {
+                if (have)
+                {
+                    result = 0;
+                    multi = 1;
+                    have = 0;
+                    neg = 1;
+                    tag = 0;
+                    counter = 0;
+                }
+                tag++;
+            }
+            else
+            {
+                have = 0;
+                neg = 1;
+                tag = 0;
+                counter = 0;
+                result = 0;
+                multi = 1;
+            }
+        }
+        if (tag > 1)
+            return 0;
+        if (neg%2 == 0)
+        {
+            if (counter > 10)
+                return -2147483648;
+            if (result > 0)
+                return -2147483648;
+            return result;
+        }
+        else
+        {
+            if (counter > 10)
+                return 2147483647;
+            if (result == 0)
+                return 0;
+            if (result == -2147483648)
+                return 2147483647;
+            if (result > 0)
+                return 2147483647;
+            return -result;
+        }
+    }
+};

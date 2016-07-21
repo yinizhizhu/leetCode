@@ -1,0 +1,49 @@
+/**
+ * Return an array of arrays.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+void incre(int* direction)
+{
+    direction[0]++;
+    direction[1]--;
+    direction[2]--;
+    direction[3]++;
+    return;
+}
+ 
+int** generateMatrix(int n) {
+    int* result;
+    int** matrix;
+    int i, j, index=0, len=n*n;
+    int direction[4]={0, n-1, n-1, 0};
+    int RU, CR, RD, CL; //RowUp, ColRight, RowDown, ColLeft
+    
+    if (n == 0)
+        return NULL;
+    matrix = (int**)malloc(n*sizeof(int*));
+    for (i=0; i<n; i++)
+        matrix[i] = (int*)malloc(n*sizeof(int));
+        
+    RU = direction[0], CR = direction[1], RD = direction[2], CL = direction[3];
+    result = (int*)malloc(len*sizeof(int));
+    for (i=0; i<len; i++)
+        result[i] = i+1;
+    while ( (RU<=RD) && (CR>=CL) )
+    {
+        for (i=CL; i<CR; i++)
+            matrix[RU][i] = result[index++];
+        for (i=RU; i<RD; i++)
+            matrix[i][CR] = result[index++];
+        for (i=CR; i>CL; i--)
+            matrix[RD][i] = result[index++];
+        for (i=RD; i>RU; i--)
+            matrix[i][CL] = result[index++];
+        if ((direction[0]==direction[2])&&(direction[1]==direction[3]))
+            matrix[direction[0]][direction[3]] = result[index++];
+        incre(direction);
+        RU = direction[0], CR = direction[1], RD = direction[2], CL = direction[3];
+    }
+    free(result);
+    return matrix;
+}

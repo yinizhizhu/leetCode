@@ -1,0 +1,74 @@
+class Solution {
+public:
+    Solution()
+    {
+        container = new int[10000];
+    }
+    ~Solution()
+    {
+        delete []container;
+    }
+    
+    bool isOperator(string a)
+    {
+        int len = a.length();
+        if (len > 1)
+            return false;
+        if (a[0] < '0')
+            return true;
+        return false;
+    }
+    
+    int calc(int b, int a, char tmp)
+    {
+        if (tmp == '+')
+            return (a+b);
+        else if (tmp == '-')
+            return (a-b);
+        else if (tmp == '*')
+            return (a*b);
+        else if (tmp == '/')
+            return (a/b);
+    }
+    
+    int atoI(string tmp)
+    {
+        int result=0, head=0, tail = tmp.length();
+        int d=1, tag=1;
+        if (tmp[0] == '-')
+        {
+            tag=-1;
+            head = 1;
+        }
+        for (int i=1+head; i<tail; i++)
+            d*=10;
+        for (int i=head; i<tail; i++)
+        {
+            result+= (tmp[i]-'0')*d;
+            d /= 10;
+        }
+        return (result*tag);
+    }
+    
+    int evalRPN(vector<string>& tokens) {
+        string tmp;
+        int len = tokens.size();
+        int a, b, i, j, indexN=-1;
+        for (i=0; i<len; i++)
+        {
+            tmp = tokens[i];
+            if (isOperator(tmp))
+            {
+                b = container[indexN];
+                a = container[indexN-1];
+                --indexN;
+                container[indexN] = calc(b, a, tmp[0]);
+            }
+            else
+                container[++indexN] = atoI(tmp);
+        }
+        return container[0];
+    }
+private:
+    int* container;
+};

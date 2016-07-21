@@ -1,0 +1,35 @@
+uint32_t change(char *arr)
+{
+    int i;
+    uint32_t re=0;
+    for (i=0; i<strlen(arr); i++)
+        re = re | (1<<(arr[i]-'a'));
+    return re;
+}
+
+int Max(int a, int b)
+{
+    return a > b ? a : b;
+}
+
+int maxProduct(char** words, int wordsSize) {
+    int i, j, result=0;
+    
+    uint32_t re[wordsSize];
+    int len[wordsSize];
+    for (i=0; i<wordsSize; i++)
+    {
+        re[i] = change(*(words+i));
+        len[i] = strlen(*(words+i));
+    }
+    
+    for (i=0; i<wordsSize-1; i++)
+    {
+        for (j=i+1; j<wordsSize; j++)
+        {
+            if (!(re[i] & re[j]))
+                result = Max(result, len[i]*len[j]);
+        }
+    }
+    return result;
+}

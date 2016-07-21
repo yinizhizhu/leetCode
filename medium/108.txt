@@ -1,0 +1,18 @@
+class Solution {
+public:
+    TreeNode* create(vector<int>& nums,int low,int hight)
+    {
+        if(low>hight)
+            return NULL ;
+        int mid=low + (hight-low)/2 ;
+        TreeNode* root=new TreeNode(nums[mid]);
+        root->left=create(nums, low, mid-1);
+        root->right=create(nums, mid+1, hight);
+        return root ;
+    }
+
+    TreeNode* sortedArrayToBST(vector<int>& nums) 
+    {
+        return  create(nums, 0, nums.size()-1);
+    }
+};

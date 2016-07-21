@@ -1,0 +1,57 @@
+class Solution
+{
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target)
+    {
+        vector<vector<int>> ret;
+        int n = nums.size();
+        if (n < 3)
+            return ret;
+        sort(nums.begin(), nums.end());
+        int i, j;
+        int left, right, target_3Sum, target_2Sum;
+        int tempI, tempJ, tempL, tempR;
+        for (i = 0; i < n-3; ++i)
+        {
+            tempI = nums[i];
+            if (tempI*4 > target)
+                break;
+            if (i != 0 && tempI == nums[i-1])
+                continue;
+            target_3Sum = target - tempI;
+            for (j = i + 1; j < n-2; ++j)
+            {
+                tempJ = nums[j];
+                if ((tempJ*3)>target_3Sum)
+                    break;
+                if (j != (i+1) && tempJ == nums[j-1])
+                    continue;
+                target_2Sum = target_3Sum - tempJ;
+                left = j + 1;
+                right = n - 1;
+                while (left < right)
+                {
+                    tempL = nums[left];
+                    tempR = nums[right];
+                    if ((tempL*2) > target_2Sum)
+                        break;
+                    if (tempL + tempR == target_2Sum)
+                    {
+                        ret.push_back(vector<int>{tempI,tempJ,tempL,tempR});
+                        while (left < right && nums[left+1] == tempL)
+                            ++left;
+                        while (left < right && nums[right-1] == tempR)
+                            --right;
+                        ++left;
+                        --right;
+                    }
+                    else if (tempL + tempR < target_2Sum)
+                        ++left;
+                    else
+                        --right;
+                }
+            }
+        }
+        return ret;
+    }
+};

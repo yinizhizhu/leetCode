@@ -1,0 +1,73 @@
+#define N 100
+
+int Max(int a, int b)
+{
+    return a > b ? a : b;
+}
+
+int maxProduct(int* nums, int numsSize) {
+    int i, j, ste, ets, final=INT_MIN;
+    int neg[N], zero[N], index=0;
+    int negC = 0, head, tail, counter, tmp;
+    for (i=0; i<numsSize; i++)
+    {
+        if (nums[i] == 0)
+        {
+            zero[index] = i;
+            neg[index++] = negC;
+            negC = 0;
+        }
+        else if (nums[i] < 0)
+            negC++;
+        else
+            ;
+    }
+    zero[index] = i;
+    neg[index++] = negC;
+    
+    for (i=0; i<index; i++)
+        printf("%d %d\n", zero[i], neg[i]);
+    
+    head = 0;
+    for (i=0; i<index; i++)
+    {
+        tail = zero[i];
+        negC = neg[i];
+        
+        counter = 0;
+        
+        if (negC % 2 == 0)
+        {
+            if (head < tail)
+                ste = 1;
+            else
+                ste = 0;
+            for (j=head; j<tail; j++)
+                ste *= nums[j];
+        }
+        else
+        {
+            ste = nums[head];
+            ets = nums[tail-1];
+            if (nums[head] < 0)
+                counter++;
+                
+            for (j=head+1; j<tail-1; j++)
+            {
+                tmp = nums[j];
+                if (tmp < 0)
+                    counter++;
+                if (counter<negC)
+                    ste *= tmp;
+                if (counter > 1 || (counter == 1 && tmp>0))
+                    ets *= tmp;
+            }
+            ste = Max(ste, ets);
+        }
+        head = tail + 1;
+        final = Max(final, ste);
+    }
+    if (index > 1)
+        final = Max(final, 0);
+    return final;
+}

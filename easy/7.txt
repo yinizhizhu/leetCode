@@ -1,0 +1,21 @@
+int reverse(int x) {
+    int i, tag=1, len, result=0, con, temp=x;
+    if (x < 0)
+    {
+        temp = -x;
+        tag = -1;
+    }
+    len = (int)(log(temp)/log(10))+1;
+    con = 1;
+    for (i=1; i<len; i++)
+        con = con*10;
+    for (i=0; i<len; i++)
+    {
+        result += temp%10*con;
+        if (result/con%10 != temp%10)
+            return 0;
+        temp = temp/10;
+        con = con/10;
+    }
+    return tag*result;
+}

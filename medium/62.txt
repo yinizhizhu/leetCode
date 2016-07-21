@@ -1,0 +1,17 @@
+int uniquePaths(int m, int n) {
+    int* container;
+    int i, j;
+    if (m*n == 0)
+        return 0;
+    if (m == 1 || n == 1)
+        return 1;
+    container =(int*)malloc(n*sizeof(int));
+    for (i=0; i<n; i++)
+        container[i] = 1;
+    for (i=1; i<m; i++)
+    {
+        for (j=1; j<n; j++)
+            container[j] = container[j] + container[j-1];
+    }
+    return container[n-1];
+}

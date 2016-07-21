@@ -1,0 +1,44 @@
+bool divider_conquer(int** maxtrix, int target, int headX, int headY, int tailX, int tailY)
+{
+    int midX, midY, tmp, i;
+    if (headY < 0)
+        return false;
+    if (tailY < 0)
+        return false;
+    if (headX > tailX || headY > tailY)
+        return false;
+    midX = (headX+tailX)/2;
+    midY = (headY+tailY)/2;
+    tmp = maxtrix[midX][midY];
+    if (tmp == target)
+        return true;
+    else if (tmp > target)
+    {
+        while (maxtrix[headX][tailY] > target && tailY>midY)
+            tailY--;
+        if (divider_conquer(maxtrix,target,headX,headY,midX-1,tailY))
+            return true;
+            
+        while (maxtrix[tailX][headY] > target && tailX>midX)
+            tailX--;
+        if (divider_conquer(maxtrix,target,headX,headY,tailX,midY-1))
+            return true;
+    }
+    else
+    {
+        while (maxtrix[tailX][headY] < target && headY<midY)
+            headY++;
+        if (divider_conquer(maxtrix,target,midX+1,headY,tailX,tailY))
+            return true;
+            
+        while (maxtrix[headX][tailY] < target && headX<midX)
+            headX++;
+        if (divider_conquer(maxtrix,target,headX,midY+1,tailX,tailY))
+            return true;
+    }
+    return false;
+}
+
+bool searchMatrix(int** maxtrix, int row, int col, int target) {
+    return divider_conquer(maxtrix, target, 0,0,row-1,col-1);
+}

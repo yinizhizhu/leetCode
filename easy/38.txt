@@ -1,0 +1,41 @@
+class Solution
+{
+public:
+    string countAndSay(int n)
+    {
+        string res;
+        if (n == 1)
+            return res = "1";
+        else if (n == 2)
+            return res = "11";
+        else if (n == 3)
+            return res = "21";
+        res = "1211";
+        for (int i=4; i<n; i++)
+        {
+            int counter = 1;
+            char container[10];
+            int j=1;
+            string temp = "";
+            for (; j<res.length(); j++)
+            {
+                if (res.at(j) != res.at(j-1))
+                {
+                    container[0]=counter+'0';
+                    container[1]=res.at(j-1);
+                    container[2]='\0';
+                    temp+=container;
+                    counter=1;
+                }
+                else
+                    counter++;
+            }
+            container[0]=counter+'0';
+            container[1]=res.at(j-1);
+            container[2]='\0';
+            temp+=container;
+            res = temp;
+        }
+        return res;
+    }
+};

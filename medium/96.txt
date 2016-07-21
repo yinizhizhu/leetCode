@@ -1,0 +1,16 @@
+int history[10000]={0};
+
+int numTrees(int n) {
+    int i, counter=0;
+    if(n < 2)
+        return 1;
+    for(i=1; i<=n ; i++)
+    {
+        if(!history[i-1])
+            history[i-1] = numTrees(i-1);
+        if(!history[n-i])
+            history[n-i] = numTrees(n-i);
+        counter += history[i-1] * history[n-i];
+    }
+    return counter;
+}

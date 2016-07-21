@@ -1,0 +1,52 @@
+class Solution {
+public:
+    Solution()
+    {
+        step = 0;
+    }
+    
+    int calc(vector<int>& each)
+    {
+        int i, result = 0;
+        for (i=0; i<each.size(); i++)
+            result += each[i];
+        return result;
+    }
+    
+    void backTracking(vector<int>& candidates, int k, int n, vector<vector<int>>& container, vector<int>& each, int head, int len)
+    {
+        int sum = calc(each);
+        if (sum > n)
+            return;
+        else if (sum == n)
+        {
+            if (step == k)
+                container.push_back(each);
+            return;
+        }
+        else
+        {
+            for (int i=head; i<len; i++)
+            {
+                each.push_back(candidates[i]);
+                step++;
+                backTracking(candidates, k, n, container, each, i+1, len);
+                step--;
+                each.pop_back();
+            }
+        }
+        return;
+    }
+    
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> container;
+        vector<int> each;
+        vector<int> candidates;
+        for (int i=1; i<10; i++)
+            candidates.push_back(i);
+        backTracking(candidates, k, n, container, each, 0, 9);
+        return container;
+    }
+private:
+    int step;
+};

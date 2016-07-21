@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int calc(vector<int>& each)
+    {
+        int i, result = 0;
+        for (i=0; i<each.size(); i++)
+            result += each[i];
+        return result;
+    }
+    
+    bool search(vector<vector<int>>& container, vector<int>& each)
+    {
+        int len1=container.size(), len2=each.size(), i, j;
+        for (i=0; i<len1; i++)
+        {
+            if (len2 == container[i].size())
+            {
+                for (j=0; j<len2; j++)
+                {
+                    if (container[i][j] != each[j])
+                        break;
+                }
+                if (j==len2)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    void backTracking(vector<int>& candidates, int target, vector<vector<int>>& container, vector<int>& each, int head, int len)
+    {
+        int sum = calc(each);
+        if (sum > target)
+            return;
+        else if (sum == target)
+        {
+            if (!search(container, each))
+                container.push_back(each);
+            return;
+        }
+        else
+        {
+            for (int i=head; i<len; i++)
+            {
+                each.push_back(candidates[i]);
+                backTracking(candidates, target, container, each, i+1, len);
+                each.pop_back();
+            }
+        }
+        return;
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> container;
+        vector<int> each;
+        
+        sort(candidates.begin(), candidates.end());
+        
+        backTracking(candidates, target, container, each, 0, candidates.size());
+        return container;
+    }
+};

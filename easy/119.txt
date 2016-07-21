@@ -1,0 +1,37 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getRow(int rowIndex, int* returnSize) {
+    int *kth, *container;
+    int i, j;
+    if (rowIndex < 0)
+        return NULL;
+    *returnSize = rowIndex + 1;
+    kth = malloc(*returnSize*sizeof(int));
+    container = malloc(*returnSize*sizeof(int));
+    for (i=0; i<*returnSize; i++)
+    {
+        if (i%2 == 0)
+        {
+            kth[0] = kth[i] = 1;
+            for (j=1; j<i; j++)
+                kth[j] = container[j-1] + container[j];
+            j = -1;
+        }
+        else
+        {
+            container[0] = container[i] = 1;
+            for (j=1; j<i; j++)
+                container[j] = kth[j-1] + kth[j];
+            j = -2;
+        }
+    }
+    if (j==-1)
+    {
+        free(container);
+        return kth;
+    }
+    free(kth);
+    return container;
+}

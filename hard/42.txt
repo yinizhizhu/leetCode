@@ -1,0 +1,46 @@
+int trap(int* height, int heightSize) {
+    int result=0;
+    int head, tail, highH, highT, calcH, calcT;
+    int high;
+    
+    if (heightSize == 0)
+        return 0;
+
+    head = 0;
+    highH = height[0];
+    calcH = 0;
+    
+    tail= heightSize - 1;
+    highT = height[tail];
+    calcT = 0;
+    
+    for (; head<=tail;)
+    {
+        if (highH >= highT)
+        {
+            if (highT > height[tail])
+                calcT += highT - height[tail];
+            else if(highT < height[tail])
+            {
+                result += calcT;
+                highT = height[tail];
+                calcT = 0;
+            }
+            tail--;
+        }
+        else if (highH <= highT)
+        {
+            if (highH > height[head])
+                calcH += highH - height[head];
+            else if(highH < height[head])
+            {
+                result += calcH;
+                highH = height[head];
+                calcH = 0;
+            }
+            head++;
+        }
+    }
+    result += (highH < highT ? calcH : calcT);
+    return result;
+}

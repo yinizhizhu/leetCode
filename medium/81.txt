@@ -1,0 +1,56 @@
+bool getIndex(int* nums, int size, int target, int start, int stop)
+{
+    int i, head=start, tail=stop, mid;
+    while (head <= tail)
+    {
+        mid = (head+tail)/2;
+        if (nums[mid] > target)
+            tail = mid-1;
+        else if (nums[mid] < target)
+            head = mid+1;
+        else
+            return true;
+    }
+    return false;
+}
+
+bool search(int* nums, int numsSize, int target) {
+    int i, head, mid, tail;
+    if (numsSize == 0)
+        return false;
+    else if (numsSize == 1)
+    {
+        if (nums[0] == target)
+            return true;
+        return false;
+    }
+    head = 0, tail = numsSize-1;
+    if (nums[tail] > nums[head])
+        return getIndex(nums, numsSize, target, head, tail);
+    else
+    {
+        if (nums[tail] == nums[head])
+            while (nums[tail-1] == nums[tail] && tail > 0)
+                tail--;
+        while (head < tail)
+        {
+            mid = (head+tail)/2;
+            if (nums[mid] >= nums[head])
+            {
+                if (nums[mid] >= nums[0])
+                    head = mid+1;
+                else
+                    tail = mid;
+            }
+            else
+                tail = mid;
+        }
+        mid = (head+tail)/2;
+        if (nums[0] > target)
+            return getIndex(nums, numsSize, target, mid, numsSize-1);
+        else if (nums[0] < target)
+            return getIndex(nums, numsSize, target, 0, mid-1);
+        else
+            return true;
+    }
+}

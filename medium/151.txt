@@ -1,0 +1,49 @@
+class Solution
+{
+public:
+    void reverseWords(string &s)
+    {
+        int length = s.length();
+        stack<string> container;
+
+        string result;
+        char temp[300];
+
+        int index = 0, counter=0, i;
+        for (i=0; i<length; i++)
+        {
+            if (s[i] == ' ')
+            {
+                if (index > 0)
+                {
+                    counter++;
+                    temp[index] = '\0';
+                    result = temp;
+                    container.push(result);
+                    index=0;
+                }
+                while (i+1<length && s[i+1] == ' ')
+                    i++;
+            }
+            else
+                temp[index++] = s[i];
+        }
+        if (index > 0)
+        {
+            counter++;
+            temp[index] = '\0';
+            result = temp;
+            container.push(result);
+        }
+        s = "";
+        if (counter == 0)
+            return;
+        for (i=0; i<counter - 1; i++)
+        {
+            s += container.top()+" ";
+            container.pop();
+        }
+        s+=container.top();
+        container.pop();
+    }
+};

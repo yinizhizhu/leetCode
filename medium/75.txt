@@ -1,0 +1,33 @@
+void swap(int* nums, int i, int j)
+{
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+    return;
+}
+
+void sortColors(int* nums, int numsSize) {
+    int head=0, tail=numsSize-1, i;
+    for (i=head; i<=tail; i++)
+    {
+        if (nums[i] == 0)
+        {
+            if (head > tail)
+                return;
+            if (i!=head)
+                swap(nums, i, head);
+            i=head;
+            head++;
+        }
+        else if (nums[i] == 2)
+        {
+            if (tail < head)
+                return;
+            swap(nums, i, tail);
+            tail--;
+            i--;
+        }
+        else
+            continue;
+    }
+}

@@ -1,0 +1,57 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** container;
+int left, right;
+int counter, step;
+
+void backTracking(int N)
+{
+    int i;
+    if (left == 0 && right == 0)
+    {
+        container[counter++][step] = '\0';
+        return;
+    }
+    if (left > 0 && left <= right)
+    {
+        left--;
+        for (i=counter+1; i<N; i++)
+            container[i][step] = '(';
+        container[counter][step++] = '(';
+        backTracking(N);
+        left++;
+        step--;
+    }
+    if (left>=0 && left < right)
+    {
+        right--;
+        for (i=counter+1; i<N; i++)
+            container[i][step] = ')';
+        container[counter][step++] = ')';
+        backTracking(N);
+        right++;
+        step--;
+    }
+    return;
+}
+
+char** generateParenthesis(int n, int* returnSize)
+{
+    int i, len;
+    int length[8] = {1,2,5,14,42,132,429,1430};
+    
+    len = length[n-1]+1;
+    container = malloc(len*sizeof(char*));
+    for (i=0; i<len; i++)
+        container[i] = malloc((2*n+1)*sizeof(char));
+
+    left = right = n;
+    counter = step = 0;
+
+    backTracking(len);
+
+    *returnSize = counter;
+    return container;
+}

@@ -1,0 +1,55 @@
+int findMin(int* nums, int numsSize)
+{
+    int head=0, mid, tail=numsSize-1;
+    if (numsSize == 0)
+        return 0;
+    while (true)
+    {
+        mid = (tail+head)/2;
+        if (nums[mid] == nums[tail])
+            return mid;
+        else if (nums[mid] > nums[tail])
+            head = mid+1;
+        else    // nums[mid] < nums[tail]
+            tail = mid;
+    }
+}
+
+int getIndex(int* nums, int size, int target, int start, int stop)
+{
+    int i, head=start, tail=stop, mid;
+    while (head <= tail)
+    {
+        mid = (head+tail)/2;
+        if (nums[mid] > target)
+            tail = mid-1;
+        else if (nums[mid] < target)
+            head = mid+1;
+        else
+            return mid;
+    }
+    return -1;
+}
+
+int search(int* nums, int size, int target) {
+    int i, mid, tail = size-1;
+    if (size == 0)
+        return -1;
+    if (nums[0] > nums[tail])
+    {
+        mid = findMin(nums, size);
+        if (target < nums[mid] || target > nums[mid-1])
+            return -1;
+        else
+        {
+            if (target < nums[0])
+                return getIndex(nums, size, target, mid, tail);
+            else if (target > nums[0])
+                return getIndex(nums, size, target, 0, mid-1);
+            else
+                return 0;
+        }
+    }
+    else
+        return getIndex(nums, size, target, 0, tail);
+}

@@ -1,0 +1,30 @@
+/**
+ * Return an array of arrays.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** generate(int numRows, int** columnSizes) {
+    int i, j;
+    int** res;
+    if (numRows < 1)
+        return NULL;
+    res = (int**)malloc(numRows*sizeof(int));
+    *columnSizes = (int *)malloc(numRows*sizeof(int));
+    for (i=0; i<numRows; i++)
+    {
+        (*columnSizes)[i] = i+1;
+        *(res+i) = (int*)malloc((i+1)*sizeof(int));
+        res[i][0] = 1;
+        for (j=1; j<i; j++)
+            res[i][j] = res[i-1][j-1] +  res[i-1][j];
+        res[i][i] = 1;
+    }
+    for (i=0; i<numRows; i++)
+        printf("%d ", (*columnSizes)[i]);
+    for (i=0; i<numRows; i++)
+        (*columnSizes)[i] = i+1;
+    printf("\n");
+    for (i=0; i<numRows; i++)
+        printf("%d ", (*columnSizes)[i]);
+    return res;
+}

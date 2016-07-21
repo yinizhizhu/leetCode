@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int getLast()
+    {
+        int last = 0;
+        for (int i=0; i<N; i++)
+            if (used[i] == 0)
+                last = i;
+        return last;
+    }
+    
+    void process(vector<vector<int>>& container, vector<int>& nums, vector<int> move, int len)
+    {
+        int i = getLast();
+        if (len > N)
+            return;
+        for (; i<N; i++)
+        {
+            if (used[i])
+            {
+                used[i] = 0;
+                move.push_back(nums[i]);
+                container.push_back(move);
+                process(container, nums, move, len+1);
+                move.erase(move.end()-1);
+                used[i] = 1;
+            }
+        }
+        return;
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> move;
+        vector<vector<int>> container;
+        
+        N = nums.size();
+        if (used.size() > 0)
+        {
+            for (int i=0; i<N; i++)
+                used[i] = 1;
+        }
+        else
+        {
+            for (int i=0; i<N; i++)
+                used.push_back(1);
+        }
+        
+        sort(nums.begin(), nums.end());
+        container.push_back(move);
+        process(container, nums, move, 0);
+        return container;
+    }
+private:
+    int N;
+    vector<int> used;
+};

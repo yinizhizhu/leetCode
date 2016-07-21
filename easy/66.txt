@@ -1,0 +1,40 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* plusOne(int* digits, int digitsSize, int* returnSize) {
+    int *container=malloc((digitsSize+1)*sizeof(int));
+    int i=0, carry=0;
+    if (digits[digitsSize-1] == 9)
+    {
+        carry = 1;
+        container[digitsSize] = 0;
+    }
+    else
+        container[digitsSize] = digits[digitsSize-1] + 1;
+    for (i=digitsSize-2; i>=0; i--)
+    {
+        if (digits[i]+carry == 10)
+        {
+            carry = 1;
+            container[i+1] = 0;
+        }
+        else
+        {
+            container[i+1] = digits[i]+carry;
+            carry = 0;
+        }
+    }
+    if (carry == 1)
+    {
+        container[0] = 1;
+        *returnSize = digitsSize+1;
+    }
+    else
+    {
+        for (i=0; i<digitsSize+1; i++)
+            container[i] = container[i+1];
+        *returnSize = digitsSize;
+    }
+    return container;
+}

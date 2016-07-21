@@ -1,0 +1,21 @@
+int removeDuplicates(int* nums, int size) {
+    int i, j, counter=1, len=size;
+    for (i=1; i<len; i++)
+    {
+        if (nums[i] == nums[i-1])
+        {
+            if (counter == 2)
+            {
+                len--;
+                for (j=i; j<len; j++)
+                    nums[j] = nums[j+1];
+                i--;
+            }
+            else
+                counter = 2;
+        }
+        else
+            counter = 1;
+    }
+    return len;
+}

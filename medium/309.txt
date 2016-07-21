@@ -1,0 +1,15 @@
+int maxProfit(int* p, int pS){
+    int i, last=0, dlast=0, tmp, container;
+    for(i=1; i<pS; i++)
+    {
+        tmp  = last;
+        container = last + p[i] - p[i-1];
+        if (container > dlast)
+            last = container;
+        else
+            last = dlast;
+        if (tmp > dlast)
+            dlast = tmp;
+    }
+    return (dlast > last ? dlast : last);
+}

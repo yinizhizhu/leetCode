@@ -1,0 +1,16 @@
+int Max(int a, int b)
+{
+    return a > b ? a : b;
+}
+
+int maxProfit(int* prices, int pricesSize) {
+    int buy1 = INT_MIN, sale1 = 0, buy2 = INT_MIN, sale2 = 0;
+    for(int i=0; i<pricesSize; i++)
+    {
+        buy1 = Max(buy1, -prices[i]);                        //left money after buy1
+        sale1 = Max(sale1, prices[i] + buy1);                //left money after sale1
+        buy2 = Max(buy2, sale1 - prices[i]);                 //left money after buy2
+        sale2 = Max(sale2, prices[i] + buy2);                //left money after sale2
+    }
+    return sale2;
+}

@@ -1,0 +1,67 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+
+int** container;
+int* feature;
+int step;
+
+int calc(int n, int k)
+{
+    int i, result = 1, tail=k;
+    if (k > n/2)
+        tail = n-k;
+    for (i=n; i>(n-tail); i--)
+        result *= i;
+    for (i=1; i<=tail; i++)
+        result /= i;
+    return result;
+}
+
+void backTracking(int* nums, int index, int head, int n, int k, int len)
+{
+    int i, j, tmp;
+    if (index == k)
+    {
+        step++;
+        return;
+    }
+    for (i=head; i<n; i++)
+    {
+        if (feature[i])
+        {
+            tmp = nums[i];
+            for (j=step; j<len; j++)
+                container[j][index] = tmp;
+            feature[i] = 0;
+            backTracking(nums, index+1, i+1, n, k, len);
+            feature[i] = 1;
+        }
+    }
+}
+
+int** combine(int n, int k, int** columnSizes, int* returnSize) {
+    int i, j, len;
+    int* nums;
+    if (n < k)
+        return NULL;
+    nums = (int*)malloc(n*sizeof(int));
+    for (i=0; i<n; i++)
+        nums[i] = i+1;
+    len = calc(n, k);
+    container = (int**)malloc(len*sizeof(char*));
+    for (i=0; i<len; i++)
+        container[i] = (int*)malloc(k*sizeof(int));
+    feature = (int*)malloc(n*sizeof(int));
+    for (i=0; i<n; i++)
+        feature[i] = 1;
+    step = 0;
+    backTracking(nums, 0, 0, n, k, len);
+    *columnSizes = (int*)malloc(len*sizeof(int));
+    for (i=0; i<len; i++)
+        (*columnSizes)[i] = k;
+    *returnSize = len;
+    return container;
+}

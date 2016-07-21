@@ -1,0 +1,16 @@
+int missingNumber(int* nums, int numsSize) {
+    int i, len, result=0, tmp=0;
+    for (i=0; i<numsSize; i++)
+        if (tmp < nums[i])
+            tmp = nums[i];
+    len = numsSize > tmp ? numsSize : tmp;
+    for (i=0; i<=len; i++)
+    {
+        if (i < numsSize)
+            result -=nums[i];
+        result += i;
+    }
+    if (result==0 && tmp+1==numsSize)
+        return numsSize;
+    return result;
+}

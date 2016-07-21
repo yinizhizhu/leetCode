@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        int counter = 0;
+        queue<struct TreeNode*> parent;
+        struct TreeNode* pos;
+        bool tagL=true, tagR=true;
+        if (root == NULL)
+            return 0;
+        parent.push(root);
+        while (tagL || tagR)
+        {
+            counter++;
+            int length = parent.size();
+            for (int i=0; i<length; i++)
+            {
+                pos = parent.front();
+                parent.pop();
+                if (pos->left)
+                    parent.push(pos->left);
+                else
+                    tagL = false;
+                if (pos->right)
+                {
+                    parent.push(pos->right);
+                    tagL = true;
+                }
+                else
+                {
+                    if (tagL == false)
+                    {
+                        tagR = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return counter;
+    }
+};

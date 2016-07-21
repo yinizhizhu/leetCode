@@ -1,0 +1,51 @@
+class Solution {
+public:
+    char *ito(int counter)
+    {
+        char *container =(char *)malloc(10*sizeof(char));
+        int temp = counter, len;
+        if (counter == 0)
+            len = 1;
+        else
+            len = (int)(log(counter)/log(10))+1;
+        int i, divider=(int)pow(10, len-1);
+        for (i=0; i<len; i++)
+        {
+            container[i] = temp/divider+'0';
+            temp %= divider;
+            divider /= 10;
+        }
+        container[i] = '\0';
+        return container;
+    }
+    string getHint(string secret, string guess) {
+        string result="";
+        int A=0, B=0;
+        
+        int container[10];
+        for (int i=0; i<10; i++)
+            container[i] = 0;
+            
+        int lenS=secret.length(), lenG=guess.length();
+        
+        int len = lenS > lenG ? lenG : lenS;
+        for (int i=0; i<len; i++)
+        {
+            if (secret.at(i) == guess.at(i))
+                A++;
+            else
+            {
+                int s=secret.at(i) - '0', g = guess.at(i) - '0';
+                if (container[s] < 0)
+                    B++;
+                container[s] ++;
+                if (container[g] > 0)
+                    B++;
+                container[g]--;
+            }
+        }
+        cout<<A<<" "<<B<<endl;
+        result = result+ito(A)+"A"+ito(B)+"B";
+        return result;
+    }
+};

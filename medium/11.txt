@@ -1,0 +1,30 @@
+int maxArea(int* height, int heightSize) {
+    int result=0;
+    int head=0, tail=heightSize-1, highH, highT, calc;
+    if (heightSize == 0)
+        return 0;
+    for (; head<=tail;)
+    {
+        highH = height[head];
+        highT = height[tail];
+        if (highH > highT)
+        {
+            calc = (tail-head)*highT;
+            tail--;
+        }
+        else if (highH < highT)
+        {
+            calc = (tail-head)*highH;
+            head++;
+        }
+        else
+        {
+            calc = (tail-head)*highT;
+            head++;
+            tail--;
+        }
+        if (calc > result)
+            result = calc;
+    }
+    return result;
+}

@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int count(vector<vector<int>>& board,vector<vector<int>>& feature,int x,int y,int row,int col)    // count the number of the tag
+    {
+        int i, j, counter=0;
+        for (i=x-1; i<(x+2); i++)
+            if (i>=0 && i<row)
+                for (j=y-1; j<(y+2); j++)
+                    if (j>=0 && j<col)
+                        if (i!=x || j!=y)
+                            if (board[i][j] == 1)
+                                counter++;
+        return counter;
+    }
+
+    void gameOfLife(vector<vector<int>>& board) {
+        int i, j, row, col, counter;
+        vector<vector<int>> feature;
+        vector<int> tmp;
+        
+        row = board.size();
+        if (row==0)
+            return;
+        col = board[0].size();
+        
+        for (i=0; i<col; i++)
+            tmp.push_back(0);
+        for (i=0; i<row; i++)
+            feature.push_back(tmp);
+            
+        for (i=0; i<row; i++)
+            for (j=0; j<col; j++)
+            {
+                if (board[i][j] == 0)
+                {
+                    if (count(board, feature, i, j, row, col) == 3)
+                        feature[i][j] = 1;
+                }
+                else
+                {
+                    counter = count(board, feature, i, j, row, col);
+                    if (counter < 2 || counter > 3)
+                        feature[i][j] = 1;
+                }
+            }
+        
+        for (i=0; i<row; i++)
+            for (j=0; j<col; j++)
+                if (feature[i][j] == 1)
+                {
+                    if (board[i][j] == 0)
+                        board[i][j] = 1;
+                    else
+                        board[i][j] = 0;
+                }
+        return;
+    }
+};

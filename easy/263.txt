@@ -1,0 +1,31 @@
+class Solution {
+public:
+bool isUgly(int num)
+{
+    if (num >= 1 && num <= 5)
+        return true;
+    else if (num > 5)
+    {
+        int tmp = num;
+        int element[3] = {2, 3, 5};
+        while (tmp != 0)
+        {
+            int i;
+            for (i=0; i<3; i++)
+            {
+                if (tmp % element[i] == 0)
+                {
+                    tmp = tmp/element[i];
+                    break;
+                }
+            }
+            if (tmp == 1)
+                return true;
+            else if (i == 3 && tmp > 1)
+                return false;
+        }
+    }
+    else
+        return false;
+}
+};

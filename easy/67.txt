@@ -1,0 +1,60 @@
+int toInt(char c)
+{
+    if (c=='1')
+        return 1;
+    return 0;
+}
+
+char* addBinary(char* a, char* b) {
+    int i, carry, lenA, lenB;
+    int pos, temp;
+    int posA, posB;
+    char* result=malloc(100*sizeof(char));
+    char tempR[100];
+    carry = 0;
+    pos = 0;
+    lenA = strlen(a);
+    lenB = strlen(b);
+    for (i=0; i<(lenA > lenB ? lenA : lenB); i++)
+    {
+        posA = lenA - i - 1;
+        posB = lenB - i - 1;
+        if (posA >= 0)
+        {
+            if (posB >= 0)
+            {
+                temp = toInt(a[posA])+toInt(b[posB])+carry;
+                result[pos++] = temp%2+'0';
+                carry = temp/2;
+            }
+            else
+            {
+                temp = toInt(a[posA])+carry;
+                result[pos++] = temp%2+'0';
+                carry = temp/2;
+            }
+        }
+        else
+        {
+            if (posB >= 0)
+            {
+                temp = toInt(b[posB])+carry;
+                result[pos++] = temp%2+'0';
+                carry = temp/2;
+            }
+            else
+                break;
+        }
+    }
+    if (carry == 1)
+        result[pos++]='1';
+    result[pos] = '\0';
+    strcpy(tempR, result);
+    lenA = strlen(result);
+    for (i=0; i<lenA; i++)
+    {
+        result[lenA-i-1] = tempR[i];
+    }
+    result[lenA] = '\0';
+    return result;
+}

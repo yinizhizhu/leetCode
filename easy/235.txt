@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+int path[2][100]= {0};  //To store the path to the node we need search.
+
+bool find(struct TreeNode* root, struct TreeNode* p, int i, int* index)
+{
+    if (root == NULL)
+        return false;
+    if (root == p)
+        return true;
+    if (root->val > p->val)
+    {
+        if ( find(root->left, p, i, index) )
+        {
+            path[ i ][ (*index)++ ] = -1;   //get the path
+            return true;
+        }
+    }
+    else
+    {
+        if ( find(root->right, p, i, index) )
+        {
+            path[ i ][ (*index)++ ] = 1;    //get the path
+            return true;
+        }
+    }
+    return false;
+}
+
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q)
+{
+    int i, j, dir;
+    int indexP=0, indexQ=0;
+    struct TreeNode* tmp;
+
+    if (root == NULL)
+        return NULL;
+
+    find(root, p, 0, &indexP);
+    find(root, q, 1, &indexQ);
+    
+    tmp = root;
+    i = indexP-1, j = indexQ-1;     //The path is reversed.
+    for (; i>=0 && j>=0; i--, j--)
+    {
+        dir = path[0][i];
+        if (dir != path[1][j])
+            return tmp;
+        tmp = (dir > 0 ? (tmp->right) : (tmp->left));
+    }
+    return tmp;
+}

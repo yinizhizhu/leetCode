@@ -1,0 +1,54 @@
+class Solution {
+public:
+    Solution(){
+        N = 900;
+        row = new int[N];
+        col = new int[N];
+        for (int i=0; i<N; i++)
+            row[i] = col[i] = -1;
+    }
+    
+    ~Solution(){
+        delete []row;
+        delete []col;
+    }
+    
+    void setZeroes(vector<vector<int>>& matrix) {
+        int i, j, lenR, lenC, tag;
+        
+        lenR = matrix.size();
+        if (lenR == 0)
+            return;
+        lenC = matrix[0].size();
+        
+        for (i=0; i<lenR; i++)
+        {
+            tag = 0;
+            for (j=0; j<lenC; j++)
+                if (matrix[i][j] == 0)
+                    tag = 1, col[j] = 1;
+            if (tag)
+                row[i] = 1;
+        }
+        
+        for (i=0; i<lenR; i++)
+            if (row[i] == 1)
+            {
+                for (j=0; j<lenC; j++)
+                    matrix[i][j] = 0;
+                row[i] = -1;
+            }
+        for (j=0; j<lenC; j++)
+            if (col[j] == 1)
+            {
+                for (i=0; i<lenR; i++)
+                    matrix[i][j] = 0;
+                col[j] = -1;
+            }
+        return;
+    }
+private:
+    int N;
+    int* row;
+    int* col;
+};

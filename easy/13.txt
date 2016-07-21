@@ -1,0 +1,34 @@
+int value(char c)
+{
+    switch(c)
+    {
+    case 'M':
+        return 1000;
+    case 'D':
+        return 500;
+    case 'C':
+        return 100;
+    case 'L':
+        return 50;
+    case 'X':
+        return 10;
+    case 'V':
+        return 5;
+    case 'I':
+        return 1;
+    }
+}
+
+int romanToInt(char* s)
+{
+    int res=0, pre, cur, i=1;
+    
+    pre = value(s[0]);
+    for(; i<strlen(s); i++)
+    {
+        cur = value(s[i]);
+        res += (pre < cur ? -pre : pre);
+        pre = cur;
+    }
+    return res+pre;
+}

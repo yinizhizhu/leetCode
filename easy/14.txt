@@ -1,0 +1,26 @@
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        length = len(strs)
+        if (length == 1):
+            return strs[0]
+        if (length == 0):
+            return ""
+        minLen = len(strs[0])
+        for i in xrange(1, length):
+            temp = len(strs[i])
+            if (temp <= minLen):
+                minLen = temp
+        prefix = ''
+        for pos in xrange(minLen):
+            for one in xrange(length):
+                for two in range(length):
+                    if (one != two):
+                        if (strs[one][pos] != strs[two][pos]):
+                            return prefix
+            prefix += strs[0][pos]
+        
+        return prefix

@@ -1,0 +1,82 @@
+class Solution {
+public:
+int nthUglyNumber(int n)
+{
+    int UglyNunmber[100000];
+    int i;
+    int index2 = 2, index3 = 1, index5 = 1;
+    int Next2, Next3, Next5;
+    int tag;
+    UglyNunmber[0] = 1;
+    UglyNunmber[1] = 2;
+    UglyNunmber[2] = 3;
+    UglyNunmber[3] = 4;
+    UglyNunmber[4] = 5;
+    i = 5;
+    for (; i<n; i++)
+    {
+        Next2 = UglyNunmber[index2] * 2;
+        Next3 = UglyNunmber[index3] * 3;
+        Next5 = UglyNunmber[index5] * 5;
+        if (Next2 < Next3 && Next2 < Next5)
+        {
+            index2++;
+            UglyNunmber[i]=Next2;
+        }
+        else if (Next2 == Next3 && Next2 < Next5)
+        {
+            index2++;
+            index3++;
+            UglyNunmber[i]=Next2;
+        }
+        else if (Next2 < Next3 && Next2 == Next5)
+        {
+            index2++;
+            index5++;
+            UglyNunmber[i]=Next2;
+        }
+        else if (Next3 < Next2 && Next3 < Next5)
+        {
+            index3++;
+            UglyNunmber[i]=Next3;
+        }
+        else if (Next3 == Next2 && Next3 < Next5)
+        {
+            index2++;
+            index3++;
+            UglyNunmber[i]=Next3;
+        }
+        else if (Next3 < Next2 && Next3 == Next5)
+        {
+            index3++;
+            index5++;
+            UglyNunmber[i]=Next3;
+        }
+        else if (Next5 < Next2 && Next5 < Next3)
+        {
+            index5++;
+            UglyNunmber[i]=Next5;
+        }
+        else if (Next5 == Next2 && Next5 < Next3)
+        {
+            index2++;
+            index5++;
+            UglyNunmber[i]=Next5;
+        }
+        else if (Next5 < Next2 && Next5 == Next3)
+        {
+            index3++;
+            index5++;
+            UglyNunmber[i]=Next5;
+        }
+        else
+        {
+            index2++;
+            index3++;
+            index5++;
+            UglyNunmber[i]=Next2;
+        }
+    }
+    return UglyNunmber[n-1];
+}
+};

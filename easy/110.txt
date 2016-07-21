@@ -1,0 +1,83 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //这个问题不能转化为：求解第一个和最后一个叶节点的问题
+ //例如：[1,2,2,3,3,3,3,4,4,4,4,4,4,null,null,5,5]
+class Solution {
+public:
+    bool calc(TreeNode* root){
+        TreeNode* temp;
+        int left=0, right=0;
+        int i, length;
+        queue<TreeNode*> containerL;
+        queue<TreeNode*> containerR;
+        if (root->left)
+            containerL.push(root->left);
+        while (!containerL.empty())
+        {
+            left++;
+            length = containerL.size();
+            for (i=0; i<length; i++)
+            {
+                temp = containerL.front();
+                containerL.pop();
+                if (temp->left)
+                    containerL.push(temp->left);
+                if (temp->right)
+                    containerL.push(temp->right);
+            }
+        }
+        if (root->right)
+            containerR.push(root->right);
+        while (!containerR.empty())
+        {
+            right++;
+            length = containerR.size();
+            for (i=0; i<length; i++)
+            {
+                temp = containerR.front();
+                containerR.pop();
+                if (temp->left)
+                    containerR.push(temp->left);
+                if (temp->right)
+                    containerR.push(temp->right);
+            }
+        }
+        length = right - left;
+        if (length>1 || length<-1)
+            return false;
+        return true;
+    }
+    bool isBalanced(TreeNode* root) {
+        if (root == NULL)
+            return true;
+        if (root->left==NULL && root->right==NULL)
+            return true;
+        queue<TreeNode*> container;
+        TreeNode *temp;
+        container.push(root);
+        int length;
+        while (!container.empty())
+        {
+            length = container.size();
+            for (int i=0; i<length; i++)
+            {
+                temp = container.front();
+                container.pop();
+                if (!calc(temp))
+                    return false;
+                if (temp->left)
+                    container.push(temp->left);
+                if (temp->right)
+                    container.push(temp->right);
+            }
+        }
+        return true;
+    }
+};

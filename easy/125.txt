@@ -1,0 +1,39 @@
+bool isA(char c)
+{
+    if (c>='A' && c<='Z')
+        return true;
+    else if (c>='a' && c<='z')
+        return true;
+    else if (c>='0' && c<='9')
+        return true;
+    return false;
+}
+
+bool isPalindrome(char* s) {
+    int i, j, len;
+    len = strlen(s);
+    if (len == 0)
+        return true;
+    j = len-1;
+    for (i=0; i<len && j>=0; i++)
+    {
+        while (!isA(s[i]))
+        {
+            i++;
+            if (i >= len)
+                break;
+        }
+        while (!isA(s[j]))
+        {
+            j--;
+            if (j < 0)
+                break;
+        }
+        if (j < i)
+            break;
+        if (tolower(s[i])!=tolower(s[j]))
+            return false;
+        j--;
+    }
+    return true;
+}

@@ -1,0 +1,18 @@
+int strStr(char* haystack, char* needle) {
+    int i, j, temp;
+    int lenH = strlen(haystack);
+    int lenN = strlen(needle);
+    if (lenN == 0)
+        return 0;
+    if (lenH < lenN)
+        return -1;
+    for (i=0; i<=lenH-lenN; i++)
+    {
+        for (j=0; j<lenN; j++)
+            if (haystack[i+j] != needle[j])
+                break;
+        if (j>=lenN)
+            return i;
+    }
+    return -1;
+}

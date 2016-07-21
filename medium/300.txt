@@ -1,0 +1,29 @@
+int* container;
+
+int dynamic(int*nums, int numsSize)
+{
+    int i, j, max=1, tmp, num;
+    for (i=0; i<numsSize; i++)
+    {
+        container[i] = 1;
+        tmp = 0;
+        num = nums[i];
+        for (j=0; j<i; j++)
+        {
+            if (nums[j] < num)
+                if (container[j] > tmp)
+                    tmp = container[j];
+        }
+        container[i] += tmp;
+        if (container[i] > max)
+            max = container[i];
+    }
+    return max;
+}
+
+int lengthOfLIS(int* nums, int numsSize) {
+    if (numsSize == 0)
+        return 0;
+    container = (int*)malloc(numsSize*sizeof(int));
+    return dynamic(nums, numsSize);
+}

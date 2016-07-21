@@ -1,0 +1,33 @@
+int maxProfit(int* prices, int pricesSize) {
+    int i, min=INT_MAX, max=-INT_MAX;
+    int gain[pricesSize], index=0, result=0, tmp;
+    if (pricesSize < 2)
+        return 0;
+    for (i=0; i<pricesSize; i++)
+    {
+        tmp = prices[i];
+        if (tmp < max)
+        {
+            gain[index++] = max-min;
+            max = -INT_MAX;
+            min = tmp;
+        }
+        else
+        {
+            if (tmp < min)
+                min = tmp;
+            else
+            {
+                if (tmp > max)
+                    max = tmp;
+            }
+        }
+    }
+    if (max != -INT_MAX)
+        gain[index++] = max-min;
+    else
+        gain[index++] = 0;
+    for (i=0; i<index; i++)
+        result += gain[i];
+    return result;
+}

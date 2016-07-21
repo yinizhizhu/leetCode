@@ -1,0 +1,17 @@
+int Max(int a, int b)
+{
+    return a > b ? a : b;
+}
+
+int maxSubArray(int* nums, int numsSize) {
+    int Start, All;
+    int i, tmp = nums[numsSize - 1];
+    Start = All = tmp;
+    for(i = numsSize - 2; i >= 0; i--)
+    {
+        tmp = nums[i];
+        Start = Max( tmp, tmp + Start);
+        All = Max(Start, All);
+    }
+    return All;
+}

@@ -1,0 +1,76 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    Solution(){
+        N = 100;
+        container = new int[N];
+        index = 0;
+    }
+    
+    ~Solution(){
+        delete []container;
+    }
+    
+    int atoI()
+    {
+        int result=0, help=1;
+        for (int i=index-1; i>=0; i--)
+        {
+            result += container[i]*help;
+            help *= 10;
+        }
+        return result;
+    }
+    
+    void backTracking(TreeNode* root, vector<int>& nums)
+    {
+        TreeNode* tmp=root;
+        int getIndex;
+        if (tmp->left==NULL && tmp->right==NULL)
+        {
+            container[index++] = tmp->val;
+            nums.push_back(atoI());
+            index = 0;
+            return;
+        }
+        if (tmp->left)
+        {
+            getIndex = index;
+            container[index++] = tmp->val;
+            backTracking(tmp->left, nums);
+            index = getIndex;
+        }
+        if (tmp->right)
+        {
+            getIndex = index;
+            container[index++] = tmp->val;
+            backTracking(tmp->right, nums);
+            index = getIndex;
+        }
+        return;
+    }
+
+    int sumNumbers(TreeNode* root) {
+        int result = 0;
+        vector<int> nums;
+        
+        if (root==NULL)
+            return 0;
+        backTracking(root, nums);
+        for (int i=0; i<nums.size(); i++)
+            result += nums[i];
+        return result;
+    }
+private:
+    int N;
+    int* container;
+    int index;
+};

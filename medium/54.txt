@@ -1,0 +1,51 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+void incre(int* direction)
+{
+    direction[0]++;
+    direction[1]--;
+    direction[2]--;
+    direction[3]++;
+    return;
+}
+
+int* spiralOrder(int** matrix, int matrixRowSize, int matrixColSize) {
+    int* result;
+    int i, j, index=0, len=matrixRowSize*matrixColSize;
+    int direction[4]={0, matrixColSize-1, matrixRowSize-1, 0};
+    int RU, CR, RD, CL; //RowUp, ColRight, RowDown, ColLeft
+    
+    RU = direction[0], CR = direction[1], RD = direction[2], CL = direction[3];
+    result = (int*)malloc(len*sizeof(int));
+    if (matrixRowSize == 1)
+    {
+        for (i=CL; i<=CR; i++)
+            result[index++] = matrix[RU][i];
+    }
+    else if (matrixColSize == 1)
+    {
+        for (i=RU; i<=RD; i++)
+            result[index++] = matrix[i][CL];
+    }
+    else
+    {
+        while ( (RU<=RD) && (CR>=CL) )
+        {
+            for (i=CL; i<CR; i++)
+                result[index++] = matrix[RU][i];
+            for (i=RU; i<RD; i++)
+                result[index++] = matrix[i][CR];
+            for (i=CR; i>CL; i--)
+                result[index++] = matrix[RD][i];
+            for (i=RD; i>RU; i--)
+                result[index++] = matrix[i][CL];
+            if ((direction[0]==direction[2])&&(direction[1]==direction[3]))
+                result[index++] = matrix[direction[0]][direction[3]];
+            incre(direction);
+            RU = direction[0], CR = direction[1], RD = direction[2], CL = direction[3];
+        }
+    }
+    return result;
+}

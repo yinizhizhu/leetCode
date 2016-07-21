@@ -1,0 +1,13 @@
+int singleNumber(int* nums, int numsSize) {
+    int i, j, res = 0, x, sum;
+    for(i = 0; i < 32; i++)
+    {
+        x = 1 << i;
+        sum = 0;
+        for(j = 0; j < numsSize; j++)
+            if(x & nums[j])
+                sum++;
+        if(sum % 3) res = res | x;
+    }
+    return res;
+}

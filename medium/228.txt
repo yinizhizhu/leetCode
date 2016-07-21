@@ -1,0 +1,51 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** summaryRanges(int* nums, int numsSize, int* returnSize) {
+    int i;
+    int head, tail;
+    char** returnVal;
+    returnVal = (char **)malloc(numsSize*sizeof(char*));
+    for (i=0; i<numsSize; i++)
+    {
+        *(returnVal+i) = malloc(20*sizeof(char));
+        strcpy(*(returnVal+i), "");
+    }
+    head = 0;
+    tail = 0;
+    *returnSize = 0;
+    if (numsSize == 1)
+    {
+        sprintf(*(returnVal+*returnSize), "%d", nums[head]);
+        (*returnSize) ++;
+    }
+    for (i=1; i<numsSize; i++)
+    {
+        if (nums[i] == nums[i-1]+1)
+        {
+            tail=i;
+            if (tail == numsSize - 1)
+            {
+                sprintf(*(returnVal+*returnSize), "%d->%d", nums[head], nums[tail]);
+                (*returnSize) ++;
+            }
+        }
+        else
+        {
+            if (tail>head)
+                sprintf(*(returnVal+*returnSize), "%d->%d", nums[head], nums[tail]);
+            else
+                sprintf(*(returnVal+*returnSize), "%d", nums[head]);
+            head = i;
+            tail = i;
+            (*returnSize) ++;
+            if (head == numsSize - 1)
+            {
+                sprintf(*(returnVal+*returnSize), "%d", nums[head]);
+                (*returnSize) ++;
+            }
+        }
+    }
+    return returnVal;
+}

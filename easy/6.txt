@@ -1,0 +1,27 @@
+char* convert(char* s, int num)
+{
+    int size = strlen(s) + 1;
+    char* col;
+    int d0 = num * 2 - 2;
+    int index = 0;
+    int i, j, d;
+    
+    if(num == 1)
+        return s;
+    col = (char*)malloc(sizeof(char)*size);
+    for(i = 0; i < num; i++)
+    {
+        d = d0 - i * 2; //get the first distance;
+        for(j = i; j < size - 1;)
+        {
+            if(d > 0)
+            {
+                col[index++] = *(s+j);
+                j += d;
+            }
+            d = d0 - d;
+        }
+    }
+    col[index] = '\0';
+    return col;
+}

@@ -1,0 +1,55 @@
+class Solution
+{
+public:
+    vector<vector<int>> palindromePairs(vector<string>& words)
+    {
+        vector<vector<int>> res;
+        if (!words.size()) return res;
+        
+        unordered_map<string, size_t> word_idx;
+        for (size_t i = 0; i < words.size(); ++i)
+            word_idx[words[i]] = i;
+        
+        vector<int> slu(2);
+        for (size_t i = 0; i < words.size(); ++i)
+        {
+            size_t len = words[i].length();
+            for (size_t l = 0; l <= len; ++l)
+            {
+                string left = words[i].substr(0, l);
+                string right = words[i].substr(l);
+                string rleft = left;
+                string rright = right;
+                reverse(rleft.begin(), rleft.end());
+                reverse(rright.begin(), rright.end());
+                if (word_idx.find(rleft) != word_idx.end())
+                    if (word_idx[rleft] != i && isPalindrome(right))
+                    {
+                        slu[0] = i;
+                        slu[1] = word_idx[rleft];
+                        res.push_back(slu);
+                    }
+                if (l != 0 && word_idx.find(rright) != word_idx.end())
+                {
+                    if (word_idx[rright] != i && isPalindrome(left))
+                    {
+                        slu[0] = word_idx[rright];
+                        slu[1] = i;
+                        res.push_back(slu);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    bool isPalindrome(string s)
+    {
+        if (s.size() <= 1) return true;
+        size_t i = 0;
+        size_t j = s.size() - 1;
+        while (i < j)
+            if (s[i++] != s[j--]) return false;
+        return true;
+    }
+};

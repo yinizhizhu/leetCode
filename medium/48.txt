@@ -1,0 +1,21 @@
+void rotate(int** matrix, int matrixRowSize, int matrixColSize) {
+    int** container;
+    int i, j, tmp;
+    
+    if (matrixRowSize == 0)
+        return NULL;
+        
+    container = (int**)malloc(matrixRowSize*sizeof(int*));
+    for (i=0; i<matrixRowSize; i++)
+        container[i] = (int*)malloc(matrixRowSize*sizeof(int));
+    
+    for (i=0; i<matrixRowSize; i++)
+        for (j=0; j<matrixRowSize; j++)
+            container[j][matrixRowSize-1-i] = matrix[i][j];
+    
+    for (i=0; i<matrixRowSize; i++)
+        for (j=0; j<matrixRowSize; j++)
+            matrix[i][j] = container[i][j];
+    free(container);
+    return;
+}

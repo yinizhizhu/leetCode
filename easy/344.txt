@@ -1,0 +1,12 @@
+char* reverseString(char* s) {
+    int i, len = strlen(s)-1, mid;
+    char tmp;
+    mid = len/2;
+    for (i=0; i<=mid; i++)
+    {
+        tmp = s[i];
+        s[i] = s[len-i];
+        s[len-i] = tmp;
+    }
+    return s;
+}

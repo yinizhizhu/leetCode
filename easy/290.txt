@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        map<char, string>cms;
+        map<string, char>smc;
+        
+        char oneChar;
+        char oneString[100];
+        int i, index=0, len = str.size();
+        int counter=0, countLen = pattern.size();
+        for (i=0; i<=len; i++)
+        {
+            if (i==len || str[i]==' ')
+            {
+                if (counter == countLen)
+                    return false;
+                    
+                oneString[index] = '\0', index = 0;
+                oneChar = pattern[counter++];
+
+                if (cms.find(oneChar) == cms.end())
+                {
+                    if (smc.find(oneString) != smc.end())
+                        return false;
+                    cms.insert(pair<char, string>(oneChar, oneString));
+                    smc.insert(pair<string, char>(oneString, oneChar));
+                }
+                else
+                    if (smc.find(oneString) == smc.end())
+                        return false;
+            }
+            else
+                oneString[index++] = str[i];
+        }
+        if (counter < countLen)
+            return false;
+        return true;
+    }
+};

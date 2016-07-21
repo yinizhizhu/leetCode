@@ -1,0 +1,12 @@
+int trailingZeroes(int n) {
+    int temp, divider, five = 0;
+    if (n < 4)
+        return 0;
+    temp = n;
+    while (temp > 0)
+    {
+        temp /= 5;
+        five += temp;
+    }
+    return five;
+}

@@ -1,0 +1,20 @@
+char* intToRoman(int num) {
+    char romans[20][3] = {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
+    int nums[20] = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+    char* result=malloc(20*sizeof(char));
+    
+    int myNum = num;
+    int i = 12, j;
+    int index=0;
+    for(i=12; i>=0; i--)
+    {
+        while(myNum>=nums[i])
+        {
+            for (j=0; j<(i%2+1); j++)
+                result[index++] = romans[i][j];
+            myNum = myNum - nums[i];
+        }
+    }
+    result[index]='\0';
+    return result;
+}

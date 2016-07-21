@@ -1,0 +1,41 @@
+class Solution {
+public:
+    Solution()
+    {
+        for (int i=0; i<=240; i++)
+            container.push_back(calc(i));
+    }
+    int calc(uint32_t n)
+    {
+        uint32_t tmp=1;
+        int counter=0;
+        for (int i=0; i<32; i++)
+        {
+            if (tmp>n)
+                break;
+            if (tmp&n)
+                counter++;
+            tmp = tmp<<1;
+        }
+        return counter;
+    }
+    vector<int> countBits(int num) {
+        vector<int> result;
+        uint32_t i;
+        if (num > 240)
+        {
+            for (i=0; i<=240; i++)
+                result.push_back(container[i]);
+            for (i=241; i<=num; i++)
+                result.push_back(calc(i));
+        }
+        else
+        {
+            for (i=0; i<=num; i++)
+                result.push_back(container[i]);
+        }
+        return result;
+    }
+private:
+    vector<int> container;
+};

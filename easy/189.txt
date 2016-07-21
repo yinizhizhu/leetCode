@@ -1,0 +1,13 @@
+void rotate(int* nums, int numsSize, int k) {
+    int i;
+    int* temp;
+    temp = malloc(numsSize*sizeof(int));
+    for (i=0; i<numsSize; i++)
+        temp[i] = nums[i];
+    for (i=0; i<numsSize; i++)
+    {
+        nums[(i+k)%numsSize] = temp[i];
+    }
+    free(temp);
+    return;
+}

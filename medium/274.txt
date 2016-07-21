@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int i, len=citations.size(), maxN=0, number;
+        if (len == 0)
+            return 0;
+        else if (len == 1)
+            return (citations[0] > 0 ? 1 : 0);
+        sort(citations.begin(), citations.end());
+        for (i=0; i<len; i++)
+        {
+            number = len-i;
+            if (citations[i] >= number)
+                maxN = (maxN > number ? maxN : number);
+        }
+        return maxN;
+    }
+};

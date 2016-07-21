@@ -1,0 +1,25 @@
+char* convertToTitle(int n) {
+    int i, j, len, remain;
+    char* temp = malloc(100*sizeof(char));
+    char result[100];
+    remain = n-1;
+    len = (int)(log(n)/log(26));
+    for (i=0; i<=len; i++)
+    {
+        result[i] = remain%26+'A';
+        remain = remain/26;
+        if (remain == 0)
+        {
+            i++;
+            break;
+        }
+        else
+            remain--;
+    }
+    result[i] = '\0';
+    len = strlen(result);
+    for (i=0; i<len; i++)
+        temp[len-i-1] = result[i];
+    temp[i] = '\0';
+    return temp;
+}

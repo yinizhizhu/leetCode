@@ -1,0 +1,31 @@
+int Min(int a, int b)
+{
+    return (a < b ? a : b);
+}
+
+int minPathSum(int** grid, int gridRowSize, int gridColSize) {
+    int* container;
+    int i, j, k, counter, tmp;
+    
+    if (gridRowSize*gridColSize == 0)
+        return 0;
+        
+    container =(int*)malloc(gridColSize*sizeof(int));
+    counter=0;
+    for (i=0; i<gridColSize; i++)
+    {
+        counter += grid[0][i];
+        container[i] = counter;
+    }
+    
+    for (i=1; i<gridRowSize; i++)
+    {
+        container[0] = container[0] + grid[i][0];
+        for (j=1; j<gridColSize; j++)
+        {
+            tmp = grid[i][j];
+            container[j] = Min(container[j-1]+tmp, container[j]+tmp);
+        }
+    }
+    return container[gridColSize-1];
+}

@@ -1,0 +1,28 @@
+int integerBreak(int n) {
+    int i, j, num, tmp;
+    int result=0, average;
+    for (i=1; i<n; i++)
+    {
+        num = 1;
+        tmp = n/i;
+        average = i;
+        for (j=0; j<tmp; j++)
+            num *= average;
+        if ((n%i)>1)
+            num *= (n-average*j);
+        else if ((n%i) == 1)
+        {
+            if (tmp > 1)
+            {
+                num /= average;
+                num *= (average+1);
+            }
+        }
+        
+        if (num >= result)
+            result = num;
+        else
+            return result;
+    }
+    return result;
+}

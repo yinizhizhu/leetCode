@@ -1,0 +1,18 @@
+int rob(int* nums, int numsSize) {
+    int i, result, temp1;
+    int *container = malloc(numsSize*sizeof(int));
+    if (numsSize < 1)
+        return 0;
+    temp1 = nums[0];
+    container[0] = temp1;
+    container[1] = temp1 > nums[1] ? temp1 : nums[1];
+    for (i=2; i<numsSize; i++)
+    {
+        temp1 = container[i-1];
+        result = nums[i] + container[i-2];
+        container[i] = result > temp1 ? result : temp1;
+    }
+    result = container[numsSize-1];
+    free(container);
+    return result;
+}

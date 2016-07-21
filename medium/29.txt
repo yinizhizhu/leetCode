@@ -1,0 +1,67 @@
+int calc(int first, int second)
+{
+    int counter = 0, delta = 1, tmp=first, divider=second;
+    if (first < 0)
+    {
+        tmp = 2147483647-second;
+        tmp ++;
+        counter++;
+    }
+    if (tmp < second)
+        return counter;
+    else if (tmp == second)
+        return 1;
+    
+    while (true)
+    {
+        while (tmp>=divider)
+        {
+            tmp -= divider;
+            divider += divider;
+            delta += delta;
+            if (divider <= 0)
+                break;
+        }
+        counter += delta-1;
+        divider = second;
+        delta = 1;
+        if (tmp < second)
+            return counter;
+    }
+}
+
+int divide(int dividend, int divisor) {
+    int first=dividend, second=divisor;
+    int tag=0, rm, counter = 0;
+    if (divisor == 1)
+        return dividend;
+    if (dividend < 0)
+    {
+        tag++;
+        first = -dividend;
+    }
+    if (divisor < 0)
+    {
+        tag++;
+        second = -divisor;
+    }
+    if (second < 0)
+    {
+        if (dividend == divisor)
+            return 1;
+        else
+            return 0;
+    }
+    if (second == 1)
+    {
+        if (first <= 0)
+            return 2147483647;
+        if (tag == 1)
+            return -first;
+        return first;
+    }
+    counter = calc(first, second);
+    if (tag == 1)
+        return -counter;
+    return counter;
+}

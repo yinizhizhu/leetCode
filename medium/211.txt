@@ -1,0 +1,89 @@
+#define MAX_LEN 26
+
+struct Trie
+{
+    bool isStr;
+    struct Trie* ch[MAX_LEN];
+    Trie()
+    {
+        isStr = false;
+        for (int i=0; i<MAX_LEN; i++)
+            ch[i] = NULL;
+    }
+};
+
+class WordDictionary
+{
+public:
+    WordDictionary()
+    {
+        root = new struct Trie;
+    }
+    // Adds a word into the data structure.
+    void addWord(string word)
+    {
+        int index;
+        struct Trie* tmp;
+        tmp = root;
+        for (int i=0; i<word.length(); i++)
+        {
+            index = word[i]-'a';
+            if (!tmp->ch[index])
+                tmp->ch[index] = new struct Trie;
+            tmp = tmp->ch[index];
+        }
+        tmp->isStr = true;
+        return;
+    }
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word)
+    {
+        int tag = 0, len, counter=1, index;
+        struct Trie *tmp;
+        queue<struct Trie*> container;
+        container.push(root);
+        for (int i=0; i<word.length(); i++)
+        {
+            if (counter == 0)
+                return false;
+            len = counter;
+            for (int j=0; j<len; j++)
+            {
+                tmp = container.front();
+                container.pop();
+                counter--;
+                if (word[i] == '.')
+                {
+                    for (int k=0; k<MAX_LEN; k++)
+                        if (tmp->ch[k]!=NULL)
+                        {
+                            container.push(tmp->ch[k]);
+                            counter++;
+                        }
+                }
+                else
+                {
+                    index = word[i] - 'a';
+                    if (tmp->ch[index]!=NULL)
+                    {
+                        container.push(tmp->ch[index]);
+                        counter++;
+                    }
+                }
+            }
+        }
+        if (counter == 0)
+            return false;
+        for (int i=0; i<counter; i++)
+        {
+            tmp = container.front();
+            container.pop();
+            if (tmp->isStr)
+                return true;
+        }
+        return false;
+    }
+private:
+    struct Trie* root;
+};

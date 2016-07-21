@@ -1,0 +1,15 @@
+int findMin(int* nums, int numsSize) {
+    int head=0, mid, tail=numsSize-1;
+    if (numsSize == 0)
+        return 0;
+    while (true)
+    {
+        mid = (tail+head)/2;
+        if (nums[mid] == nums[tail])
+            return nums[mid];
+        else if (nums[mid] > nums[tail])
+            head = mid+1;
+        else    // nums[mid] < nums[tail]
+            tail = mid;
+    }
+}

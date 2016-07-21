@@ -1,0 +1,15 @@
+bool increasingTriplet(int* nums, int numsSize) {
+    int i;
+    int a = 2147483647;
+    int b = 2147483647;
+    for (i=0; i<numsSize; i++)
+    {
+        if (nums[i] <= a)
+            a = nums[i];
+        else if (nums[i] <= b)
+            b = nums[i];
+        else
+            return true;
+    }
+    return false;
+}

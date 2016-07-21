@@ -1,0 +1,14 @@
+int removeElement(int* nums, int numsSize, int val) {
+    int i, j, returnSize=numsSize;
+    for (i=0; i<returnSize; i++)
+    {
+        if (val == nums[i])
+        {
+            for (j=i; j<returnSize; j++)
+                nums[j] = nums[j+1];
+            returnSize--;
+            i--;
+        }
+    }
+    return returnSize;
+}

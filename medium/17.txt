@@ -1,0 +1,80 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+char** container;
+int** feature;
+int step;
+
+void backTracking(char** container, char select[8][5], int* length, char* digits, int index, int len, int size)
+{
+    int i, j, tmp;
+    char each;
+    if (index == size)
+    {
+        container[step][index] = 0;
+        step++;
+        return;
+    }
+    tmp = digits[index]-'2';
+    for (i=0; i<length[tmp]; i++)
+    {
+        if (feature[index][i])
+        {
+            each = select[tmp][i];
+            container[step][index] = each;
+            for (j=step+1; j<len; j++)
+                container[j][index] = each;
+                
+            feature[index][i] = 0;
+            
+            backTracking(container, select, length, digits, index+1, len, size);
+            
+            feature[index][i] = 1;
+        }
+    }
+}
+
+char** letterCombinations(char* digits, int* returnSize)
+{
+    int i, j, len=1, size, tmp;
+    char select[8][5] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    int length[8] = {3, 3, 3, 3, 3, 4, 3, 4};
+    
+    size = strlen(digits);
+    if (size == 0)
+    {
+        container = (char**)malloc(sizeof(char*));
+        container[0] = (char*)malloc(sizeof(char));
+        *returnSize = 0;
+        return container;
+    }
+    
+    for (i=0; i<size; i++)
+    {
+        tmp = digits[i]-'2';
+        len *= length[tmp];
+    }
+    *returnSize = len;
+    
+    container = (char**)malloc(len*sizeof(char*));
+    for (i=0; i<len; i++)
+        container[i] = (char*)malloc((size+1)*sizeof(char));
+    
+    feature = (int**)malloc(size*sizeof(int*));
+    for (i=0; i<size; i++)
+        feature[i] = (int*)malloc(length[ (digits[i]-'2') ]*sizeof(int));
+        
+    for (i=0; i<size; i++)
+    {
+        tmp = digits[i]-'2';
+        for (j=0; j<length[tmp]; j++)
+            feature[i][j] = 1;
+    }
+    
+    step = 0;
+    
+    backTracking(container, select, length, digits, 0, len, size);
+    return container;
+}

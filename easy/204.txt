@@ -1,0 +1,40 @@
+bool isPrime(int num)
+{
+    int i, temp;
+    if (num < 2)
+        return false;
+    else if (num==2 || num==3)
+        return true;
+    else
+    {
+        if (num%2 == 0)
+            return false;
+        else
+        {
+            temp = sqrt(num);
+            for (i=3; i<temp+1; i+=2)
+                if (num%i == 0)
+                    return false;
+            return true;
+        }
+    }
+}
+
+int countPrimes(int n) {
+    int i, counter;
+    if (n < 3)
+        return 0;
+    else
+    {
+        if (n == 3)
+            return 1;
+        else
+        {
+            counter = 1;
+            for (i=3; i<n; i+=2)
+                if (isPrime(i))
+                    counter ++;
+            return counter;
+        }
+    }
+}

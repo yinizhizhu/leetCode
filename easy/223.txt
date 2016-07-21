@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int width[4] = {A, C, E, G};
+        int height[4] = {B, D, F, H};
+        int s1 = (D-B)*(C-A), s2 = (H-F)*(G-E);
+        if (D < F || H < B || G < A || C < E)
+            return s1+s2;
+        sort(width, width+4);
+        sort(height, height+4);
+        return s1+s2-(width[2]-width[1])*(height[2]-height[1]);
+    }
+};

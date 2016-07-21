@@ -1,0 +1,68 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+int** container;
+int* feature;
+int step;
+
+void backTracking(int* nums, int index_, int len, int numsSize)
+{
+    int i, j, tmp;
+    if (index_ == numsSize)
+    {
+        step++;
+        return;
+    }
+    for (i=0; i<numsSize; i++)
+    {
+        if (feature[i])
+        {
+            tmp = nums[i];
+            container[step][index_] = tmp;
+            for (j=step+1; j<len; j++)
+                container[j][index_] = tmp;
+            
+            feature[i] = 0;
+            
+            backTracking(nums, index_+1, len, numsSize);
+            
+            feature[i] = 1;
+        }
+    }
+    return;
+}
+
+int** permute(int* nums, int numsSize, int* returnSize) {
+    int i, j, len;
+    
+    if (numsSize == 0)
+    {
+        container = (int**)malloc(sizeof(int*));
+        container = (int*)malloc(sizeof(int));
+        *returnSize = 1;
+        return container;
+    }
+    else
+    {
+        feature = (int*)malloc(numsSize*sizeof(int));
+        for (i=0; i<numsSize; i++)
+            feature[i] = 1;
+            
+        len = 1;
+        for (i=1; i<=numsSize; i++)
+            len*=i;
+        *returnSize = len;
+        
+        container = (int**)malloc(len*sizeof(int *));
+        for (i=0; i<len; i++)
+            container[i] = (int*)malloc(numsSize*sizeof(int));
+        
+        step = 0;
+        
+        backTracking(nums, 0, len, numsSize);
+        
+        return container;
+    }
+}
