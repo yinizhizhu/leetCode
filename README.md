@@ -1,0 +1,2 @@
+# leetCode
+Trying some OJ.
