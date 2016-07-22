@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2)
+    {
+        vector<int> result;
+        int i, len = nums1.size();
+        map<int, int> containerA, containerR;
+        map<int, int>::iterator tmp;
+        for (i=0; i<len; i++)
+        {
+            if (containerA.find(nums1[i]) == containerA.end())
+                containerA.insert(map<int, int>::value_type(nums1[i], 0));
+        }
+        len = nums2.size();
+        for (i=0; i<len; i++)
+        {
+            if (containerA.find(nums2[i]) != containerA.end())
+            {
+                if (containerR.find(nums2[i]) == containerR.end())
+                    containerR.insert(map<int, int>::value_type(nums2[i], 0));
+            }
+        }
+        tmp = containerR.begin();
+        for (; tmp!=containerR.end(); tmp++)
+            result.push_back(tmp->first);
+        return result;
+    }
+};
