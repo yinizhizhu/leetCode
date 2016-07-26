@@ -1,0 +1,41 @@
+class Solution
+{
+public:
+    bool check(char tmp)
+    {
+        if (tmp == 'a' || tmp == 'A')
+            return true;
+        else if (tmp == 'e' || tmp == 'E')
+            return true;
+        else if (tmp == 'i' || tmp == 'I')
+            return true;
+        else if (tmp == 'o' || tmp == 'O')
+            return true;
+        else if (tmp == 'u' || tmp == 'U')
+            return true;
+        return false;
+    }
+    string reverseVowels(string s)
+    {
+        char tmp;
+        int len = 0, indexH, indexT;
+        vector<int> indexV;
+        for (int i=0; i<s.size(); i++)
+        {
+            if (check(s[i]))
+            {
+                indexV.push_back(i);
+                len++;
+            }
+        }
+        for (int i=0; i<(len/2); i++)
+        {
+            indexH = indexV[i];
+            indexT = indexV[len - 1 - i];
+            tmp = s[indexH];
+            s[indexH] = s[indexT];
+            s[indexT] = tmp;
+        }
+        return s;
+    }
+};

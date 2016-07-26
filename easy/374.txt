@@ -1,0 +1,30 @@
+// Forward declaration of guess API.
+// @param num, your guess
+// @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+int guess(int num);
+
+class Solution {
+public:
+    int guessNumber(int n) {
+        int head = 1, tail = n;
+        int res, mid, next;
+        mid = ((head&1)+(tail&1))>>1;
+        mid += (head>>1)+(tail>>1);
+        while(true)
+        {
+            res = guess(mid);
+            if (res == 0)
+                return mid;
+            else if (res == 1)
+                head = mid;
+            else
+                tail = mid;
+            next = ((head&1)+(tail&1))>>1;
+            next += (head>>1)+(tail>>1);
+            if (mid == next)
+                return mid+1;
+            else
+                mid = next;
+        }
+    }
+};
