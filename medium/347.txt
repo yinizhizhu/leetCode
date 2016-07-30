@@ -1,0 +1,47 @@
+typedef struct node
+{
+	int x;
+	int y;
+	bool operator>(const node& rhs) const   //for des
+	{
+		return y > rhs.y;
+	}
+	node(int a, int b) : x(a), y(b) {}
+} node;
+
+class Solution
+{
+public:
+	vector<int> topKFrequent(vector<int>& nums, int k)
+	{
+		size_t i, len = nums.size();
+		int term;
+
+		unordered_map<int, int> container;
+		unordered_map<int, int>::iterator iter, end = container.end();
+		for (i = 0; i<len; i++)
+		{
+			term = nums[i];
+			iter = container.find(term);
+			if (iter == end)
+				container.insert(unordered_map<int, int>::value_type(term, 1));
+			else
+				iter->second++;
+		}
+
+		vector<node> allNode;
+		iter = container.begin();
+		while (iter != end)
+		{
+			allNode.push_back(node(iter->first, iter->second));
+			iter++;
+		}
+
+		sort(allNode.begin(), allNode.end(), greater<node>());
+
+		vector<int> result;
+		for (i = 0; i < k; i++)
+			result.push_back(allNode[i].x);
+		return result;
+	}
+};
