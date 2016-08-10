@@ -1,0 +1,30 @@
+class Solution {
+public:
+	int minimumTotal(vector<vector<int>>& v) {
+		int n = v.size(), tmp;
+
+		vector<int> next;
+		vector<int> container;
+		for (int i = 0; i<n; i++)
+		{
+		    tmp = v[n - 1][i];
+			next.push_back(tmp);
+			container.push_back(tmp);
+		}
+
+		for (int i = n - 2; i >= 0; i--)
+		{
+			for (int j = 0; j<=i; j++)
+			{
+				if (container[j] < container[j + 1])
+					next[j] = container[j] + v[i][j];
+				else
+					next[j] = container[j + 1] + v[i][j];
+			}
+			
+			for (int j = 0; j<=i; j++)
+				container[j] = next[j];
+		}
+		return next[0];
+	}
+};
