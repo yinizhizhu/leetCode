@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        if (num < 1)
+            return false;
+        else if (num == 1)
+            return true;
+        
+        int re = num % 10;
+        switch(re)
+        {
+            case 2:
+            case 3:
+            case 7:
+            case 8:
+                return false;
+            default:
+                break;
+        }
+        
+        int guess;
+        int head = 2, mid, tail = (int)(log(num)/log(10));
+        tail = tail/2 + 1;
+        tail = (int)pow(10, tail);
+        while (head <= tail)
+        {
+            mid = (head+tail)/2;
+            cout<<mid<<endl;
+            guess = mid*mid;
+            if (guess == num)
+                return true;
+            else if (guess < num)
+                head = mid+1;
+            else
+                tail = mid-1;
+        }
+        return false;
+    }
+};
