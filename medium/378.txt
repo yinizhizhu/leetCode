@@ -1,0 +1,62 @@
+typedef struct node
+{
+	int x;
+	int y;
+	node(int a, int b) : x(a), y(b){}
+} node;
+
+class Solution {
+public:
+	int kthSmallest(vector<vector<int>>& matrix, int k) {
+		int row = matrix.size();
+		int col = matrix[0].size();
+
+		int i, j;
+		vector<vector<int>> tag;
+		for (i = 0; i < row; i++)
+		{
+			vector<int> tmp;
+			tmp.resize(col);
+			for (j = 0; j < col; j++)
+				tmp[j] = 1;
+			tag.push_back(tmp);
+		}
+
+		node *minNode, *tmp;
+		int minPos, counter = 0, len;
+		vector<node*> container;
+		container.push_back(new node(0, 0));
+		tag[0][0] = 0;
+		len = container.size();
+		while (len)
+		{
+			minNode = container[0];
+			minPos = 0;
+			for (i = 1; i < len; i++)
+			{
+				tmp = container[i];
+				if (matrix[tmp->x][tmp->y] < matrix[minNode->x][minNode->y])
+				{
+					minNode = tmp;
+					minPos = i;
+				}
+			}
+			if (minNode->x + 1 < row && tag[minNode->x + 1][minNode->y])
+			{
+				container.push_back(new node(minNode->x + 1, minNode->y));
+				tag[minNode->x + 1][minNode->y] = 0;
+			}
+			if (minNode->y + 1 < col && tag[minNode->x][minNode->y + 1])
+			{
+				container.push_back(new node(minNode->x, minNode->y + 1));
+				tag[minNode->x][minNode->y + 1] = 0;
+			}
+			counter++;
+			if (counter == k)
+				return matrix[minNode->x][minNode->y];
+			container.erase(container.begin() + minPos);
+			len = container.size();
+		}
+		return matrix[minNode->x][minNode->y];
+	}
+};

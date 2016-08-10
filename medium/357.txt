@@ -1,0 +1,23 @@
+class Solution {
+public:
+	Solution()
+	{
+		container.push_back(1);
+		container.push_back(10);
+		int pos = 2;
+		int next = 9, move = 9;
+		for (; pos < 11; pos++)
+		{
+			next *= move;
+			container.push_back(next + container[pos - 1]);
+			move--;
+		}
+	}
+	int countNumbersWithUniqueDigits(int n) {
+		if (n > 10)
+			return container[10];
+		return container[n];
+	}
+public:
+	vector<int> container;
+};
