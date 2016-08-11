@@ -1,0 +1,24 @@
+class Solution {
+public:
+	bool canConstruct(string ransomNote, string magazine) {
+		int container[26];
+		memset(container, 0, 26*sizeof(int));
+
+		size_t i, len = magazine.size();
+		for (size_t i = 0; i < len; i++)
+		{
+			container[magazine.at(i) - 'a']++;
+		}
+        
+        size_t tmp;
+		len = ransomNote.size();
+		for (size_t i = 0; i < len; i++)
+		{
+		    tmp = ransomNote.at(i) - 'a';
+			container[tmp]--;
+			if (container[tmp] < 0)
+				return false;
+		}
+		return true;
+	}
+};

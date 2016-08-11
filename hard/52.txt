@@ -1,0 +1,45 @@
+class Solution {
+public:
+	bool safe(int posX, int posY)
+	{
+		int x, y, i;
+		for (i = 0; i < posX; i++)
+		{
+			y = container[i] - posY;
+			y = (y > 0 ? y : (-y));
+			if (y == 0)
+				return false;
+			x = posX - i;
+			if (x == y)
+				return false;
+		}
+		return true;
+	}
+
+	void backTracking(int deep, int n)
+	{
+		if (deep == n)
+		{
+		    counter++;
+			return;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			if (safe(deep, i))
+			{
+				container[deep] = i;
+				backTracking(deep + 1, n);
+			}
+		}
+		return;
+	}
+    int totalNQueens(int n) {
+        counter = 0;
+		container.resize(n);
+		backTracking(0, n);
+		return counter;
+    }
+public:
+    int counter;
+	vector<int> container;
+};

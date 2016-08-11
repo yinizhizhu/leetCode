@@ -1,0 +1,65 @@
+class Solution {
+public:
+	bool safe(int posX, int posY)
+	{
+		int x, y, i;
+		for (i = 0; i < posX; i++)
+		{
+			y = container[i] - posY;
+			y = (y > 0 ? y : (-y));
+			if (y == 0)
+				return false;
+			x = posX - i;
+			if (x == y)
+				return false;
+		}
+		return true;
+	}
+
+	void getOne(int n)
+	{
+		int j;
+		char line[66];
+		for (j = 0; j < n; j++)
+			line[j] = '.';
+		line[j] = '\0';
+		
+		vector<string> one;
+		for (j = 0; j < n; j++)
+		{
+			one.push_back(string(line));
+			one[j][container[j]] = 'Q';
+		}
+		result.push_back(one);
+		return;
+	}
+
+	void backTracking(int deep, int n)
+	{
+		if (deep == n)
+		{
+			getOne(n);
+			return;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			if (safe(deep, i))
+			{
+				container[deep] = i;
+				backTracking(deep + 1, n);
+			}
+		}
+		return;
+	}
+
+	vector<vector<string>> solveNQueens(int n) {
+		container.resize(n);
+		result.clear();
+		backTracking(0, n);
+		return result;
+	}
+
+public:
+	vector<int> container;
+	vector<vector<string>> result;
+};
