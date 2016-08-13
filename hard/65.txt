@@ -1,0 +1,67 @@
+class Solution {
+public:
+	bool isNumber(string s) {
+		int tmp, head;
+		int tagP = 0, tagE = 0;
+		size_t i = 0, len = s.size();
+
+		while (s[i] == ' ')
+			i++;
+		if (i == len)
+			return false;
+
+		if (s[i] == '-' || s[i] == '+')
+			i++;
+		head = i;
+
+		for (; i < len; i++)
+		{
+			switch (s[i])
+			{
+			case '.':
+				if (i == head)
+				{
+					if (i == (len - 1))
+						return false;
+					if (s[i + 1] == ' ' || s[i + 1] == 'e')
+						return false;
+				}
+				if (tagE)
+					return false;
+				tagP++;
+				if (tagP > 1)
+					return false;
+				break;
+			case 'e':
+				if (i == head)
+					return false;
+				tagE++;
+				if (tagE > 1)
+					return false;
+				if (i == (len - 1))
+					return false;
+				if (s[i + 1] == ' ')
+					return false;
+				if (s[i + 1] == '-' || s[i + 1] == '+')
+				{
+					i++;
+					if (i == (len - 1))
+						return false;
+				}
+				break;
+			case ' ':
+				while (s[i] == ' ')
+					i++;
+				if (i != len)
+					return false;
+				break;
+			default:
+				tmp = s[i] - '0';
+				if (tmp < 0 || tmp > 9)
+					return false;
+				break;
+			}
+		}
+		return true;
+	}
+};
