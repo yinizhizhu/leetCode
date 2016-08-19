@@ -1,0 +1,77 @@
+class LRUCache
+{
+public:
+	LRUCache(int a)
+	{
+		capacity = a;
+	}
+
+	int get(int key)
+	{
+	    unordered_map<int, triple>::const_iterator iter = cache.find(key);
+		if (iter != cache.end())
+		{
+			if (key != y_key)
+			{
+				if (key == o_key)
+				{
+					o_key = cache[key].younger;
+					cache[key].older = y_key;
+					cache[y_key].younger = key;
+					y_key = key;
+				}
+				else
+				{
+					cache[cache[key].younger].older = cache[key].older;
+					cache[cache[key].older].younger = cache[key].younger;
+					cache[key].older = y_key;
+					cache[y_key].younger = key;
+					y_key = key;
+				}
+			}
+			return cache[key].value;
+		}
+		return -1;
+	}
+
+	void set(int key, int value)
+	{
+		if (cache.empty())
+		{
+			o_key = key;
+			y_key = key;
+			cache[key].value = value;
+			return;
+		}
+	    unordered_map<int, triple>::const_iterator iter = cache.find(key);
+		if (iter != cache.end())
+		{
+			cache[key].value = value;
+			get(key);
+		}
+		else
+		{
+			cache[key].value = value;
+			cache[key].older = y_key;
+			cache[y_key].younger = key;
+			y_key = key;
+			if (cache.size()>capacity)
+			{
+				o_key = cache[o_key].younger;
+				cache.erase(cache[o_key].older);
+			}
+		}
+	}
+public:
+	struct triple
+	{
+		int older;
+		int younger;
+		int value;
+	};
+
+	int capacity;
+	unordered_map<int, triple> cache;
+	int o_key;
+	int y_key;
+};
