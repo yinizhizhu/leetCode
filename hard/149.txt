@@ -1,0 +1,83 @@
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+class Solution {
+public:
+	bool checkP(int x, int y)
+	{
+		if (tanZ)
+		{
+			if (x == tan)
+				return true;
+			return false;
+		}
+		double result = (y - tan*x - b);
+		result = (result > 0 ? result : (-result));
+		if (result < (1e-9))
+			return true;
+		return false;
+	}
+
+	int maxPoints(vector<Point>& points) {
+		int x, y, x1;
+		int maxN = 0, counter;
+		int i, j, k, len = points.size();
+
+		if (len == 1)
+			return 1;
+
+		tag.resize(len);
+		for (i = 0; i < len; i++)
+			tag[i] = 1;
+
+		for (i = 0; i < (len - 1); i++)
+		{
+			x = points[i].x;
+			y = points[i].y;
+			for (j = i + 1; j < len; j++)
+			{
+				tag[j] = 0;
+
+				x1 = points[j].x;
+				if (x == x1)
+				{
+					tanZ = 1;
+					tan = x;
+				}
+				else
+				{
+					tanZ = 0;
+					tan = ((double)(y - points[j].y));
+					tan /= ((double)(x - x1));
+					b = ((double)(y)) - (tan*x);
+				}
+                counter = 2;
+				for (k = i + 1; k < len; k++)
+				{
+					if (tag[k])
+					{
+						if (checkP(points[k].x, points[k].y))
+							counter++;
+					}
+				}
+				if (counter >(len + 1) / 2)
+					return counter;
+				if (counter > maxN)
+					maxN = counter;
+				tag[j] = 1;
+			}
+		}
+		return maxN;
+	}
+public:
+	double tan;
+	double b;
+	int tanZ;
+	vector<int> tag;
+};
