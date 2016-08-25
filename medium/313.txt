@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        int i, j, rst = 1, minn;
+        int len = primes.size();
+        int idx[len] = {0};
+        int tmp[len] = {0};
+        vector<int> buf;
+        for (int i=0; i<(n-1); ++i) {
+            buf.push_back(rst);
+            
+            minn = INT_MAX;
+            for (j=0; j<len; ++j)
+            {
+                tmp[j] = buf[idx[j]]*primes[j];
+                if (tmp[j] < minn)
+                    minn = tmp[j];
+            }
+            
+            for (j=0; j<len; ++j) 
+                if (tmp[j] == minn)
+                    idx[j]++;
+                
+            rst = minn;
+        }
+        return rst;
+    }
+};
