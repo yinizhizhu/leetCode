@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+	TreeNode *toList(TreeNode *parent, TreeNode *right)
+	{
+		TreeNode *last = NULL;
+		if (parent)
+		{
+			if (parent->left)
+			{
+				parent->right = parent->left;
+				parent->left = NULL;
+				last = toList(parent->right, parent->right->right);
+				if (right)
+				{
+					last->right = right;
+					last = toList(right, right->right);
+				}
+				return last;
+			}
+			else
+			{
+				if (right)
+					return toList(right, right->right);
+				else
+					return parent;
+			}
+		}
+		return last;
+	}
+	void flatten(TreeNode *root) {
+		if (root)
+			toList(root, root->right);
+		return;
+	}
+};

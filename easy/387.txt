@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        int i, index;
+        int container[26], len = s.size();
+        
+        for (i=0; i<26; i++) container[i] = -1;
+        for (i=0; i<len; i++)
+        {
+            index = s[i] - 'a';
+            if (container[index] == -1)
+                container[index] = i;
+            else if (container[index] >= 0)
+                container[index] = -2;
+        }
+        index = len;
+        for (i=0; i<26; i++)
+        {
+            if (container[i] >= 0 && container[i] < index)
+                index = container[i];
+        }
+        return (index == len ? -1 : index);
+    }
+};

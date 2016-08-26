@@ -1,0 +1,49 @@
+class Solution {
+public:
+	bool isValidSerialization(string preorder) {
+		int len = preorder.size();
+		if (len == 0)
+			return false;
+		else if (len == 1)
+		{
+			if (preorder[0] == '#')
+				return true;
+			else
+				return false;
+		}
+		vector<int> container;
+		container.resize(len);
+		int i, j, top = -1;
+		for (i = 0; i < len;)
+		{
+			j = i;
+			while (preorder[j] != ',' && j < len)
+				j++;
+			if ((j - i) == 1)
+			{
+				if (preorder[i] == '#')
+				{
+					while (top >= 0)
+					{
+						if (container[top] == 0)
+						{
+							container[top]++;
+							break;
+						}
+						else
+							top--;
+					}
+
+					if (top == -1 && j < len)
+						return false;
+				}
+				else
+					container[++top] = 0;
+			}
+			else
+				container[++top] = 0;
+			i = j + 1;
+		}
+		return (top == -1);
+	}
+};
