@@ -9,23 +9,26 @@
  */
 class Solution {
 public:
-    int rob(TreeNode* root) {
-        if (root == NULL)
-            return 0;
-        int rootM = root->val;
-        int childM = 0;
-        if (root->left)
+    int Max(int a, int b)
+    {
+        return (a >= b ? a : b);
+    }
+    int rob(TreeNode* root)
+    {
+        vector<int> result = help(root);
+        return Max(result[0], result[1]);
+    }
+    vector<int> help(TreeNode* root)
+    {
+        vector<int> result(2, 0);
+        if (!root)
         {
-            rootM+=rob(root->left->left)+rob(root->left->right);
-            childM+=rob(root->left);
+            return result;
         }
-        if (root->right)
-        {
-            rootM+=rob(root->right->left)+rob(root->right->right);
-            childM+=rob(root->right);
-        }
-        if (rootM > childM)
-            return rootM;
-        return childM;
+        vector<int> left = help(root->left);
+        vector<int> right = help(root->right);
+        result[0] = Max(left[0], left[1]) + Max(right[0], right[1]);
+        result[1] = root->val + left[0] + right[0];
+        return result;
     }
 };

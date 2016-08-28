@@ -16,3 +16,26 @@ int rob(int* nums, int numsSize) {
     free(container);
     return result;
 }
+
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int len = nums.size();
+        if (len < 1)
+            return 0;
+        else if (len == 1)
+            return nums[0];
+        int i, first, sec, thrid;
+        first = nums[0];
+        sec = (first > nums[1] ? first : nums[1]);
+        for (i=2; i<len; i++)
+        {
+            thrid = nums[i] + first;
+            thrid = (thrid > sec ? thrid : sec);
+            first = sec;
+            sec = thrid;
+        }
+        return sec;
+    }
+};
