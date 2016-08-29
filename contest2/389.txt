@@ -1,0 +1,23 @@
+class Solution {
+public:
+	char findTheDifference(string s, string t) {
+		vector<int> container;
+		container.resize(26);
+
+		int i, j, len = s.size();
+		for (i = 0; i < len; i++)
+		{
+			j = s[i] - 'a';
+			container[j]++;
+		}
+		len = t.size();
+		for (i = 0; i < len; i++)
+		{
+			j = t[i] - 'a';
+			container[j]--;
+			if (container[j] < 0)
+				return t[i];
+		}
+		return '-';
+	}
+};

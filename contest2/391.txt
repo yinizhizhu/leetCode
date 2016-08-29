@@ -1,0 +1,56 @@
+class Solution {
+public:
+	bool isRectangleCover(vector<vector<int>>& rectangles) {
+		int bx = INT_MAX, by = INT_MAX;
+		int tx = INT_MIN, ty = INT_MIN;
+		
+		for (auto& rect : rectangles) {
+			bx = min(rect[0], bx);
+			by = min(rect[1], by);
+			tx = max(rect[2], tx);
+			ty = max(rect[3], ty);
+		}
+
+		int lenH = tx - bx, lenW = ty - by;
+		vector<int> heights, widths;
+		heights.resize(lenH);
+		widths.resize(lenW);
+		
+		for (auto& rect : rectangles) {
+			int l = rect[0] - bx;
+			int r = rect[2] - bx - 1;
+			int b = rect[1] - by;
+			int t = rect[3] - by - 1;
+			int h = rect[3] - rect[1];
+			int w = rect[2] - rect[0];
+
+			heights[l] += h;
+			if (r < lenH - 1)
+				heights[r + 1] -= h;
+
+			widths[b] += w;
+			if (t < lenW - 1)
+				widths[t + 1] -= w;
+		}
+
+		int actualAreaH = heights[0];
+		for (int i = 1; i < lenH; i++) {
+			heights[i] += heights[i - 1];
+			if (heights[i] != heights[i - 1])
+				return false;
+			actualAreaH += heights[i];
+		}
+
+		int actualAreaW = widths[0];
+		for (int i = 1; i < lenW; i++) {
+			widths[i] += widths[i - 1];
+			if (widths[i] != widths[i - 1])
+				return false;
+			actualAreaW += widths[i];
+		}
+
+		int area = lenH * lenW;
+
+		return (actualAreaH == area && actualAreaW == area);
+	}
+};
