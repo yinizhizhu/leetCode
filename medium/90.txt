@@ -1,0 +1,28 @@
+class Solution
+{
+public:
+    void sub(vector<vector<int>> &result, vector<int> &eachOne, vector<int> &nums, int j)
+    {
+        int len = nums.size();
+        if(j>=len)
+            return;
+        for(int i=j;i<len;i++)
+        {
+            if(i>j && nums[i]==nums[i-1])
+                continue;
+            eachOne.push_back(nums[i]);
+            result.push_back(eachOne);
+            sub(result,eachOne,nums,i+1);
+            eachOne.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums)
+    {
+        vector<vector<int>> result;
+        vector<int> eachOne;
+        sort(nums.begin(),nums.end());
+        result.push_back(eachOne);
+        sub(result,eachOne,nums,0);
+        return result;
+    }
+};
