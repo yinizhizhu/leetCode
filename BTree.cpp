@@ -16,7 +16,7 @@ void initT(node* root)	//get the full binary tree
 {
 	int i, len;
 	int counter = 1, level = 2;
-	node* newOne,* tmp = NULL;
+	node* newOne, *tmp = NULL;
 	queue<node*> container;
 	container.push(root);
 	while (level > 0)
@@ -36,6 +36,29 @@ void initT(node* root)	//get the full binary tree
 		}
 		level--;
 	}
+	return;
+}
+
+node *build(vector<int>& A, int headA, int tailA, vector<int>& B, int headB, int tailB)
+{
+	int i, len, tmp = A[headA];
+	for (i = headB; i <= tailB; i++)
+		if (B[i] == tmp)
+			break;
+	
+	len = i - headB;
+	node *newOne = new node(tmp);
+	if (len)
+		newOne->lChild = build(A, headA + 1, headA + len, B, headB, i - 1);
+	len = tailB - i;
+	if (len)
+		newOne->rChild = build(A, tailA - len + 1, tailA, B, i + 1, tailB);
+	return newOne;
+}
+
+void initT2(node *&root, vector<int>& A, vector<int>& B)//A - preorder, B - inorder
+{
+	root = build(A, 0, A.size() - 1, B, 0, B.size() - 1);
 	return;
 }
 
@@ -97,12 +120,12 @@ void postO2(node* root)
 	stack<node*> s;
 	while (p || !s.empty())
 	{
-		if (p)	//move to the left
+		if (p)
 		{
 			s.push(p);
 			p = p->lChild;
 		}
-		else	//move to the right
+		else
 		{
 			p = s.top();
 			if (p->lChild && p->rChild != r)
@@ -151,16 +174,42 @@ void levelO(node* root)
 
 int main()
 {
-	node* root = new node(1);
-	initT(root);
+	//node* root = new node(1);
+	//initT(root);
+
+	vector<int> A, B;
+	for (int i = 1; i < 10; i++)
+		A.push_back(i);
+	B.push_back(2);
+	B.push_back(3);
+	B.push_back(1);
+	B.push_back(5);
+	B.push_back(4);
+	B.push_back(7);
+	B.push_back(8);
+	B.push_back(6);
+	B.push_back(9);
+
+	for (int i = 0; i < 9; i++)
+		cout << A[i] << " ";
+	cout << endl;
+	for (int i = 0; i < 9; i++)
+		cout << B[i] << " ";
+	cout << endl;
+
+	node *root = NULL;
+	initT2(root, A, B);
+
+	preO(root);
+	cout << endl;
 
 	inO(root);
 	cout << endl;
 
-	inO2(root);
-	cout << endl;
+	//postO(root);
+	//cout << endl;
 
-	levelO(root);
-	cout << endl;
+	//postO2(root);
+	//cout << endl;
 	return 0;
 }
