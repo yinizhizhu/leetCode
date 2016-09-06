@@ -91,6 +91,39 @@ void inO2(node* root)
 	return;
 }
 
+void postO2(node* root)
+{
+	node *p = root, *r = NULL;
+	stack<node*> s;
+	while (p || !s.empty())
+	{
+		if (p)	//move to the left
+		{
+			s.push(p);
+			p = p->lChild;
+		}
+		else	//move to the right
+		{
+			p = s.top();
+			if (p->lChild && p->rChild != r)
+			{
+				p = p->rChild;
+				s.push(p);
+				p = p->lChild;
+			}
+			else
+			{
+				p = s.top();
+				s.pop();
+				cout << p->value << " ";
+				r = p;
+				p = NULL;
+			}
+		}
+	}
+	return;
+}
+
 void levelO(node* root)
 {
 	int i, len;
