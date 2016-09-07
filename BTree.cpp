@@ -172,6 +172,49 @@ void levelO(node* root)
 	return;
 }
 
+void exchangeLR(node* root)
+{
+	if (root)
+	{
+		node* tmp = NULL;
+		tmp = root->lChild;
+		root->lChild = root->rChild;
+		root->rChild = tmp;
+		exchangeLR(root->lChild);
+		exchangeLR(root->rChild);
+	}
+	return;
+}
+
+void cTwoDegreeNode(node* root, int& counter)
+{
+	if (root)
+	{
+		if (root->lChild && root->rChild)
+			counter++;
+		cTwoDegreeNode(root->lChild, counter);
+		cTwoDegreeNode(root->rChild, counter);
+	}
+	return;
+}
+
+void getKthInO(node* root, int& move, bool& tag)
+{
+	if (root && tag)
+	{
+		cout << root->value << " ";
+		move--;
+		if (move == 0)
+		{
+			move = root->value;
+			tag = false;
+		}
+		getKthInO(root->lChild, move, tag);
+		getKthInO(root->rChild, move, tag);
+	}
+	return;
+}
+
 int main()
 {
 	//node* root = new node(1);
@@ -190,21 +233,17 @@ int main()
 	B.push_back(6);
 	B.push_back(9);
 
-	for (int i = 0; i < 9; i++)
-		cout << A[i] << " ";
-	cout << endl;
-	for (int i = 0; i < 9; i++)
-		cout << B[i] << " ";
-	cout << endl;
-
 	node *root = NULL;
 	initT2(root, A, B);
 
 	preO(root);
 	cout << endl;
 
-	inO(root);
+	int move = 7;
+	bool tag = true;
+	getKthInO(root, move, tag);
 	cout << endl;
+	cout << move << endl;
 
 	//postO(root);
 	//cout << endl;
