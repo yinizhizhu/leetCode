@@ -8,14 +8,37 @@ using namespace std;
 
 void initGraph(vector< vector<int> >& graph);
 void showGraph(vector< vector<int> >& graph);
+void floyd(vector< vector<int> >& graph);
 void Dijkstra(vector< vector<int> >& graph, int i);
 int main()
 {
 	vector< vector<int> > graph;
 	initGraph(graph);
 
-	Dijkstra(graph, 0);
+	for (int i = 0; i < 5; i++)
+		Dijkstra(graph, i);
+
+	floyd(graph);
+
+	showGraph(graph);
 	return 0;
+}
+
+void floyd(vector< vector<int> >& graph)
+{
+	int i, j, k;
+	for (k = 0; k < 5; k++)
+	{
+		for (i = 0; i < 5; i++)
+		{
+			for (j = 0; j < 5; j++)
+			{
+				if ((graph[i][k] && graph[k][j] && graph[i][k] < INT_MAX && graph[k][j] < INT_MAX) && (graph[i][k] + graph[k][j] < graph[i][j]))
+					graph[i][j] = graph[i][k] + graph[k][j];
+			}
+		}
+	}
+	return;
 }
 
 void Dijkstra(vector< vector<int> >& graph, int n)
@@ -32,10 +55,6 @@ void Dijkstra(vector< vector<int> >& graph, int n)
 		dist[i] = graph[n][i];
 	}
 	s[n] = 1;
-
-	for (i = 0; i < 5; i++)
-		cout << dist[i] << " ";
-	cout << endl;
 
 	for (j = 0; j < 4; j++)
 	{
@@ -63,7 +82,7 @@ void Dijkstra(vector< vector<int> >& graph, int n)
 
 	}
 	for (i = 0; i < 5; i++)
-		cout << dist[i] << " ";
+		cout << dist[i] << "	";
 	cout << endl;
 	return;
 }
