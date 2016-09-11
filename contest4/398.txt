@@ -1,0 +1,44 @@
+typedef struct area
+{
+	int head;
+	int tail;
+	area(int a, int b) : head(a), tail(b){}
+} one;
+
+class Solution {
+public:
+	Solution(vector<int> nums) {
+		int i, j, tmp, len = nums.size();
+		if (len == 0)
+			return;
+		for (i = 0; i < len; i++)
+		{
+			tmp = nums[i];
+			j = i + 1;
+			while (j < len && nums[j] == tmp)
+				j++;
+			container.insert(unordered_map<int, one>::value_type(tmp, one(i, j)));
+		}
+	}
+
+	int pick(int target) {
+		int index, len;
+		unordered_map<int, one>::iterator iter;
+		iter = container.find(target);
+		if (iter != container.end())
+		{
+			index = iter->second.head;
+			len = iter->second.tail - iter->second.head;
+			index += (rand() % len);
+		}
+		return index;
+	}
+public:
+	unordered_map<int, one> container;
+};
+
+/**
+* Your Solution object will be instantiated and called as such:
+* Solution obj = new Solution(nums);
+* int param_1 = obj.pick(target);
+*/
