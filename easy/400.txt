@@ -1,0 +1,43 @@
+class Solution {
+public:
+	int findNthDigit(int n) {
+		long long count = 9, digits = 1, number = 0, temp_n = n, tmp;
+		while (temp_n)
+		{
+			tmp = count*digits;
+			if (temp_n <= tmp)
+				break;
+			temp_n -= tmp;
+
+			number += count;
+			count *= 10;
+			digits++;
+		}
+		number += (temp_n) / digits;
+
+		if (temp_n%digits)
+		{
+			number++;
+			temp_n = temp_n%digits;
+		}
+		else
+			temp_n = digits;
+
+		for (int i = 0; i<(digits - temp_n); i++)
+			number = number / 10;
+		return number % 10;
+	}
+};
+
+
+class Solution {
+public:
+    int findNthDigit(int n) {
+        n--;
+        for (int k = 1, first = 1; ; k++, first *= 10) {
+            if ((n / 9 / k) < first)
+                return (first + n / k) / (int)pow(10, k - 1 - n % k) % 10;
+            n -= (9 * k * first);
+        }
+    }
+};

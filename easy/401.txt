@@ -1,0 +1,51 @@
+class Solution {
+public:
+	Solution()
+	{
+		int i, n, counter;
+		for (i = 0; i < 60; i++)
+		{
+			n = i;
+			counter = 0;
+			while (n)
+			{
+				counter += (n % 2);
+				n /= 2;
+			}
+			container.push_back(counter);
+		}
+	}
+	vector<string> readBinaryWatch(int num) {
+		vector<string> result;
+		int i, j, m, n;
+		char tmp[10];
+		string eachOne, one;
+		for (i = 0; i <= num; i++)
+		{
+			for (m = 0; m < 12; m++)
+			{
+				if (container[m] == i)
+				{
+					sprintf(tmp, "%d", m);
+					eachOne = tmp;
+					j = num - i;
+					for (n = 0; n < 60; n++)
+					{
+						if (container[n] == j)
+						{
+							sprintf(tmp, "%d", n);
+							one = ":";
+							if (n < 10)
+								one += "0";
+							one += tmp;
+							result.push_back(eachOne + one);
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+public:
+	vector<int> container;
+};
