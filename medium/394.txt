@@ -1,0 +1,50 @@
+class Solution {
+public:
+	int check(char a) {
+		if (a == '[')
+			return 1;
+		if (a == ']')
+			return -1;
+		if (a >= '0' && a <= '9')
+			return 2;
+		return -2;
+	}
+	void getPart(char *part, string s, int& i, int tag)
+	{
+		int j = 0;
+		while (i < s.length() && check(s[i]) == tag) {
+			part[j++] = s[i];
+			i++;
+		}
+		part[j] = '\0';
+	}
+	string help(string s, int& head)
+	{
+		if (head == s.length())
+			return "";
+		int i, j, n;
+		char part[100];
+		string result = "", tmp;
+
+		for (; head < s.length(); head++)
+		{
+			j = 0;
+			getPart(part, s, head, -2);
+			result += part;
+			if (head == s.length() || check(s[head]) == -1)
+				return result;
+
+			getPart(part, s, head, 2);
+			n = atoi(part);
+			head++;
+			tmp = help(s, head);
+			for (i = 0; i < n; i++)
+				result += tmp;
+		}
+		return result;
+	}
+	string decodeString(string s) {
+		int head = 0;
+		return help(s, head);
+	}
+};
