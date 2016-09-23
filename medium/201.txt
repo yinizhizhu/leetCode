@@ -1,0 +1,38 @@
+class Solution {
+public:
+	void help(vector<int>& container, int n) {
+		int j = 1;
+		for (int i = 0; i < 31; i++) {
+			if (j&n)
+				container.push_back(j);
+			j = (j << 1);
+		}
+		return;
+	}
+	int num(vector<int>& container, int m, int n) {
+		if (n >(m << 1))
+			return 0;
+		for (++m; m <= n; m++) {
+			if (container.size() == 0)
+				return 0;
+			for (int i = 0; i < container.size(); i++) {
+				if (!(container[i] & m))
+					container.erase(container.begin() + (i--));
+			}
+		}
+		int counter = 0;
+		for (int i = 0; i < container.size(); i++)
+			counter += container[i];
+		return counter;
+	}
+	int rangeBitwiseAnd(int m, int n) {
+		int len, counter = (1 << 30);
+		if (!(m & counter))
+			counter = 0;
+		vector<int> container;
+		m -= counter;
+		help(container, m);
+		counter += num(container, m, n-counter);
+		return counter;
+	}
+};
