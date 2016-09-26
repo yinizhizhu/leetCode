@@ -1,0 +1,29 @@
+class Solution {
+public:
+	string help(vector<int>& container) {
+	    int tmp;
+		string a = "";
+		for (int i = 7; i >= 0; i--) {
+		    tmp = container[i];
+			if (tmp < 10) {
+				if (a.length() == 0 && tmp == 0)
+					continue;
+				a += ('0' + tmp);
+			}
+			else
+				a += ('a' + tmp - 10);
+		}
+		if (a.length())
+    		return a;
+    	return "0";
+	}
+	string toHex(int num) {
+		vector<int> container;
+		for (int i = 0; i < 8; i++)
+		{
+			container.push_back(num & 15);
+			num = (num >> 4);
+		}
+		return help(container);
+	}
+};

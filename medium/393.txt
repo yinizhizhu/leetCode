@@ -1,0 +1,28 @@
+class Solution {
+public:
+	int help(int n){
+		int i = (1 << 7), counter = 0;
+		while (i&n){
+			counter++;
+			i = (i >> 1);
+		}
+		return counter;
+	}
+	bool validUtf8(vector<int>& data) {
+		int len = data.size();
+		if (len == 0)
+			return true;
+		int tmpL;
+		for (int i = 0; i < len;){
+			tmpL = help(data[i]);
+			if (tmpL == 1 || tmpL > 4)
+			    return false;
+			tmpL += i;
+			for (i = i + 1; i < tmpL; i++){
+				if (help(data[i]) != 1)
+					return false;
+			}
+		}
+		return true;
+	}
+};
