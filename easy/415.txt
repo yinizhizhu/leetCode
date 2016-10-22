@@ -1,0 +1,60 @@
+
+class Solution {
+public:
+	string num(int remain) {
+		switch (remain)
+		{
+		case 0:
+			return "0";
+		case 1:
+			return "1";
+		case 2:
+			return "2";
+		case 3:
+			return "3";
+		case 4:
+			return "4";
+		case 5:
+			return "5";
+		case 6:
+			return "6";
+		case 7:
+			return "7";
+		case 8:
+			return "8";
+		case 9:
+			return "9";
+		default:
+			break;
+		}
+		return "";
+	}
+	string add(char a, char b, int& carry) {
+		int remain;
+		carry += (a + b - 96);
+		remain = carry % 10;
+		carry /= 10;
+		return num(remain);
+	}
+	string addStrings(string num1, string num2) {
+		char tmp;
+		string con;
+		int carry = 0;
+		int i = num1.length() - 1, j = num2.length() - 1;
+		for (; i >= 0 && j >= 0; i--, j--) {
+			con += add(num1[i], num2[j], carry);
+		}
+		for (; i >= 0; i--)
+			con += add(num1[i], '0', carry);
+		for (; j >= 0; j--)
+			con += add('0', num2[j], carry);
+		if (carry == 1)
+			con += "1";
+		for (i = 0, j = con.length() - 1; i < j; i++, j--) {
+			tmp = con[i];
+			con[i] = con[j];
+			con[j] = tmp;
+		}
+		return con;
+	}
+};

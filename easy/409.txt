@@ -1,0 +1,34 @@
+//A: 65, a: 97
+class Solution {
+public:
+	void get(vector<int>& con, int& counter, int& tag) {
+		int index;
+		for (int i = 0; i < 26; i++) {
+			index = con[i];
+			if (index > 1) {
+				counter += index;
+				if (index % 2 == 1) {
+					tag = 1;
+					counter--;
+				}
+			}
+			else if (index == 1)
+				tag = 1;
+		}
+		return;
+	}
+	int longestPalindrome(string s) {
+		vector<int> conL(26, 0);
+		vector<int> conU(26, 0);
+		int counter = 0, tag = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s[i] > 96)
+				conU[s[i] - 97]++;
+			else
+				conL[s[i] - 65]++;
+		}
+		get(conL, counter, tag);
+		get(conU, counter, tag);
+		return counter + tag;
+	}
+};

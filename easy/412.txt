@@ -1,0 +1,20 @@
+class Solution {
+public:
+	vector<string> fizzBuzz(int n) {
+		vector<string> con;
+		for (int i = 0; i < n; i++)
+			con.push_back(to_string(i + 1));
+		for (int i = 1, tmp = i * 3; tmp <= n; i++) {
+			con[tmp - 1] = "Fizz";
+			tmp = i * 3;
+		}
+		for (int i = 1, tmp = i * 5; tmp <= n; i++) {
+			if (con[tmp - 1][0] == 'F')
+				con[tmp - 1] += "Buzz";
+			else
+				con[tmp - 1] = "Buzz";
+			tmp = i * 5;
+		}
+		return con;
+	}
+};
