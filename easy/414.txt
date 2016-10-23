@@ -1,0 +1,19 @@
+bool cmpDec(const int& s1, const int& s2) //for sort
+{
+	return s1 > s2;
+}
+class Solution {
+public:
+	int thirdMax(vector<int>& nums) {
+		sort(nums.begin(), nums.end(), cmpDec);
+		int counter = 0, i, j, len = nums.size();
+		for (i = 0; i < len; i += j) {
+			counter++;
+			if (counter == 3)
+				return nums[i];
+			j = 0;
+			while (nums[i + j] == nums[i] && (i + j) < len) j++;
+		}
+		return nums[0];
+	}
+};

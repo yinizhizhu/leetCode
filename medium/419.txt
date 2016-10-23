@@ -1,0 +1,77 @@
+class Solution {
+public:
+	//-1: up-down, 1: right-left, 0: initial
+	bool check(int x, int y) {
+		if (x >= 0 && x < height && y >= 0 && y < width)
+			return true;
+		return false;
+	}
+	void remove(vector<vector<char>>& board, int x, int y, int direct) {
+		board[x][y] = '.';
+		coutX++;
+		if (check(x + 1, y))	//up-down: -1
+		{
+			if (board[x + 1][y] == 'X') {
+				if (direct != 1)
+					remove(board, x + 1, y, -1);
+			}
+		}
+		if (check(x - 1, y))	//up-down: -1
+		{
+			if (board[x - 1][y] == 'X') {
+				if (direct != 1)
+					remove(board, x - 1, y, -1);
+			}
+		}
+		if (check(x, y + 1))	//right-left: 1
+		{
+			if (board[x][y + 1] == 'X') {
+				if (direct != -1)
+					remove(board, x, y + 1, 1);
+			}
+		}
+		if (check(x, y - 1))	//right-left: 1
+		{
+			if (board[x][y - 1] == 'X') {
+				if (direct != -1)
+					remove(board, x, y - 1, 1);
+			}
+		}
+	}
+	void show(vector<vector<char>>& board) {
+		for (int i = 0; i<height; i++)
+		{
+			for (int j = 0; j<width; j++) {
+				cout << board[i][j] << " ";
+			}
+			cout << endl;
+		}
+	}
+	int countBattleships(vector<vector<char>>& board) {
+		int direct = 0;
+		coutX = counter = 0;
+		height = board.size(), width = board[0].size();
+		if (width == 0)
+		    return 0;
+	    show(board);
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (board[i][j] == 'X') {
+					remove(board, i, j, direct);
+					if (counter < 0)
+						return 0;
+					counter++;
+					direct = 0;
+				}
+			}
+		}
+		if (coutX == height*width)
+		    counter = 1;
+		return counter;
+	}
+private:
+    int coutX;
+	int counter;
+	int height;
+	int width;
+};
