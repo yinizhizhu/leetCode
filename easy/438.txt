@@ -1,0 +1,27 @@
+class Solution {
+public:
+	bool help(int start, int len1, string& s, vector<int> container) {
+		int i, index, len = s.size();
+		for (i = 0; i < len1; i++) {
+			index = s[i + start] - 'a';
+			container[index]--;
+			if (container[index] < 0)
+				return false;
+		}
+		return true;
+	}
+	vector<int> findAnagrams(string s, string p) {
+		vector<int> container(26, 0);
+		int i, len, len1 = p.size();
+		for (i = 0; i < len1; i++) {
+			container[p[i] - 'a'] ++;
+		}
+		vector<int> index;
+		len = s.size() - len1;
+		for (i = 0; i < len; i++) {
+			if (help(i, len1, s, container))
+				index.push_back(i);
+		}
+		return index;
+	}
+};

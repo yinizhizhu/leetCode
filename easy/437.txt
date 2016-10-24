@@ -1,0 +1,38 @@
+class Solution {
+public:
+	void help(TreeNode* node, int sum) {
+		if (node) {
+			sum += node->val;
+			if (sum == target)
+				counter++;
+			help(node->left, sum);
+			help(node->right, sum);
+		}
+	}
+	int pathSum(TreeNode* root, int sum) {
+		counter = 0, target = sum;
+		TreeNode* tmp;
+		queue<TreeNode*> container;
+		if (root)
+			container.push(root);
+		int i, len;
+		while (true) {
+			len = container.size();
+			for (i = 0; i < len; i++) {
+			    tmp = container.front();
+				help(tmp, 0);
+				if (tmp->left)
+					container.push(tmp->left);
+				if (tmp->right)
+					container.push(tmp->right);
+				container.pop();
+			}
+			if (container.empty())
+				break;
+		}
+		return counter;
+	}
+private:
+	int counter;
+	int target;
+};

@@ -1,0 +1,130 @@
+class Solution {
+public:
+	/*
+	g:	eight
+	h:	eight	three
+	n:	seven	one	nine
+	o:	zero	two	four	one
+	s:	six	seven
+	u:	four
+	v:	seven	five
+	w:	two
+	x:	six
+	z:	zero
+	*/
+	string help(char a, int num) {
+		string res, tmp;
+		switch (a)
+		{
+		case '0':
+			tmp = "0";
+			break;
+		case '1':
+			tmp = "1";
+			break;
+		case '2':
+			tmp = "2";
+			break;
+		case '3':
+			tmp = "3";
+			break;
+		case '4':
+			tmp = "4";
+			break;
+		case '5':
+			tmp = "5";
+			break;
+		case '6':
+			tmp = "6";
+			break;
+		case '7':
+			tmp = "7";
+			break;
+		case '8':
+			tmp = "8";
+			break;
+		case '9':
+			tmp = "9";
+			break;
+		default:
+			break;
+		}
+		for (int i = 0; i < num; i++){
+			res += tmp;
+		}
+		return res;
+	}
+	string originalDigits(string s) {
+		string zero;
+		vector<int> container(26, 0);
+		int i, len = s.size();
+		for (i = 0; i < len; i++)
+			container[s[i] - 'a']++;
+		container['h' - 'a'] -= container['g' - 'a']; //three
+		container['s' - 'a'] -= container['x' - 'a']; //seven
+		container['v' - 'a'] -= container['s' - 'a']; //five
+		container['o' - 'a'] -= (container['z' - 'a'] + container['w' - 'a'] + container['u' - 'a']);//one
+		if (container['o' - 'a'])
+			container['n' - 'a'] -= (container['s' - 'a'] + container['o' - 'a']);//nine
+		container['n' - 'a'] /= 2;
+		zero += help('0', container['z' - 'a']);
+		zero += help('1', container['o' - 'a']);
+		zero += help('2', container['w' - 'a']);
+		zero += help('3', container['h' - 'a']);
+		zero += help('4', container['u' - 'a']);
+		zero += help('5', container['v' - 'a']);
+		zero += help('6', container['x' - 'a']);
+		zero += help('7', container['s' - 'a']);
+		zero += help('8', container['g' - 'a']);
+		zero += help('9', container['n' - 'a']);
+		return zero;
+	}
+};
+
+class Solution {
+public:
+	/*
+	g:	eight
+	h:	eight	three
+	n:	seven	one	nine
+	o:	zero	two	four	one
+	s:	six	seven
+	u:	four
+	v:	seven	five
+	w:	two
+	x:	six
+	z:	zero
+	*/
+	string help(int a, int num) {
+		string res, tmp = to_string(a);
+		for (int i = 0; i < num; i++){
+			res += tmp;
+		}
+		return res;
+	}
+	string originalDigits(string s) {
+		string zero;
+		vector<int> container(26, 0);
+		int i, len = s.size();
+		for (i = 0; i < len; i++)
+			container[s[i] - 'a']++;
+		container['h' - 'a'] -= container['g' - 'a']; //three
+		container['s' - 'a'] -= container['x' - 'a']; //seven
+		container['v' - 'a'] -= container['s' - 'a']; //five
+		container['o' - 'a'] -= (container['z' - 'a'] + container['w' - 'a'] + container['u' - 'a']);//one
+		if (container['o' - 'a'])
+			container['n' - 'a'] -= (container['s' - 'a'] + container['o' - 'a']);//nine
+		container['n' - 'a'] /= 2;
+		zero += help(0, container['z' - 'a']);
+		zero += help(1, container['o' - 'a']);
+		zero += help(2, container['w' - 'a']);
+		zero += help(3, container['h' - 'a']);
+		zero += help(4, container['u' - 'a']);
+		zero += help(5, container['v' - 'a']);
+		zero += help(6, container['x' - 'a']);
+		zero += help(7, container['s' - 'a']);
+		zero += help(8, container['g' - 'a']);
+		zero += help(9, container['n' - 'a']);
+		return zero;
+	}
+};
