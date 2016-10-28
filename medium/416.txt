@@ -1,0 +1,31 @@
+class Solution {
+public:
+	bool help(int index, vector<int>& nums, int target) {
+		if (index < 0)
+			return false;
+		target -= nums[index];
+		if (target < 0)
+			return false;
+		if (target == 0)
+			return true;
+		int gap;
+		for (int i = index - 1; i >= 0; i--) {
+			gap = target - nums[i];
+			if (gap == 0)
+				return true;
+			if ((gap > 0) && help(i - 1, nums, gap))
+				return true;
+		}
+		return false;
+	}
+	bool canPartition(vector<int>& nums) {
+		int target = 0;
+		int i, len = nums.size();
+		for (i = 0; i < len; i++)
+			target += nums[i];
+		if (target % 2 == 1)
+			return false;
+		//sort(nums.begin(), nums.end());
+		return help(len - 1, nums, target/2);
+	}
+};

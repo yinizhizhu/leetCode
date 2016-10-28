@@ -1,0 +1,58 @@
+class Solution {
+public:
+	int characterReplacement(string s, int k) {
+		int i = 0, j = 0, ret = 0;
+		vector<int> cnt(26, 0);
+		while (j < s.size())
+		{
+			cnt[s[j++] - 'A']++;
+			while (j - i - *max_element(cnt.begin(), cnt.end()) > k)
+			{
+				cnt[s[i++] - 'A']--;
+			}
+			ret = max(ret, j - i);
+		}
+		return ret;
+	}
+};
+
+class Solution {
+public:
+	int maxE(vector<int>& cnt) {
+		int res = 0;
+		for (int i = 0; i < 26; i++) {
+			if (cnt[i] > res)
+				res = cnt[i];
+		}
+		return res;
+	}
+	int characterReplacement(string s, int k) {
+		int i = 0, j = 0, ret = 0;
+		vector<int> cnt(26, 0);
+		while (j < s.size())
+		{
+			cnt[s[j++] - 'A']++;
+			while (j - i - maxE(cnt) > k)
+				cnt[s[i++] - 'A']--;
+			ret = max(ret, j - i);
+		}
+		return ret;
+	}
+};
+
+class Solution {
+public:
+	int characterReplacement(string s, int k) {
+		int i = 0, j = 0, times = k, res = 0, cache[26] = {};
+		for (; j < s.size(); j++) {
+			cache[s[j] - 'A']++;
+			if (s[j] != s[i] && times-- == 0) {
+				res = max(res, j - i);
+				while (i < j && j - i - cache[s[i] - 'A'] >= k)
+					cache[s[i++] - 'A']--;
+				times = k - j + i - 1 + cache[s[i] - 'A'];
+			}
+		}
+		return max(res, j - i + min(i, times));
+	}
+};
