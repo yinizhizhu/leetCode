@@ -1,0 +1,54 @@
+class Solution {
+public:
+	int getNext(string& s, vector<char>& seg, int index, int tail) {
+		for (; index <= tail; index++)
+			if (inSeg(seg, s[index]))
+				break;
+		return index;
+	}
+	bool inSeg(vector<char>& seg, char a) {
+		for (int i = 0; i < seg.size(); i++)
+			if (a == seg[i])
+				return true;
+		return false;
+	}
+	void getSeg(vector<int>& cnt, vector<char>& seg) {
+		for (int i = 0; i < 26; i++) {
+			if (cnt[i] > 0 && cnt[i] < target)
+				seg.push_back(i + 'a');
+		}
+	}
+	int help(string& s, int head, int tail) {
+		int len = tail - head + 1;
+		if (len < target)
+			return 0;
+		int i, j, res = 0, tmp, mid;
+		vector<int> cnt(26, 0);
+		vector<char> segment;
+		for (i = head; i <= tail; i++)
+			cnt[s[i] - 'a']++;
+		getSeg(cnt, segment);
+		if (segment.size() == 0)
+			return len;
+		else if (segment.size() > len - target)
+			return 0;
+		while (head < tail) {
+			mid = getNext(s, segment, head, tail);
+			while (mid == head && head < tail) {
+				head++;
+				mid = getNext(s, segment, head, tail);
+			}
+			tmp = help(s, head, mid - 1);
+			if (tmp > res)
+				res = tmp;
+			head = mid + 1;
+		}
+		return res;
+	}
+	int longestSubstring(string s, int k) {
+		target = k;
+		return help(s, 0, s.length() - 1);
+	}
+private:
+	int target;
+};
