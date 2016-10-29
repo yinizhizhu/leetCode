@@ -1,0 +1,154 @@
+class Solution {
+private:
+    unordered_map<long, int>pivots;
+    bool addPivot(int x, int y, int pos) {
+        long key = x << 15 ^ y;
+        if (pivots.find(key) != pivots.end() && pivots[key] & pos) {
+            return false;
+        }
+        pivots[key] ^= (pos | 16); // extra bit for even or odd appear times
+        return true;
+    }
+public:
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        for (auto rect: rectangles) {
+            if (!addPivot(rect[0], rect[1], 1)) return false;
+            if (!addPivot(rect[2], rect[3], 2)) return false;
+            if (!addPivot(rect[0], rect[3], 4)) return false;
+            if (!addPivot(rect[2], rect[1], 8)) return false;
+        }
+        int count = 0;
+        for (auto it = pivots.begin(); it != pivots.end(); it++) {
+            if (it -> second == 3 || it -> second == 12) return false; // check diagonal position
+            if ((it -> second & 16) != 0) count++;
+        }
+        return count == 4;
+    }
+};
+
+
+
+Have a try:
+class Solution {
+public:
+    void show(vector<int>& cnt) {
+        for (int i = 0; i<cnt.size(); i++)
+            cout << cnt[i] << " ";
+        cout << endl;
+    }
+    int check(vector<int>& cnt, int len) {
+        for (int i = 1; i < len; i++)
+            if (cnt[i])
+                return -1;
+        return cnt[0] * len;
+    }
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        int ax = INT_MAX, ay = INT_MAX;
+        int bx = INT_MIN, by = INT_MIN;
+
+        for (auto& rect : rectangles) {
+            ax = min(rect[0], ax);
+            ay = min(rect[1], ay);
+            bx = max(rect[2], bx);
+            by = max(rect[3], by);
+        }
+        int actualArea = 0;
+        int lenH = bx - ax, lenW = by - ay;
+        vector<int> heights(lenH + 1, 0);
+        vector<int> widths(lenW + 1, 0);
+
+        for (auto& rect : rectangles) {
+            int deltaY1 = rect[0] - ax; //x1 - x
+            int deltaY2 = rect[2] - ax; //x2 - x
+            int deltaX1 = rect[1] - ay; //y1 - y
+            int deltaX2 = rect[3] - ay; //y2 - y
+            int deltaY = deltaX2 - deltaX1;//x2 - x1
+            int deltaX = deltaY2 - deltaY1;//y2 - y1
+            heights[deltaY1] += deltaY;
+            heights[deltaY2] -= deltaY;
+
+            widths[deltaX1] += deltaX;
+            widths[deltaX2] -= deltaX;
+            actualArea += deltaX*deltaY;
+            show(heights);
+            show(widths);
+            cout << endl;
+        }
+        int s = lenH*lenW;
+        if (s != actualArea)
+            return false;
+        actualArea = check(heights, lenH);
+        if (actualArea < 0 || actualArea != s)
+            return false;
+        actualArea = check(widths, lenW);
+        if (actualArea < 0 || actualArea != s)
+            return false;
+        return true;
+    }
+};
+
+
+Generate:
+class Solution {
+private:
+    unordered_map<long, unsigned int>pivots;
+    bool addPivot(int x, int y, int pos) {
+        long key = (x << 15) | y;
+        auto tmp = pivots.find(key);
+        if ((tmp != pivots.end()) && (tmp->second & pos))
+            return false;
+        pivots[key] = pos; // extra bit for even or odd appear times
+        return true;
+    }
+public:
+    int check(vector<int>& cnt, int len) {
+        for (int i = 1; i < len; i++)
+            if (cnt[i])
+                return -1;
+        return cnt[0] * len;
+    }
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        int ax = INT_MAX, ay = INT_MAX;
+        int bx = INT_MIN, by = INT_MIN;
+
+        for (auto& rect : rectangles) {
+            if (addPivot(rect[0], rect[1], 1)
+                && addPivot(rect[2], rect[3], 2)
+                && addPivot(rect[0], rect[3], 4)
+                && addPivot(rect[2], rect[1], 8)) {
+                ax = min(rect[0], ax);
+                ay = min(rect[1], ay);
+                bx = max(rect[2], bx);
+                by = max(rect[3], by);
+            }
+            else
+                return false;
+        }
+        int actualArea = 0;
+        int lenH = bx - ax, lenW = by - ay;
+        vector<int> heights(lenH + 1, 0);
+        vector<int> widths(lenW + 1, 0);
+
+        for (auto& rect : rectangles) {
+            int deltaY1 = rect[0] - ax; //x1 - x
+            int deltaY2 = rect[2] - ax; //x2 - x
+            int deltaX1 = rect[1] - ay; //y1 - y
+            int deltaX2 = rect[3] - ay; //y2 - y
+            int deltaY = deltaX2 - deltaX1;//x2 - x1
+            int deltaX = deltaY2 - deltaY1;//y2 - y1
+            heights[deltaY1] += deltaY;
+            heights[deltaY2] -= deltaY;
+
+            widths[deltaX1] += deltaX;
+            widths[deltaX2] -= deltaX;
+        }
+        int s = lenH*lenW;
+        actualArea = check(heights, lenH);
+        if (actualArea < 0 || actualArea != s)
+            return false;
+        actualArea = check(widths, lenW);
+        if (actualArea < 0 || actualArea != s)
+            return false;
+        return true;
+    }
+};
