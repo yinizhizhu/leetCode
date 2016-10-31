@@ -1,0 +1,60 @@
+class Solution {
+public:
+    bool sequenceReconstruction(vector<int>& org, vector<vector<int>>& seqs) {
+        int n = org.size();
+        vector<int> to(n), in(n);
+        vector<bool> vis(n);
+        vector<vector<int>> adj(n);
+        int k = 0;
+        for (auto &x : org) {
+            x--;
+            to[x] = k++;
+        }
+        for (auto &vec : seqs) {
+            for (auto &c : vec) {
+                c--;
+                if (c < 0 || c >= n) {
+                    return false;
+                }
+                vis[to[c]] = true;
+            }
+            for (int i = 1; i < vec.size(); i++) {
+                auto x = to[vec[i - 1]], y = to[vec[i]];
+                adj[x].push_back(y);
+                in[y]++;
+                if (x > y) {
+                    return false;
+                }
+            }
+        }
+        queue<int> q;
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                return false;
+            }
+            if (!in[i]) {
+                q.push(i);
+            }
+        }
+        vector<int> sorted;
+        while (!q.empty()) {
+            if (q.size() > 1) {
+                return false;
+            }
+            auto s = q.front();
+            q.pop();
+            sorted.push_back(s);
+            for (auto v : adj[s]) {
+                if (!--in[v]) {
+                    q.push(v);
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (i != sorted[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+};

@@ -1,0 +1,16 @@
+class Solution {
+public:
+	int arrangeCoins(int n) {
+		int gap = INT_MAX / 8;
+		if (n > gap) {
+			int r = 1;
+			while (n >= r) {
+				n -= r;
+				r++;
+			}
+			return r - 1;
+
+		}
+		return (int)((sqrt(8 * n + 1) - 1) / 2);
+	}
+};

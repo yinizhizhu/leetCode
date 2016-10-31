@@ -1,0 +1,22 @@
+bool cmpAsc(const Interval& s1, const Interval& s2) //for sort
+{
+	return s1.end < s2.end;
+}
+class Solution {
+public:
+	int eraseOverlapIntervals(vector<Interval>& intervals) {
+		if (intervals.size() < 2)
+			return 0;
+		sort(intervals.begin(), intervals.end(), cmpAsc);
+		int res = 0;
+		for (int i = 1; i < intervals.size();) {
+			if (intervals[i].start < intervals[i-1].end) {
+				res++;
+				intervals.erase(intervals.begin() + i);
+			}
+			else
+				i++;
+		}
+		return res;
+	}
+};
