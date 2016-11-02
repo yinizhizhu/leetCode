@@ -1,0 +1,29 @@
+class Solution {
+public:
+	void show(vector<vector<int>>& cnt) {
+		int i, j, len = cnt.size();
+		for (i = 0; i<len; i++) {
+		    cout<<i<<" ";
+			for (j = 0; j<cnt[i].size(); j++) {
+				cout << cnt[i][j] << "	";
+			}
+			cout << endl;
+		}
+	}
+	int maxCoins(vector<int>& nums) {
+		int n = nums.size();
+		nums.insert(nums.begin(), 1);
+		nums.push_back(1);
+		vector<vector<int>> dp(nums.size(), vector<int>(nums.size(), 0));
+		for (int len = 1; len <= n; ++len)
+			for (int left = 1; left <= n - len + 1; ++left) {
+				int right = left + len - 1;
+				cout<<"left = "<<left<<", right = "<<right<<endl;
+				for (int k = left; k <= right; ++k)
+					cout<<k<<": "<<nums[left - 1]<<" "<<nums[k]<<" "<<nums[right + 1]<<", lr: "<<dp[left][right]<<", lk-: "<<dp[left][k - 1]<<", k+r: "<<dp[k + 1][right]<<endl, dp[left][right] = max(dp[left][right], nums[left - 1] * nums[k] * nums[right + 1] + dp[left][k - 1] + dp[k + 1][right]);
+				show(dp);
+				cout<<endl;
+			}
+		return dp[1][n];
+	}
+};

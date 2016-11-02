@@ -1,0 +1,58 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class SummaryRanges {
+public:
+	/** Initialize your data structure here. */
+	SummaryRanges() {
+	}
+
+	void addNum(int val) {
+	    int length = container.size();
+		if (length) {
+			for (int i = 0; i < length; i++) {
+				if (val < container[i].start - 1) {
+					container.insert(container.begin() + i, Interval(val, val));
+					return;
+				}
+				else if (container[i].start - 1 == val) {
+					container[i].start = val;
+					return;
+				}
+				else if (val >= container[i].start && val <= container[i].end)
+					return;
+				else if (container[i].end + 1 == val) {
+					if (i + 1 < length && val == (container[i + 1].start - 1)) {
+						container[i].end = container[i + 1].end;
+						container.erase(container.begin() + i + 1);
+					}
+					else
+						container[i].end = val;
+					return;
+				}
+			}
+			container.push_back(Interval(val, val));
+		}
+		else
+			container.push_back(Interval(val, val));
+	}
+
+	vector<Interval> getIntervals() {
+		return container;
+	}
+private:
+	vector<Interval> container;
+};
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges obj = new SummaryRanges();
+ * obj.addNum(val);
+ * vector<Interval> param_2 = obj.getIntervals();
+ */
