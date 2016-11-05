@@ -11,16 +11,8 @@ public:
 			}
 			else {
 				p = s.top();
-				if (p->right) {
-					if (p->right != r)
-						p = p->right;
-					else {
-						s.pop();
-						res.push_back(p->val);
-						r = p;
-						p = NULL;
-					}
-				}
+				if (p->right && p->right != r)
+					p = p->right;
 				else {
 					s.pop();
 					res.push_back(p->val);

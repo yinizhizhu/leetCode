@@ -1,0 +1,141 @@
+class RandomizedSet {
+private:
+	struct TreeNode {
+		bool end;
+		int counter;
+		TreeNode* bit[2];
+		TreeNode() { end = false, counter = 0; bit[0] = bit[1] = NULL; }
+	};
+	int num;
+	TreeNode *root;
+	void insertNode(int num) {
+		if (!root)
+			root = new TreeNode();
+		int d;
+		TreeNode *p = root;
+		for (; num; num >>= 1) {
+			d = (num & 1);
+			if (p->bit[d] == NULL)
+				p->bit[d] = new TreeNode();
+			p = p->bit[d];
+			p->counter++;
+		}
+		p->end = true;
+		num++;
+	}
+	bool findNode(int num) {
+		int d;
+		TreeNode *p = root;
+		for (; num; num >>= 1) {
+			d = (num & 1);
+			if (p->bit[d] == NULL)
+				return false;
+			p = p->bit[d];
+		}
+		return p->end;
+	}
+	void deleteNode(int num) {
+		int d;
+		TreeNode *p = root;
+		stack<TreeNode*> cnt;
+		for (; num; num >>= 1) {
+			d = (num & 1);
+			p = p->bit[d];
+			if (p->end) {
+				while (!cnt.empty())
+					cnt.pop();
+			}
+			else
+				cnt.push(p);
+			p->counter--;
+		}
+		while (!cnt.empty()) {
+			p = cnt.top();
+			if (p->counter > 0) {
+				delete p;
+			}
+			cnt.pop();
+		}
+		num--;
+	}
+	int randomNode() {
+		srand((unsigned)time(NULL));
+		int d, res = 0, tmp = 1;
+		TreeNode *p = root;
+		while (!p->end) {
+			d = (rand() & 1);
+			if (p->bit[d])
+				p = p->bit[d];
+			else {
+				d = !d;
+				if (p->bit[d])
+					p = p->bit[d];
+				else
+					return res;
+			}
+		}
+		return res;
+	}
+public:
+	/** Initialize your data structure here. */
+	RandomizedSet() {
+		num = 0;
+	}
+
+	/** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+	bool insert(int val) {
+		if (findNode(val))
+			return false;
+		insertNode(val);
+		return true;
+	}
+
+	/** Removes a value from the set. Returns true if the set contained the specified element. */
+	bool remove(int val) {
+		if (findNode(val)) {
+			deleteNode(val);
+			return true;
+		}
+		return false;
+	}
+
+	/** Get a random element from the set. */
+	int getRandom() {
+		return randomNode();
+	}
+};
+
+class RandomizedSet {
+public:
+    /** Initialize your data structure here. */
+    RandomizedSet() {
+        
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    bool insert(int val) {
+        if (m.find(val) != m.end()) return false;
+        nums.emplace_back(val);
+        m[val] = nums.size() - 1;
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    bool remove(int val) {
+        if (m.find(val) == m.end()) return false;
+        int last = nums.back();
+        m[last] = m[val];
+        nums[m[val]] = last;
+        nums.pop_back();
+        m.erase(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    int getRandom() {
+        return nums[rand() % nums.size()];
+    }
+private:
+    vector<int> nums;
+    unordered_map<int, int> m;
+};
