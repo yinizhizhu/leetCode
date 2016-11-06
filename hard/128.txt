@@ -1,0 +1,97 @@
+class Solution {
+public:
+	int longestConsecutive(vector<int>& nums) {
+	    if (nums.size() == 0)
+	        return 1;
+		unordered_map<int, int> cnt;
+		int a, counter, move, res = 0;
+		for (auto& a : nums) {
+			auto tmp = cnt.find(a);
+			if (tmp == cnt.end()) {
+				counter = 1, move = 1;
+				auto cntR = cnt.find(a + move);
+				auto cntL = cnt.find(a - move);
+				if (cntR != cnt.end())
+					counter += cntR->second;
+				if (cntL != cnt.end())
+					counter += cntL->second;
+				while (cntR != cnt.end()) {
+					cntR->second = counter;
+					move++;
+					cntR = cnt.find(a + move);
+				}
+				move = 1;
+				while (cntL != cnt.end()) {
+					cntL->second = counter;
+					move++;
+					cntL = cnt.find(a - move);
+				}
+				cnt[a] = counter;
+				if (counter > res)
+					res = counter;
+			}
+		}
+		return res;
+	}
+};
+
+class Solution {
+public:
+	int longestConsecutive(vector<int>& nums) {
+		unordered_set<int> s(nums.begin(), nums.end());
+		int res = 1;
+		while (!s.empty()){
+			auto it = s.begin();
+			int cur = *it;
+			s.erase(it);
+			int prev = cur - 1;
+			int next = cur + 1;
+			int cnt = 1;
+			while ((it = s.find(prev)) != s.end()){
+				prev--;
+				s.erase(it);
+				cnt++;
+			}
+			while ((it = s.find(next)) != s.end()){
+				next++;
+				s.erase(it);
+				cnt++;
+			}
+			res = max(res, cnt);
+		}
+		return res;
+	}
+};
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if (nums.size() == 0){
+            return 0;
+        }
+        
+        sort(nums.begin(), nums.end());
+        int consecutiveCompare = nums[0]-1;
+        int counter = 0;
+        int longestCounter = 0;
+        
+        for (int i=0; i<nums.size(); i++){
+            if (consecutiveCompare == nums[i]) { //handle duplicates
+                continue;
+            }
+            else if (consecutiveCompare+1 != nums[i]){ //found the end of a sequence, now reset the sequence
+                consecutiveCompare = nums[i];
+                longestCounter = max(longestCounter, counter);
+                counter = 1;
+            }
+            else { //found an element of a sequence, now continue to the next element.
+                consecutiveCompare = nums[i];
+                counter++;
+            }
+        }
+        
+        longestCounter = max(longestCounter, counter);
+        
+        return longestCounter;
+    }
+};

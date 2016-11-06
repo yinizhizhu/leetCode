@@ -44,3 +44,37 @@ int trap(int* height, int heightSize) {
     result += (highH < highT ? calcH : calcT);
     return result;
 }
+
+
+class Solution {
+public:
+    int help(vector<int>& height, int head, int tail) {
+        int tmp = min(height[head], height[tail]);
+        int res = tmp*(tail - head - 1);
+        for (++head; head < tail; head++)
+            res -= height[head];
+        return res;
+    }
+    int trap(vector<int>& height) {
+        int tmp, left = -1, res = 0;
+        int i = 0, right = height.size();
+        if (right < 3)
+            return 0;
+        while (i + 1 < right && height[i] < height[i + 1]) i++;
+        if (i + 1 < right) left = i, tmp = height[i++];
+        else return 0;
+        for (; i < right; i++) {
+            if (height[i] >= tmp)
+                res += help(height, left, i), left = i, tmp = height[i];
+        }
+        i = right - 1;
+        while (i - 1 > left && height[i] < height[i - 1]) i--;
+        if (i - 1 > left) right = i, tmp = height[i--];
+        else return res;
+        for (; i >= left; i--) {
+            if (height[i] >= tmp)
+                res += help(height, i, right), right = i, tmp = height[i];
+        }
+        return res;
+    }
+};
