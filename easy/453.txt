@@ -1,0 +1,16 @@
+class Solution {
+public:
+	int minMoves(vector<int>& nums) {
+		int len = nums.size();
+		if (len < 1)
+			return 0;
+		int i, minN = nums[0], res = minN, tmp;
+		for (i = 1; i < len; i++) {
+			tmp = nums[i];
+			res += tmp;
+			if (tmp < minN)
+				minN = tmp;
+		}
+		return (res - len*minN);
+	}
+};
