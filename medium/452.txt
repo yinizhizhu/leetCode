@@ -1,0 +1,21 @@
+bool cmpAsc(const pair<int, int>& s1, const pair<int, int>& s2) //for sort
+{
+	return s1.second < s2.second;
+}
+class Solution {
+public:
+	int findMinArrowShots(vector<pair<int, int>>& points) {
+		int len = points.size();
+		if (len < 1)
+			return len;
+		int i = 0, cut, res = 0;
+		sort(points.begin(), points.end(), cmpAsc);
+		while (i < len) {
+			cut = points[i].second;
+			res++, i++;
+			while (i < len && points[i].first <= cut)
+				i++;
+		}
+		return res;
+	}
+};
