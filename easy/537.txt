@@ -1,0 +1,36 @@
+class Solution {
+public:
+	string complexNumberMultiply(string a, string b) {
+		char tmp[20];
+		int x, y, m, n, s, t;
+		getV(a, x, y);
+		cout << a << " " << x << " " << y << endl;
+		getV(b, m, n);
+		cout << b << " " << m << " " << n << endl;
+		s = x*m - y*n;
+		t = x*n + y*m;
+		cout << s << " " << t << endl;
+		sprintf(tmp, "%d+%di", s, t);
+		return string(tmp);
+	}
+	void getV(string& str, int&a, int& b) {
+		int mid = str.find('+');
+		int tag = 1, i, basis = 1, n = 0;
+		if (str[0] == '-') {
+			tag = -1;
+			n = 1;
+		}
+		for (i = mid - 1, a = 0; i >= n; i--, basis *= 10)
+			a += (str[i] - '0')*basis;
+		a *= tag;
+		tag = 1;
+		if (str[mid + 1] == '-') {
+			tag = -1;
+			mid++;
+		}
+		b = 0;
+		for (basis = 1, i = str.size() - 2; i > mid; i--, basis *= 10)
+			b += (str[i] - '0')*basis;
+		b *= tag;
+	}
+};

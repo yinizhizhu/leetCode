@@ -1,0 +1,39 @@
+class Solution {
+public:
+	TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+		int n = nums.size();
+		if (n) {
+			int maxN, maxI;
+			maxN = findMaxN(nums, 0, n, maxI);
+			TreeNode* root = new TreeNode(maxN);
+			help(root, nums, 0, n, maxI);
+			return root;
+		}
+		return NULL;
+	}
+	int findMaxN(vector<int>& nums, int head, int tail, int& maxI) {
+		int i = tail - 1;
+		maxI = i;
+		int maxN = nums[i--];
+		for (; i >= head; i--) {
+			if (nums[i] > maxN) {
+				maxN = nums[i];
+				maxI = i;
+			}
+		}
+		return maxN;
+	}
+	void help(TreeNode* root, vector<int>& nums, int head, int tail, int maxI) {
+		if (head < tail) {
+			int tmpI;
+			if (head < maxI) {
+				root->left = new TreeNode(findMaxN(nums, head, maxI, tmpI));
+				help(root->left, nums, head, maxI, tmpI);
+			}
+			if (maxI + 1 < tail) {
+				root->right = new TreeNode(findMaxN(nums, maxI + 1, tail, tmpI));
+				help(root->right, nums, maxI + 1, tail, tmpI);
+			}
+		}
+	}
+};
