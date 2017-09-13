@@ -1,0 +1,36 @@
+class Solution {
+public:
+	string container[3];
+	Solution() {
+		container[0] = "qQwWeErRtTyYuUiIoOpP";
+		container[1] = "aAsSdDfFgGhHjJkKlL";
+		container[2] = "zZxXcCvVbBnNmM";
+	}
+	bool findC(string& str, char c) {
+		for (int i = str.size() - 1; i >= 0; i--)
+			if (str[i] == c)
+				return true;
+		return false;
+	}
+	bool check(string& str) {
+		for (int i = 0; i < 3; i++) {
+			if (findC(container[i], str[0])) {
+				for (int j = str.size() - 1; j > 0; j--) {
+					if (!findC(container[i], str[j]))
+						return false;
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	vector<string> findWords(vector<string>& words) {
+		vector<string> ans;
+		int i, n = words.size();
+		for (i = 0; i < n; i++) {
+			if (check(words[i]))
+				ans.push_back(words[i]);
+		}
+		return ans;
+	}
+};

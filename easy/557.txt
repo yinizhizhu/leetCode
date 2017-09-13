@@ -1,0 +1,40 @@
+class Solution {
+public:
+	string reverseWords(string s) {
+		string ans = "", tmp;
+		int i, len = s.size();
+		for (i = 0; i < len; i++) {
+			tmp = "";
+			while (i < len && s[i] != ' ')
+				tmp += s[i++];
+			reverse(tmp.begin(), tmp.end());
+			if (i < len)
+				tmp += ' ';
+			ans += tmp;
+		}
+		return ans;
+	}
+};
+
+class Solution {
+public:
+	string reverseWords(string s) {
+		stack<string> container;
+		string ans = "", tmp;
+		int i = s.size() - 1;
+		for (; i >= 0; i--) {
+			tmp = "";
+			while (i >= 0 && s[i] != ' ')
+				tmp += s[i];
+			container.push(tmp);
+		}
+		while (!container.empty()) {
+			ans += container.top();
+			container.pop();
+			if (container.empty())
+				break;
+			ans += " ";
+		}
+		return ans;
+	}
+};

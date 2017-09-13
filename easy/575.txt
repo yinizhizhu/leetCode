@@ -1,0 +1,37 @@
+#define GAP 100000
+class Solution {
+private:
+	int container[GAP * 2 + 1];
+public:
+	int distributeCandies(vector<int>& candies) {
+		int i, ans = 0, len = candies.size();
+		for (i = GAP * 2; i >= 0; i--)
+			container[i] = 0;
+		for (i = len - 1; i >= 0; i--)
+			container[candies[i]+GAP]++;
+		for (i = GAP * 2; i >= 0; i--)
+			if (container[i])
+				ans++;
+		if (ans < len / 2)
+			return ans;
+		return len / 2;
+	}
+};
+
+class Solution {
+private:
+public:
+	int distributeCandies(vector<int>& candies) {
+		int i, ans = 0, len = candies.size(), tmp;
+		sort(candies.begin(), candies.end());
+		for (i = 0; i < len;) {
+			ans++;
+			tmp = candies[i++];
+			while (i < len && candies[i] == tmp)
+				i++;
+		}
+		if (ans < len / 2)
+			return ans;
+		return len / 2;
+	}
+};
