@@ -1,0 +1,77 @@
+int dir[4][2] = {
+	1,0,
+	-1,0,
+	0,1,
+	0,-1
+};
+
+class Solution {
+public:
+	bool check(int i, int bais) {
+		if (i >= 0 && i < bais) return true;
+		return false;
+	}
+	int help(vector<vector<int>>& grid, int i, int j, int r, int c) {
+		int ans = 0;
+		int a, b;
+		for (int k = 0; k < 4; k++) {
+			a = i + dir[k][0];
+			b = j + dir[k][1];
+			if (check(a, r) && check(b, c)) {
+				if (!grid[a][b])
+					ans++;
+			}
+			else
+				ans++;
+		}
+		return ans;
+	}
+	int islandPerimeter(vector<vector<int>>& grid) {
+		int ans = 0, r, c, i, j;
+		r = grid.size();
+		if (r == 0) return ans;
+		c = grid[0].size();
+		if (c == 0) return ans;
+		for (i = 0; i < r; i++)
+			for (j = 0; j < c; j++)
+				if (grid[i][j])
+					ans += help(grid, i, j, r, c);
+		return ans;
+	}
+};
+
+int dir[4][2] = {
+	1,0,
+	-1,0,
+	0,1,
+	0,-1
+};
+
+class Solution {
+public:
+	bool check(int i, int bais) {
+		if (i >= 0 && i < bais) return true;
+		return false;
+	}
+	int islandPerimeter(vector<vector<int>>& grid) {
+		int ans = 0, r, c, i, j, a, b;
+		r = grid.size();
+		if (r == 0) return ans;
+		c = grid[0].size();
+		if (c == 0) return ans;
+		for (i = 0; i < r; i++)
+			for (j = 0; j < c; j++)
+				if (grid[i][j] == 1)
+					for (int k = 0; k < 4; k++) {
+						a = i + dir[k][0];
+						b = j + dir[k][1];
+						if (check(a, r) && check(b, c)) {
+							if (grid[a][b] == 0)
+								ans++;
+						}
+						else
+							ans++;
+					}
+		return ans;
+	}
+};

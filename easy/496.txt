@@ -1,0 +1,24 @@
+class Solution {
+public:
+	vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
+		int i, j, lenf = findNums.size(), lenn = nums.size(), tmp;
+		for (i = 0; i < lenf; i++) {
+			tmp = findNums[i];
+			for (j = 0; j < lenn; j++) {
+				if (nums[j] == tmp) {
+					for (j++; j<lenn; j++)
+						if (nums[j] > tmp) {
+							tmp = nums[j];
+							break;
+						}
+					break;
+				}
+			}
+			if (tmp - findNums[i])
+				findNums[i] = tmp;
+			else
+				findNums[i] = -1;
+		}
+		return findNums;
+	}
+};

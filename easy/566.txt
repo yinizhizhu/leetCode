@@ -1,0 +1,20 @@
+class Solution {
+public:
+	vector<vector<int> > matrixReshape(vector<vector<int> >& nums, int r, int c) {
+		int row = nums.size(), col;
+		if (row) col = nums[0].size();
+		else return nums;
+		if (row*col - r*c) return nums;
+		if (row == r) return nums;
+		int i, j, k = 0;
+		vector<vector<int> > ans;
+		ans.resize(r);
+		for (i = 0; i < r; i++) {
+			ans[i].resize(c);
+			for (j = 0; j < c; j++, k++) {
+				ans[i][j] = nums[k / col][k %col];
+			}
+		}
+		return ans;
+	}
+};
