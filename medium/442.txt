@@ -1,0 +1,54 @@
+class Solution {
+public:
+	vector<int> findDuplicates(vector<int>& nums) {
+		int i, n = nums.size();
+		vector<int> ans, con;
+		con.resize(n);
+		for (i = 0; i < n; i++)
+			con[i] = 0;
+		for (i = 0; i < n; i++)
+			con[nums[i]-1] ++;
+		for (i = 0; i < n; i++)
+			if (con[i] == 2)
+				ans.push_back(i + 1);
+		return ans;
+	}
+};
+
+class Solution {
+public:
+	void show(vector<int>& nums) {
+		for (int i = 0; i < nums.size(); i++)
+			cout << nums[i] << " ";
+		cout << endl;
+	}
+	vector<int> findDuplicates(vector<int>& nums) {
+		int i, n = nums.size(), tmp, cur;
+		show(nums);
+		vector<int> ans;
+		for (i = 0; i < n; i++) {
+			cur = nums[i];
+			if (cur <= n && cur > 0) {
+				if (cur == i + 1)
+					nums[i] = n + cur;
+				else {
+					tmp = nums[cur - 1];
+					if (tmp > n) {
+						nums[cur - 1] += cur;
+						nums[i] = 0;
+					}
+					else {
+						nums[cur - 1] = cur + n;
+						nums[i] = tmp;
+						i--;
+					}
+				}
+			}
+			show(nums);
+		}
+		for (i = 0; i < n; i++)
+			if ((nums[i] - n) / (i + 1) == 2)
+				ans.push_back(i + 1);
+		return ans;
+	}
+};
