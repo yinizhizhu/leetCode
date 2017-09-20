@@ -1,0 +1,29 @@
+#define INT_LEE -2147483648
+
+class Solution {
+public:
+	vector<int> largestValues(TreeNode* root) {
+		int n, l;
+		vector<int> ans;
+		TreeNode* tmp = NULL;
+		queue<TreeNode*> con;
+		if (root)
+			con.push(root);
+		while (!con.empty()) {
+			n = con.size();
+			l = INT_LEE;
+			while (n--) {
+				tmp = con.front();
+				if (l < tmp->val)
+					l = tmp->val;
+				if (tmp->left)
+					con.push(tmp->left);
+				if (tmp->right)
+					con.push(tmp->right);
+				con.pop();
+			}
+			ans.push_back(l);
+		}
+		return ans;
+	}
+};

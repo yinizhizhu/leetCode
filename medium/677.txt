@@ -1,0 +1,25 @@
+class MapSum {
+public:
+	unordered_map<string, int> con;
+	typedef unordered_map<string, int>::iterator iter;
+	MapSum() {
+		con.clear();
+	}
+
+	void insert(string key, int val) {
+		iter tmp = con.find(key);
+		if (tmp == con.end())
+			con[key] = val;
+		else
+			tmp->second = val;
+	}
+
+	int sum(string prefix) {
+		int ans = 0;
+		iter step = con.begin();
+		for (; step != con.end(); step++)
+			if (step->first.find(prefix) == 0)
+				ans += step->second;
+		return ans;
+	}
+};

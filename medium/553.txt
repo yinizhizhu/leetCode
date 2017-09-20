@@ -1,0 +1,28 @@
+class Solution {
+public:
+	string optimalDivision(vector<int>& nums) {
+		string ans = "";
+		char tmp[6];
+		int i, n = nums.size();
+		if (n == 0) return ans;
+		sprintf(tmp, "%d", nums[0]);
+		cout << tmp << endl;
+		ans = tmp;
+		if (n == 1) return ans;
+		ans += "/";
+		sprintf(tmp, "%d", nums[1]);
+		if (n == 2) {
+			ans += tmp;
+			return ans;
+		}
+		ans += "(";
+		ans += tmp;
+		for (i = 2; i < n; i++) {
+			ans += "/";
+			sprintf(tmp, "%d", nums[i]);
+			ans += tmp;
+		}
+		ans += ")";
+		return ans;
+	}
+};

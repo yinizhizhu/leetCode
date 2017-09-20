@@ -1,0 +1,23 @@
+class Solution {
+public:
+	int result;
+	vector<bool> visit;
+	void dfs(int index) {
+		if (index == 1) {
+			result++;
+			return;
+		}
+		for (int i = 1; i < visit.size(); i++) {
+			if (visit[i] == false && (i % index == 0 || index % i == 0)) {
+				visit[i] = true;
+				dfs(index - 1);
+				visit[i] = false;
+			}
+		}
+	}
+	int countArrangement(int N) {
+		visit.resize(N + 1);
+		dfs(N);
+		return result;
+	}
+};
