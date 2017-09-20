@@ -1,0 +1,58 @@
+class Solution {
+public:
+	int help(string& s, int h, int t) {
+		for (t--; h < t; h++, t--)
+			if (s[h] != s[t])
+				return 0;
+		return 1;
+	}
+	int countSubstrings(string s) {
+		int ans = s.size();
+		if (ans) {
+			int i, j, n = ans;
+			for (i = 0; i < n; i++)
+				for (j = 2; j <= n - i; j++)
+					ans += help(s, i, j + i);
+		}
+		return ans;
+	}
+};
+
+
+class Solution {
+public:
+	int min_(int a, int b) {
+		return (a < b ? a : b);
+	}
+	void show(vector<int>& con) {
+		for (int i = 0; i < con.size(); i++)
+			cout << con[i] << " ";
+		cout << endl;
+	}
+	int countSubstrings(string s) {
+		int i, n = s.size();
+		string str = "#";
+		for (i = 0; i < n; i++) {
+			str += s[i];
+			str += "#";
+		}
+		n <<= 1;
+		n++;
+		vector<int> RL;
+		RL.resize(n);
+		for (i = 0; i < n; i++)	RL[i] = 0;
+		int pos = 0, maxRight = 0, count = 0;
+		for (int i = 0; i < n; i++) {
+			if (i < maxRight)
+				RL[i] = min_(maxRight - i, RL[2 * pos - i]);
+			while (i - RL[i] - 1 >= 0 && i + RL[i] + 1 < n && str[i - RL[i] - 1] == str[i + RL[i] + 1])
+				RL[i]++;
+			if (i + RL[i] > maxRight) {
+				pos = i;
+				maxRight = i + RL[i];
+			}
+			count += (RL[i] + 1) / 2;
+		}
+		return count;
+	}
+};
