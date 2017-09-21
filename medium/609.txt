@@ -1,0 +1,46 @@
+class Solution {
+public:
+	int i, n;
+	string str, root, fileName, fileContent;
+	unordered_map<string, vector<string>> con;
+	typedef unordered_map<string, vector<string>>::iterator iter;
+	void initial(string s) {
+		str = s;
+		root = "";
+		n = str.size();
+		for (i = 0; i < n && str[i] != ' '; i++)
+			root += str[i];
+		root += "/";
+	}
+	void getNext() {
+		fileName = "";
+		for (++i; i < n && str[i] != '('; i++)
+			fileName += str[i];
+		fileContent = "";
+		for (++i; i < n && str[i] != ')'; i++)
+			fileContent += str[i];
+		i++;
+	}
+	vector<vector<string>> findDuplicate(vector<string>& paths) {
+		vector<vector<string>> ans;
+		int j, len = paths.size();
+		for (j = 0; j < len; j++) {
+			initial(paths[j]);
+			for (; i < n;) {
+				getNext();
+				iter tmp = con.find(fileContent);
+				if (tmp == con.end()) {
+					vector<string> step;
+					step.push_back(root + fileName);
+					con[fileContent] = step;
+				}
+				else
+					tmp->second.push_back(root + fileName);
+			}
+		}
+		for (iter tmp = con.begin(); tmp != con.end(); tmp++)
+			if (tmp->second.size() > 1)
+				ans.push_back(tmp->second);
+		return ans;
+	}
+};

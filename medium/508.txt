@@ -1,0 +1,41 @@
+class Solution {
+public:
+	int times;
+	unordered_map<int, int> con;
+	typedef unordered_map<int, int>::iterator iter;
+	void push(int i) {
+		iter step;
+		step = con.find(i);
+		if (step != con.end()) {
+			step->second++;
+			if (step->second > times)
+				times = step->second;
+		}
+		else
+			con[i] = 1;
+	}
+	int sumSub(TreeNode* root) {
+		int l = 0, r = 0;
+		if (root->left) {
+			l = sumSub(root->left);
+			push(l);
+		}
+		if (root->right) {
+			r = sumSub(root->right);
+			push(r);
+		}
+		return (root->val + l + r);
+	}
+	vector<int> findFrequentTreeSum(TreeNode* root) {
+		times = 1;
+		con.clear();
+		vector<int> ans;
+		if (!root) return ans;
+		push(sumSub(root));
+		iter step = con.begin();
+		for (; step != con.end(); step++)
+			if (step->second == times)
+				ans.push_back(step->first);
+		return ans;
+	}
+};
