@@ -1,0 +1,23 @@
+class Solution {
+public:
+	bool check(char c) {
+		if (c >= 'A' && c <= 'Z') return true;
+		return false;
+	}
+	bool detectCapitalUse(string word) {
+		bool tag0, tag;
+		int i, len = word.size();
+		tag0 = check(word[0]);
+		if (len > 1) {
+			if (check(word[1]))
+				tag = true;
+			else
+				tag = false;
+			if (!tag0 && tag0 ^ tag) return false;
+			for (i = 2; i < len; i++)
+				if (check(word[i]) ^ tag)
+					return false;
+		}
+		return true;
+	}
+};
