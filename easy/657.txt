@@ -1,0 +1,27 @@
+class Solution {
+public:
+	bool judgeCircle(string moves) {
+		int hor(0), ver(0);
+		for (int i = moves.size() - 1; i >= 0; i--)
+			switch (moves[i])
+			{
+			case 'U':
+				ver++;
+				break;
+			case 'D':
+				ver--;
+				break;
+			case 'R':
+				hor++;
+				break;
+			case 'L':
+				hor--;
+				break;
+			default:
+				break;
+			}
+		if (hor || ver)
+			return false;
+		return true;
+	}
+};

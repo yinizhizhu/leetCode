@@ -1,0 +1,23 @@
+class Solution {
+public:
+	TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+		if (t1)
+			add(t1, t2);
+		else
+			t1 = t2;
+		return t1;
+	}
+	void add(TreeNode* a, TreeNode* b) {
+		if (b) {
+			a->val += b->val;
+			if (a->left)
+				add(a->left, b->left);
+			else
+				a->left = b->left;
+			if (a->right)
+				add(a->right, b->right);
+			else
+				a->right = b->right;
+		}
+	}
+};
