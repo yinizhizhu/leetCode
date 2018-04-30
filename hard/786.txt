@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <functional>
+
+using namespace std;
+
+typedef struct node {
+	int s, t;
+	float val;
+	node(int m, int n, int x, int y) {
+		s = m;
+		t = n;
+		val = x*1.0 / y;
+	}
+} NODE;
+
+struct cmp {
+	bool operator()(const NODE& a, const NODE& b) {
+		return a.val > b.val;
+	}
+};
+
+class Solution {
+public:
+	vector< vector<bool> > visit;
+	priority_queue<NODE, vector<NODE>, cmp> Q;
+	vector<int> kthSmallestPrimeFraction(vector<int>& a, int k) {
+		int n = a.size() - 1, x, y;
+		visit.resize(n);
+		for (x = 0; x < n; x++)
+			for (y = 0; y < n - x; y++)
+				visit[x].push_back(true);
+		vector<int> ans;
+		NODE cur(0, 0, a[0], a[n]);
+		if (k == 1) {
+			ans.push_back(a[cur.s]);
+			ans.push_back(a[n - cur.t]);
+			return ans;
+		}
+		Q.push(cur);
+		for (; k; k--) {
+			cur = Q.top();
+			Q.pop();
+			x = cur.s;
+			y = cur.t;
+			if (x + y <= n - 2) {
+				if (visit[x + 1][y]) {
+					Q.push(NODE(x + 1, y, a[x + 1], a[n - y]));
+					visit[x + 1][y] = false;
+				}
+				if (visit[x][y + 1]) {
+					Q.push(NODE(x, y + 1, a[x], a[n - y - 1]));
+					visit[x][y + 1] = false;
+				}
+			}
+		}
+		ans.push_back(a[cur.s]);
+		ans.push_back(a[n - cur.t]);
+		return ans;
+	}
+};
+
+int main() {
+	vector<int> a;
+	for (int i = 0; i < 3; i++)
+		a.push_back(i);
+	Solution s;
+	s.kthSmallestPrimeFraction(a, 2);
+	return 0;
+}
