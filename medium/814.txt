@@ -1,0 +1,28 @@
+class Solution {
+public:
+	TreeNode* pruneTree(TreeNode* root) {
+		if (root) {
+			if (sumTree(root)) {
+				root->left = pruneTree(root->left);
+				root->right = pruneTree(root->right);
+			}
+			else {
+				delTree(root);
+				root = NULL;
+			}
+		}
+		return root;
+	}
+	int sumTree(TreeNode* p) {
+		if (p)
+			return (p->val + sumTree(p->left) + sumTree(p->right));
+		return 0;
+	}
+	void delTree(TreeNode* p) {
+		if (p) {
+			delTree(p->left);
+			delTree(p->right);
+			delete p;
+		}
+	}
+};

@@ -1,0 +1,20 @@
+class Solution {
+public:
+	int minAddToMakeValid(string s) {
+		int i = 0, n = s.size(), ans = 0;
+		stack<char> con;
+		for (; i < n; i++) {
+			if (con.empty())
+				con.push(s[i]);
+			else {
+				if (con.top() == s[i])
+					con.push(s[i]);
+				else if (s[i] == ')')
+					con.pop();
+				else
+					con.push(s[i]);
+			}
+		}
+		return con.size();
+	}
+};
