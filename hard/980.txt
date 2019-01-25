@@ -1,0 +1,132 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+//struct TreeNode {
+//	int val;
+//	TreeNode *left;
+//	TreeNode *right;
+//	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+//};
+
+bool cmp(int& a, int & b) {
+	return a < b;
+}
+
+void show(vector<int>& deck) {
+	int i = 0, n = deck.size();
+	for (; i < n; i++)
+		cout << deck[i] << " ";
+	cout << endl;
+}
+
+typedef class point {
+public:
+	int x, y;
+	point() :x(0), y(0){}
+	point(int a, int b) :x(a), y(b) {}
+	void setP(int a, int b) {
+		x = a;
+		y = b;
+	}
+	point& operator += (const point& p) {
+		x += p.x;
+		y += p.y;
+		return *this;
+	}
+	point& operator -= (const point& p) {
+		x -= p.x;
+		y -= p.y;
+		return *this;
+	}
+	bool operator == (const point& p) {
+		if (x == p.x && y == p.y)
+			return true;
+		return false;
+	}
+	friend ostream& operator<<(ostream &os, const point &p) {
+		os << "(" << p.x << "," << p.y << ")";
+		return os;
+	}
+} P;
+
+P directions[4] = { P(-1, 0), P(1, 0), P(0, -1), P(0, 1) };
+
+class Solution {
+public:
+	P s, t;
+	int counter, ans, m, n;
+	vector<vector<int>> tags;
+	vector<P> path;
+	int uniquePathsIII(vector<vector<int>>& grid) {
+		ans = 0;
+		counter = -1;
+		tags.clear();
+		path.clear();
+
+		int i, j, tmp;
+		m = grid.size(), n = grid[0].size();
+		for (i = 0; i < m; i++) {
+			tags.push_back(vector<int>());
+			for (j = 0; j < n; j++) {
+				tmp = grid[i][j];
+				if (tmp == -1)
+					tags[i].push_back(0);
+				else {
+					tags[i].push_back(1);
+					counter++;
+					if (tmp == 1)
+						s.setP(i, j);
+					else if (tmp == 2)
+						t.setP(i, j);
+				}
+			}
+		}
+		dfs();
+		return ans;
+	}
+	void dfs() {
+		if (tags[s.x][s.y] == 0)
+			return;
+		if (s == t) {
+			if (counter == 0) {
+				for (int i = 0; i < path.size(); i++)
+					cout << path[i];
+				cout << endl;
+				ans++;
+			}
+			return;
+		}
+		path.push_back(s);
+		tags[s.x][s.y] = 0;
+		counter--;
+		for (int i = 0; i < 4; i++) {
+			s += directions[i];
+			if (s.x >= 0 && s.x < m && s.y >= 0 && s.y < n)
+				dfs();
+			s -= directions[i];
+		}
+		tags[s.x][s.y] = 1;
+		counter++;
+		path.pop_back();
+	}
+};
+
+int main() {
+	//cout << "Hello world!" << endl;
+	vector<vector<int> > con;
+	for (int i = 0; i < 3; i++) {
+		con.push_back(vector<int>());
+		for (int j = 0; j < 4; j++)
+			con[i].push_back(0);
+	}
+	con[0][0] = 1;
+	con[2][2] = 2;
+	con[2][3] = -1;
+	Solution a;
+	cout << a.uniquePathsIII(con) << endl;
+	return 0;
+}
