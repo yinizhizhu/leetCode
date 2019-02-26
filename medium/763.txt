@@ -1,0 +1,54 @@
+typedef struct intr {
+	int head, tail;
+	intr() : head(0), tail(0) {}
+	intr(int h, int t) : head(h), tail(t) {}
+	void setH(int h) { head = h; }
+} INTR;
+
+bool cmp(INTR& a, INTR& b) {
+	return a.head < b.head;
+}
+
+void show(vector<INTR>& order) {
+	for (auto p : order)
+		cout << " "<< p.head << " - " << p.tail << endl;
+}
+
+class Solution {
+public:
+	unordered_map<char, INTR> con;
+	vector<int> partitionLabels(string s) {
+		cout << s << endl;
+		int i = s.size() - 1;
+		for (; i >= 0; i--) {
+			auto iter = con.find(s[i]);
+			if (iter == con.end())
+				con[s[i]] = INTR(i, i);
+			else
+				iter->second.setH(i);
+		}
+		cout << "0.0" << endl;
+		vector<INTR> order;
+		auto iter = con.begin();
+		for (; iter != con.end(); iter++)
+			order.push_back(iter->second);
+		cout << "-.0" << endl;
+		show(order);
+		sort(order.begin(), order.end(), cmp);
+		cout << "-.-" << endl;
+		show(order);
+		vector<int> ans;
+		int counter = 1;
+		INTR step = order[0];
+		for (i = 1; i < order.size(); i++) {
+			if (order[i].head < step.tail)
+				step.tail = max(step.tail, order[i].tail);
+			else {
+				ans.push_back(step.tail - step.head + 1);
+				step = order[i];
+			}
+		}
+		ans.push_back(step.tail - step.head + 1);
+		return ans;
+	}
+};
