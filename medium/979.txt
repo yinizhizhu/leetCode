@@ -1,0 +1,56 @@
+class Solution {
+public:
+	int distributeCoins(TreeNode* root) {
+		TreeNode* counter = copyTree(root);
+		countTree(root);
+		countTree2(counter);
+		return doIt(root, counter);
+	}
+	int doIt(TreeNode* root, TreeNode* counter) {
+		if (root) {
+			int rv = root->val, ans = 0;
+			TreeNode *leftR = root->left, *rightR = root->right;
+			TreeNode *leftC = counter->left, *rightC = counter->right;
+			int leftRV = 0, rightRV = 0;
+			int leftCV = 0, rightCV = 0;
+			int delta = 0;
+			if (leftR) {
+				leftRV = leftR->val;
+				leftCV = leftC->val;
+				delta += abs(leftCV - leftRV);
+			}
+			if (rightR) {
+				rightRV = rightR->val;
+				rightCV = rightC->val;
+				delta += abs(rightCV - rightRV);
+			}
+			return delta + doIt(root->left, counter->left) + doIt(root->right, counter->right);
+		}
+		return 0;
+	}
+	TreeNode* copyTree(TreeNode* root) {
+		if (root) {
+			TreeNode* tmp = new TreeNode(0);
+			tmp->left = copyTree(root->left);
+			tmp->right = copyTree(root->right);
+			return tmp;
+		}
+		return NULL;
+	}
+	int countTree(TreeNode* root) {
+		if (root) {
+			int ans = root->val + countTree(root->left) + countTree(root->right);
+			root->val = ans;
+			return ans;
+		}
+		return 0;
+	}
+	int countTree2(TreeNode* counter) {
+		if (counter) {
+			int ans = 1 + countTree2(counter->left) + countTree2(counter->right);
+			counter->val = ans;
+			return ans;
+		}
+		return 0;
+	}
+};
