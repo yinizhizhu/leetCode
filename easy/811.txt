@@ -1,0 +1,59 @@
+class Solution {
+public:
+	unordered_map<string, int> con;
+	void push(string& str) {
+		vector<int> index;
+		int i = str.size() - 1, j, n;
+		for (; i >= 0; i--) {
+			if (str[i] == '.')
+				index.push_back(i);
+			else if (str[i] == ' ')
+				index.push_back(i);
+		}
+		n = index.size() - 1;
+		int counter;
+		string num = "";
+		for (i = 0; i < index[n]; i++)
+			num += str[i];
+		counter = atoi(num.c_str());
+
+		num = "";
+		i = str.size() - 1;
+		j = 0;
+		for (; j <= n && i > index[n]; i--) {
+			if (i == index[j]) {
+				auto iter = con.find(num);
+				if (iter == con.end())
+					con[num] = counter;
+				else
+					iter->second += counter;
+				j++;
+			}
+			num += str[i];
+		}
+		auto iter = con.find(num);
+		if (iter == con.end())
+			con[num] = counter;
+		else
+			iter->second += counter;
+	}
+	string rever(string str) {
+		int i = str.size() - 1;
+		string ans = "";
+		for (; i >= 0; i--)
+			ans += str[i];
+		return ans;
+	}
+	vector<string> subdomainVisits(vector<string>& cpdomains) {
+		vector<string> ans;
+		for (auto str : cpdomains)
+			push(str);
+		char num[101];
+		auto iter = con.begin();
+		for (; iter != con.end(); iter++) {
+			sprintf(num, "%d ", iter->second);
+			ans.push_back(num + rever(iter->first));
+		}
+		return ans;
+	}
+};

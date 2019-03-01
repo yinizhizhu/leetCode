@@ -1,0 +1,41 @@
+class Solution {
+public:
+	TreeNode* ans;
+	TreeNode* insertIntoMaxTree(TreeNode* root, int val) {
+		ans = root;
+		insertT(NULL, root, val);
+		return ans;
+	}
+	void insertT(TreeNode* pre, TreeNode* cur, int val) {
+		if (pre) {
+			if (cur) {
+				if (cur->val < val) {
+					TreeNode* tmp = new TreeNode(val);
+					pre->right = tmp;
+					tmp->left = cur;
+				}
+				else
+					insertT(cur, cur->right, val);
+			}
+			else {
+				TreeNode* tmp = new TreeNode(val);
+				pre->right = tmp;
+			}
+		}
+		else {
+			if (cur) {
+				if (cur->val < val) {
+					TreeNode* tmp = new TreeNode(val);
+					tmp->left = cur;
+					ans = tmp;
+				}
+				else
+					insertT(cur, cur->right, val);
+			}
+			else {
+				TreeNode* tmp = new TreeNode(val);
+				ans = tmp;
+			}
+		}
+	}
+};

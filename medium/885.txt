@@ -1,0 +1,71 @@
+class Solution {
+public:
+	vector<vector<int>> spiralMatrixIII(int r, int c, int r0, int c0) {
+		int step = 0, n = r*c;
+		vector<vector<int> > ans(n, vector<int>(2, 0));
+		int left = c0 - 1, right = c0 + 1, up = r0 - 1, down = r0 + 1;
+		ans[step][0] = r0;
+		ans[step][1] = c0;
+		cout << step + 1 << ": " << r0 << ", " << c0 << " -> " << ans[step][0] << ", " << ans[step][1] << endl;
+		step++;
+		for (; step < n;) {
+			//right
+			cout << "right: " << r0 << " " << c0 << endl;
+			if (r0 >= 0 && r0 < r) {
+				for (c0++; step < n && c0 <= right; c0++) {
+					if (c0 >= 0 && c0 < c) {
+						ans[step][0] = r0;
+						ans[step][1] = c0;
+						cout << step + 1 << " right: " << r0 << ", " << c0 << " -> " << ans[step][0] << ", " << ans[step][1] << endl;
+						step++;
+					}
+				}
+			}
+			c0 = right;
+			right++;
+			//down
+			cout << "down: " << r0 << " " << c0 << endl;
+			if (c0 >= 0 && c0 < c) {
+				for (r0++; step < n && r0 <= down; r0++) {
+					if (r0 >= 0 && r0 < r) {
+						ans[step][0] = r0;
+						ans[step][1] = c0;
+						cout << step + 1 << " down: " << r0 << ", " << c0 << " -> " << ans[step][0] << ", " << ans[step][1] << endl;
+						step++;
+					}
+				}
+			}
+			r0 = down;
+			down++;
+			//left
+			cout << "left: " << r0 << " " << c0 << endl;
+			if (r0 >= 0 && r0 < r) {
+				for (c0--; step < n && c0 >= left; c0--) {
+					if (c0 >= 0 && c0 < c) {
+						ans[step][0] = r0;
+						ans[step][1] = c0;
+						cout << step + 1 << " left: " << r0 << ", " << c0 << " -> " << ans[step][0] << ", " << ans[step][1] << endl;
+						step++;
+					}
+				}
+			}
+			c0 = left;
+			left--;
+			//up
+			cout << "up: " << r0 << " " << c0 << endl;
+			if (c0 >= 0 && c0 < c) {
+				for (r0--; step < n && r0 >= up; r0--){
+					if (r0 >= 0 && r0 < r) {
+						ans[step][0] = r0;
+						ans[step][1] = c0;
+						cout << step + 1 << " up: " << r0 << ", " << c0 << " -> " << ans[step][0] << ", " << ans[step][1] << endl;
+						step++;
+					}
+				}
+			}
+			r0 = up;
+			up--;
+		}
+		return ans;
+	}
+};
