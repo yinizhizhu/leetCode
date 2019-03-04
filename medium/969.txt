@@ -1,0 +1,38 @@
+class Solution {
+public:
+	void show(vector<int>& con, int k) {
+		for (int i = 0; i < k; i++)
+			cout << con[i] << " ";
+		cout << endl;
+	}
+	void reverse(vector<int>& con, int k) {
+		int i = 0, j = k - 1, c;
+		show(con, k);
+		for (; i < j; i++, j--) {
+			c = con[i] ^ con[j];
+			con[i] = c^con[i];
+			con[j] = c^con[i];
+		}
+		show(con, k);
+	}
+	vector<int> pancakeSort(vector<int>& con) {
+		vector<int> ans;
+		int i, j, n = con.size();
+		for (i = n; i > 0; i--) {
+			for (j = i - 1; j >= 0; j--)
+				if (con[j] == i)
+					break;
+			if (j == i - 1)
+				continue;
+			if (j > 0) {
+				reverse(con, j + 1);
+				ans.push_back(j + 1);
+			}
+			if (i > 1) {
+				reverse(con, i);
+				ans.push_back(i);
+			}
+		}
+		return ans;
+	}
+};
