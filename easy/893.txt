@@ -1,0 +1,30 @@
+class Solution {
+public:
+	unordered_set<string> con;
+	void change(string& str) {
+		string ans = "";
+		int i = str.size() - 1;
+		vector<char> p, n;
+		for (; i >= 0; i--) {
+			if (i & 1)
+				n.push_back(str[i]);
+			else
+				p.push_back(str[i]);
+		}
+		sort(n.begin(), n.end());
+		sort(p.begin(), p.end());
+		for (i = p.size() - 1; i >= 0; i--)
+			ans += p[i];
+		for (i = n.size() - 1; i >= 0; i--)
+			ans += n[i]; 
+		auto iter = con.find(ans);
+		if (iter == con.end())
+			con.insert(ans);
+	}
+	int numSpecialEquivGroups(vector<string>& A) {
+		con.clear();
+		for (auto p : A)
+			change(p);
+		return con.size();
+	}
+};

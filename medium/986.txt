@@ -1,0 +1,42 @@
+class Solution {
+public:
+	vector<Interval> con;
+	int overlap(Interval& a, Interval& b) {
+		int head, tail, ans = 0;
+		head = max(a.start, b.start);
+		if (a.end < b.end) {
+			tail = a.end;
+			ans = 1;
+		}
+		else if (a.end == b.end) {
+			tail = a.end;
+			ans = 3;
+		}
+		else {
+			tail = b.end;
+			ans = 2;
+		}
+		if (head <= tail)
+			con.push_back(Interval(head, tail));
+		return ans;
+	}
+	vector<Interval> intervalIntersection(vector<Interval>& a, vector<Interval>& b) {
+		int i = 0, j = 0, m = a.size(), n = b.size();
+		con.clear();
+		for (; i < m && j < n;) {
+			switch (overlap(a[i], b[j]))
+			{
+			case 1:
+				i++;
+				break;
+			case 2:
+				j++;
+				break;
+			default:
+				i++, j++;
+				break;
+			}
+		}
+		return con;
+	}
+};
