@@ -1,0 +1,24 @@
+class Solution {
+public:
+	string customSortString(string s, string t) {
+		string ans = "";
+		vector<char> counter(26, 0);
+		char c;
+		int i, j;
+		for (i = 0; i < t.size(); i++)
+			counter[t[i] - 'a']++;
+		n = s.size();
+		for (i = 0; i < s.size(); i++) {
+			c = s[i];
+			for (j = counter[c - 'a']; j; j--)
+				ans += c;
+			counter[c - 'a'] = 0;
+		}
+		for (i = 0; i < 26; i++) {
+			c = 'a' + i;
+			for (j = counter[i]; j; j--)
+				ans += c;
+		}
+		return ans;
+	}
+};
