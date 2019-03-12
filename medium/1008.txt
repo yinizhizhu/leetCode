@@ -1,0 +1,20 @@
+class Solution {
+public:
+	TreeNode* bstFromPreorder(vector<int>& preorder) {
+		if (preorder.size()) {
+			int i, val = preorder[0];
+			TreeNode* root = new TreeNode(val);
+			vector<int> left, right;
+			for (i = 1; i < preorder.size(); i++) {
+				if (preorder[i] < val) left.push_back(preorder[i]);
+				else break;
+			}
+			root->left = bstFromPreorder(left);
+			for (; i < preorder.size(); i++)
+				right.push_back(preorder[i]);
+			root->right = bstFromPreorder(right);
+			return root;
+		}
+		return NULL;
+	}
+};
