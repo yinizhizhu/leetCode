@@ -1,0 +1,22 @@
+class Solution {
+public:
+	bool canVisitAllRooms(vector<vector<int>>& rooms) {
+		vector<int> con(rooms.size(), 0);
+		con[0] = 1;
+		help(0, rooms, con);
+		for (auto p : con)
+			if (p == 0)
+				return false;
+		return true;
+	}
+	void help(int nxt, vector<vector<int>>& rooms, vector<int>& con) {
+		int i, j;
+		for (i = rooms[nxt].size() - 1; i >= 0; i--) {
+			j = rooms[nxt][i];
+			if (con[j] == 0) {
+				con[j] = 1;
+				help(j, rooms, con);
+			}
+		}
+	}
+};
