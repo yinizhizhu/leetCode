@@ -1,0 +1,33 @@
+typedef struct node {
+	int x, y, dist;
+	node() : x(0), y(0) {}
+	node(int a, int b) : x(a), y(b) {}
+	void getD(int r, int c) { dist = abs(x - r) + abs(y - c); }
+} NODE;
+
+bool cmp(NODE& a, NODE& b) {
+	return a.dist < b.dist;
+}
+
+class Solution {
+public:
+	vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0) {
+		vector<NODE> container;
+		int i, j;
+		for (i = 0; i < R; i++)
+			for (j = 0; j < C; j++) {
+				NODE tmp(i, j);
+				tmp.getD(r0, c0);
+				container.push_back(tmp);
+			}
+		sort(container.begin(), container.end(), cmp);
+		vector<vector<int>> ans;
+		for (i = 0; i < container.size(); i++) {
+			vector<int> tmp;
+			tmp.push_back(container[i].x);
+			tmp.push_back(container[i].y);
+			ans.push_back(tmp);
+		}
+		return ans;
+	}
+};
