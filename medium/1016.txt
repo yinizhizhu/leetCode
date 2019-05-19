@@ -1,0 +1,30 @@
+class Solution {
+public:
+	bool check(string& str, string& num) {
+		int i, j, n = str.size()-num.size();
+		for (i = 0; i <= n; i++) {
+			for (j = 0; j < num.size(); j++)
+				if (str[i + j] != num[j])
+					break;
+			if (j == num.size())
+				return true;
+		}
+		return false;
+	}
+	bool help(string& str, int n) {
+		stack<int> nums;
+		for (; n; n >>= 1)
+			nums.push(n & 1);
+		string num = "";
+		for (; nums.size(); nums.pop())
+			num += '0' + nums.top();
+		cout << str << " - " << num << endl;
+		return check(str, num);
+	}
+	bool queryString(string str, int n) {
+		for (; n >= 1; n--)
+			if (!help(str, n))
+				return false;
+		return true;
+	}
+};
