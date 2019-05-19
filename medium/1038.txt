@@ -1,0 +1,24 @@
+class Solution {
+public:
+	TreeNode* bstToGst(TreeNode* root) {
+		if (root) {
+			help(root, 0);
+		}
+		return root;
+	}
+
+	int help(TreeNode* root, int parent) {
+		if (root) {
+			if (root->right) {
+				int right = help(root->right, parent);
+				root->val += right;
+			}
+			else
+				root->val += parent;
+			if (root->left)
+				return help(root->left, root->val);
+			return root->val;
+		}
+		return 0;
+	}
+};
