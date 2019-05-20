@@ -1,0 +1,26 @@
+class Solution {
+public:
+	int end, dp[1001];
+	Solution() {
+		dp[1] = 0;
+		dp[2] = 1;
+		dp[3] = 0;
+		end = 3;
+	}
+	bool divisorGame(int n) {
+		if (n <= end) return dp[n];
+		int i, j, tag;
+		for (i = end + 1; i <= n; i++) {
+			tag = 0;
+			for (j = 1; j <= int(sqrt(i)) + 1; j++)
+				if (i % j == 0 && dp[i - j] == 0) {
+					tag = 1;
+					break;
+				}
+			if (dp[i - 1] == 0) tag = 1;
+			dp[i] = tag;
+		}
+		end = n;
+		return dp[n];
+	}
+};
