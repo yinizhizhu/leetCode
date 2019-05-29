@@ -1,0 +1,17 @@
+class Solution {
+public:
+	int maxSatisfied(vector<int>& cus, vector<int>& gru, int x) {
+		int ans = 0, diff = 0, t;
+		int i, j, n = cus.size();
+		for (i = 0; i < n; i++)
+			ans += cus[i] * (!gru[i]);
+		for (i = 0; i < x; i++)
+			diff += cus[i] * gru[i];
+		t = diff;
+		for (; i < n; i++) {
+			diff += cus[i] * gru[i] - cus[i - x] * gru[i - x];
+			t = max(diff, t);
+		}
+		return (ans + t);
+	}
+};
