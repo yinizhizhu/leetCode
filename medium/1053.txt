@@ -1,0 +1,18 @@
+class Solution {
+public:
+	vector<int> prevPermOpt1(vector<int>& a) {
+		int i, j, tmp;
+		for (i = a.size() - 2; i >= 0; i--)
+			if (a[i] > a[i + 1]) break;
+		if (i >= 0) {
+			tmp = a[i];
+			for (j = i + 1; j < a.size(); j++)
+				if (tmp <= a[j]) break;
+			j--;
+			for (; a[j - 1] == a[j]; j--);
+			a[i] = a[j];
+			a[j] = tmp;
+		}
+		return a;
+	}
+};
