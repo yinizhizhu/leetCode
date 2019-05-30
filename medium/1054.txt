@@ -1,0 +1,48 @@
+const int BASIS = 100000;
+struct point {
+	int num;
+	point(int x, int y) { num = x * BASIS + y; }
+};
+
+bool operator<(point a, point b) {
+	return ((a.num%BASIS) < (b.num%BASIS));
+}
+
+class Solution {
+public:
+	vector<int> rearrangeBarcodes(vector<int>& barcodes) {
+		priority_queue<point> con;
+		sort(barcodes.begin(), barcodes.end());
+		int i, num1, counter1, num2, counter2;
+		for (i = 0; i < barcodes.size();) {
+			counter1 = 0, num1 = barcodes[i];
+			for (; i < barcodes.size() && num1 == barcodes[i]; counter1++, i++);
+			con.push(point(num1, counter1));
+		}
+		vector<int> ans;
+		for (; con.size(); ) {
+			counter1 = con.top().num;
+			num1 = counter1 / BASIS;
+			counter1 %= BASIS;
+			con.pop();
+			if (con.size()) {
+				counter2 = con.top().num;
+				num2 = counter2 / BASIS;
+				counter2 %= BASIS;
+				con.pop();
+				ans.push_back(num1);
+				ans.push_back(num2);
+				counter1--;
+				counter2--;
+				if (counter1) con.push(point(num1, counter1));
+				if (counter2) con.push(point(num2, counter2));
+			}
+		}
+		for (; counter1; counter1--) ans.push_back(num1);
+		for (; counter2; counter2--) ans.push_back(num2);
+		for (i = 0; i < ans.size(); i++)
+			cout << ans[i] << " ";
+		cout << endl;
+		return ans;
+	}
+};
