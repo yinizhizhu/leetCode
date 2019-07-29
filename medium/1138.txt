@@ -1,0 +1,102 @@
+int dir[4][2] = { -1, 0, 1, 0, 0, 1, 0, -1 };
+char dir2[4] = {'U', 'D', 'R', 'L'};
+char board[6][6] = { "abcde", "fghij", "klmno", "pqrst", "uvwxy", "z" };
+char visited[6][6];
+class Solution {
+public:
+	string ans;
+	pair<int, int> step;
+	void reset() {
+		for (int i = 0; i < 6; i++)
+			for (int j = 0; j < strlen(board[i]); j++)
+				visited[i][j] = '*';
+	}
+	void show() {
+		for (int i = 0; i < 6; i++) cout << board[i] << endl;
+		for (int i = 0; i < 6; i++) {
+			//cout << board[i] << endl;
+			for (int j = 0; j < strlen(board[i]); j++)
+				cout << visited[i][j];
+			cout << endl;
+		}
+	}
+	string alphabetBoardPath(string target) {
+		ans = "";
+		step.first = 0;
+		step.second = 0;
+		for (int i = 0; i < target.size(); i++) {
+			reset();
+			visited[step.first][step.second] = 'S';
+			//cout << "------" << target[i] << "," << board[step.first][step.second] << "------" << endl;
+			//show();
+			//cout << "------" << target[i] << "," << board[step.first][step.second] << "------" << endl;
+			BFS(target[i], step.first, step.second);
+			//show();
+			//cout << "---------------" << board[step.first][step.second] << "---------------" << endl;
+			getAns();
+		}
+		return ans;
+	}
+	void getAns() {
+		stack<char> tmp;
+		pair<int, int> p = step;
+		for (; visited[p.first][p.second] != 'S'; ) {
+			if (visited[p.first][p.second] == dir2[0]) {
+				p.first += dir[1][0];
+				p.second += dir[1][1];
+				tmp.push(dir2[0]);
+			}
+			else if (visited[p.first][p.second] == dir2[1]) {
+				p.first += dir[0][0];
+				p.second += dir[0][1];
+				tmp.push(dir2[1]);
+			}
+			else if (visited[p.first][p.second] == dir2[3]) {
+				p.first += dir[2][0];
+				p.second += dir[2][1];
+				tmp.push(dir2[3]);
+			}
+			else if (visited[p.first][p.second] == dir2[2]) {
+				p.first += dir[3][0];
+				p.second += dir[3][1];
+				tmp.push(dir2[2]);
+			}
+			else {
+				cout << "Something is wrong!" << endl;
+				return;
+			}
+		}
+		for (; tmp.size(); tmp.pop()) ans += tmp.top();
+		ans += '!';
+	}
+	void BFS(char c, int x, int y) {
+		//cout << "Start:" << x << ", " << y << ":" << board[x][y] << endl;
+		queue<pair<int, int> > tmp;
+		tmp.push(pair<int, int> (x, y));
+		for (int n = tmp.size(); n;  n = tmp.size()) {
+			for (; n; n--) {
+				pair<int, int> p = tmp.front();
+				x = p.first;
+				y = p.second;
+				tmp.pop();
+				//cout << x << ", " << y << ":" << board[x][y] << endl;
+				if (board[x][y] == c) {
+					step.first = x;
+					step.second = y;
+					return;
+				}
+				for (int i = 0; i < 4; i++) {
+					x = p.first + dir[i][0];
+					y = p.second + dir[i][1];
+					if (x >= 0 && x < 6 &&
+						y >= 0 && y < strlen(board[x]) &&
+						visited[x][y]=='*') {
+						visited[x][y] = dir2[i];
+						tmp.push(pair<int, int> (x, y));
+					}
+				}
+			}
+			//cout << ".................." << endl;
+		}
+	}
+};
