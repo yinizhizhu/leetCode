@@ -1,0 +1,43 @@
+class Solution {
+public:
+    char str[8];
+    unordered_set<string> con;
+    int numTilePossibilities(string tiles) {
+        for (int i=0; i<tiles.size(); i++) str[i] = tiles[i];
+        str[tiles.size()] = '\0';
+        con.clear();
+
+        char results[8];
+        CombineRecursiveImpl(str, results, results);
+        return con.size();
+    }
+    void CombineRecursiveImpl(const char *pStr, char *head, char *tail) {
+        if (*pStr == 0) {
+            *tail = 0;
+            if (head != tail)
+                Permutation2(head, head);
+            return;
+        }
+        CombineRecursiveImpl(pStr + 1, head, tail);
+        *tail = *pStr;
+        CombineRecursiveImpl(pStr + 1, head, tail + 1);
+    }
+    void Permutation2(char *pStr, char *head) {
+        if (*head == '\0')
+            con.insert(pStr);
+        else {
+            char tmp;
+            for (char *step = head; *step!='\0'; step ++) {
+                tmp = *step;
+                *step = *head;
+                *head = tmp;
+
+                Permutation2(pStr, head+1);
+
+                tmp = *step;
+                *step = *head;
+                *head = tmp;
+            }
+        }
+    }
+};
