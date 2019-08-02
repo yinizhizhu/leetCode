@@ -1,0 +1,29 @@
+class Solution {
+public:
+	int maxAncestorDiff(TreeNode* root) {
+		if (!root) return 0;
+		int ans = 0, i;
+		TreeNode* p = root, *r = NULL;
+		vector<TreeNode*> con;
+		con.push_back(root);
+		for (; p || con.size(); ) {
+			if (p) {
+				for (i = 0; i < con.size(); i++)
+					ans = max(ans, abs(con[i]->val - p->val));
+				con.push_back(p);
+				p = p->left;
+			}
+			else {
+				p = con.back();
+				if (p->right && p->right != r)
+					p = p->right;
+				else {
+					con.pop_back();
+					r = p;
+					p = NULL;
+				}
+			}
+		}
+		return ans;
+	}
+};
