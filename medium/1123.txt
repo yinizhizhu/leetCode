@@ -1,0 +1,66 @@
+class Solution {
+public:
+	bool find;
+	stack<TreeNode*> path;
+	vector<TreeNode*> leaves;
+	void getLeaves(TreeNode* root) {
+		int i, n;
+		queue<TreeNode*> con;
+		con.push(root);
+		for (; con.size(); ) {
+			n = con.size();
+			leaves.clear();
+			for (; n; n--) {
+				root = con.front();
+				con.pop();
+				leaves.push_back(root);
+				if (root->left) con.push(root->left);
+				if (root->right) con.push(root->right);
+			}
+		}
+	}
+	void getPath(TreeNode* root, TreeNode* node) {
+		if (root) {
+			if (root == node) {
+				find = true;
+				return;
+			}
+			if (!find && root->left) {
+				path.push(root->left);
+				getPath(root->left, node);
+				if (find) return;
+				path.pop();
+			}
+			if (!find && root->right) {
+				path.push(root->right);
+				getPath(root->right, node);
+				if (find) return;
+				path.pop();
+			}
+		}
+	}
+	TreeNode* lcaDeepestLeaves(TreeNode* root) {
+		if (root) {
+			getLeaves(root);
+			if (leaves.size() == 1) return leaves[0];
+
+			vector<vector<TreeNode*>> con;
+			for (auto node : leaves) {
+				find = false;
+				path.push(root);
+				getPath(root, node);
+				vector<TreeNode*> tmp;
+				for (; path.size(); path.pop())
+					tmp.push_back(path.top());
+				con.push_back(tmp);
+			}
+			int i, j;
+			for (i = con[0].size() - 1; i >= 0; i--) {
+				for (j = 1; j < con.size(); j++)
+					if (con[j][i] != con[0][i]) return con[0][i + 1];
+			}
+			return con[0][i + 1];
+		}
+		return NULL;
+	}
+};
