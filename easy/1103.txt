@@ -1,0 +1,27 @@
+class Solution {
+public:
+	int depth(int n, int m) {
+		int depth = 1, tmp;
+		for (; ; depth++) {
+			tmp = depth * m;
+			tmp = (tmp*tmp + tmp) >> 1;
+			if (tmp > n) break;
+		}
+		return depth - 1;
+	}
+	vector<int> distributeCandies(int n, int m) {
+		int i, step, k;
+		vector<int> ans;
+		k = depth(n, m);
+		i = k * m;
+		step = i + 1;
+        if (k) n -= ((i*i + i) >> 1);
+		for (i = 0; i < m; i++)
+			ans.push_back((i + 1)*k + (k - 1)*k*m / 2);
+		for (i = 0; n > 0; i++, step++) {
+			ans[i] += (step <= n ? step : n);
+			n -= step;
+		}
+		return ans;
+	}
+};
