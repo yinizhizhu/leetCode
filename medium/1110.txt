@@ -1,0 +1,70 @@
+class Solution {
+public:
+	void show(TreeNode* root) {
+		if (root) {
+			cout << root->val << " ";
+			show(root->left);
+			show(root->right);
+		}
+	}
+	vector<TreeNode*> delNodes(TreeNode* root, vector<int>& con) {
+		vector<TreeNode*> ans = help(NULL, root, con);
+		for (auto p : ans) {
+			cout << "Tree: ";
+			show(p);
+			cout << endl;
+		}
+		cout << "Return?" << endl;
+		root = NULL;
+		return ans;
+	}
+	vector<TreeNode*> help(TreeNode* par, TreeNode* root, vector<int>& con) {
+		vector<TreeNode*> ans;
+		if (root && con.size()) {
+			int i, p = root->val;
+			cout << "Tree: ";
+			show(root);
+			cout << endl;
+			for (auto t : con) cout << t << " ";
+			cout << endl;
+			for (i = con.size() - 1; i >= 0; i--)
+				if (p == con[i]) {
+					con.erase(con.begin() + i);
+					break;
+				}
+			vector<TreeNode*> left, right;
+			if (i >= 0) {
+				if (par) {
+					if (par->left && par->left->val == p) par->left = NULL;
+					else par->right = NULL;
+				}
+				left = help(NULL, root->left, con);
+				right = help(NULL, root->right, con);
+				delete root;
+				root = NULL;
+			}
+			else {
+				left = help(root, root->left, con);
+				right = help(root, root->right, con);
+			}
+			cout << " >> Move into left <<" << endl;
+			cout << " Length: " << left.size() << endl;
+			for (auto p : left) {
+				cout << "	left:" << p->val << endl;
+				ans.push_back(p);
+			}
+			cout << " >> Move into right <<" << endl;
+			cout << " Length: " << right.size() << endl;
+			for (auto p : right) {
+				cout << "	right:" << p->val << endl;
+				ans.push_back(p);
+			}
+			cout << "Out..." << endl;
+			if (par == NULL && root) ans.push_back(root);
+			cout << "Return?!" << endl;
+			return ans;
+		}
+		if (par == NULL && root) ans.push_back(root);
+		return ans;
+	}
+};
