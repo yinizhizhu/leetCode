@@ -1,0 +1,23 @@
+class Solution {
+public:
+	int prime(int n) {
+		if (n % 2 == 0) return 0;
+		for (int i = 3; i<int(sqrt(n + 1) + 1); i += 2)
+			if (n % i == 0) return 0;
+		return 1;
+	}
+	int count(int n) {
+		int ans = 0;
+		for (; n; ans ++) n = n & (n - 1);
+		return ans;
+	}
+	int countPrimeSetBits(int L, int R) {
+		int check[21], i;
+		check[1] = 0;
+		check[2] = 1;
+		check[3] = 1;
+		for (i = 4; i < 21; i++) check[i] = prime(i);
+		for (i = 0; L <= R; L++) i += check[count(L)];
+		return i;
+	}
+};
