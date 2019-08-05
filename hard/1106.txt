@@ -1,0 +1,41 @@
+class Solution {
+public:
+	char transfer(bool b) {
+		if (b) return 't';
+		return 'f';
+	}
+	char operate(char x, char v1, char v2) {
+		bool a1 = (v1 == 'f' ? false : true);
+		bool a2 = (v2 == 'f' ? false : true);
+		if (x == '!') return transfer(!a1);
+		if (x == '&') return transfer(a1 & a2);
+		return transfer(a1 | a2);
+	}
+	bool parseBoolExpr(string expression) {
+		char x, v1, v2;
+		stack<char> op, val;
+		for (auto p : expression) {
+			if (p == ',') continue;
+			else if (p == 'f' | p == 't') val.push(p);
+			else if (p == '(') val.push(p);
+			else if (p == ')') {
+				x = op.top();
+				op.pop();
+				v1 = val.top();
+				val.pop();
+				if (x == '!') v1 = operate(x, v1, v1);
+				else {
+					for (v2 = val.top(); v2 != '('; v2 = val.top()) {
+						val.pop();
+						v1 = operate(x, v1, v2);
+					}
+				}
+				val.pop();
+				val.push(v1);
+			}
+			else op.push(p);
+		}
+		if (val.top() == 'f') return false;
+		return true;
+	}
+};
