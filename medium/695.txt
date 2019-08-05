@@ -1,0 +1,51 @@
+const int N = 50;
+int dir[4][2] = { 1, 0, -1, 0, 0, 1, 0, -1 };
+struct point {
+	int x, y;
+	point(int a, int b) : x(a), y(b) {}
+};
+class Solution {
+public:
+	int ans, counter, m, n;
+	int maxAreaOfIsland(vector<vector<int>>& grid) {
+		ans = counter = 0;
+		int i, j;
+		m = grid.size(), n = grid[0].size();
+		for (i = 0; i < m; i++)
+			for (j = 0; j < n; j++)
+				counter += grid[i][j];
+		for (i = 0; counter > ans;)
+			for (; i < m; i++)
+				for (j = 0; j < n; j++)
+					if (grid[i][j])
+						BFS(grid, point(i, j));
+		return ans;
+	}
+	void BFS(vector<vector<int>>& grid, point p) {
+		int tmp = 1;
+		queue<point> con;
+		counter--;
+		grid[p.x][p.y] = 0;
+		con.push(p);
+		int i, x, y;
+		int s = con.size();
+		for (; s; s = con.size()) {
+			for (; s; s--) {
+				p = con.front();
+				con.pop();
+				for (i = 0; i < 4; i++) {
+					x = p.x + dir[i][0];
+					y = p.y + dir[i][1];
+					if (x >= 0 && x < m && y >= 0 && y < n)
+						if (grid[x][y]) {
+							tmp++;
+							counter--;
+							grid[x][y] = 0;
+							con.push(point(x, y));
+						}
+				}
+			}
+		}
+		if (tmp > ans) ans = tmp;
+	}
+};
