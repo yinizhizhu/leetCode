@@ -1,0 +1,20 @@
+class Solution {
+public:
+	int longestDecomposition(string text) {
+		int ans = 0, i, j;
+		int hh, ht, eh, et;
+		hh = 0, et = text.size() - 1;
+        if (et)
+		for (ht = hh, eh = et; ht < eh; ht++, eh--) {
+			for (i = ht, j = et; i >= hh && j >= eh; i--, j--)
+				if (text[i] != text[j]) break;
+			if (i < hh) {
+				ans += 2;
+				hh = ht + 1;
+				et = eh - 1;
+			}
+		}
+        if (hh <= et) return ans+1;
+		return ans;
+	}
+};
