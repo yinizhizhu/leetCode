@@ -25,3 +25,29 @@ public:
 		return ans;
 	}
 };
+
+const int N = 40;
+int con[N][N];
+class Solution {
+public:
+	int mctFromLeafValues(vector<int>& arr) {
+		int i, j, k, t;
+		int left, right;
+		int m, n = arr.size();
+		for (i = 0; i < n; i++) con[i][i] = 0;
+		for (k = 1; k <= n; k++) {
+			for (i = 0; i < n - k; i++) { // i ~ i+k
+				t = 1 << 30;
+				for (m = 0; m < k; m++) {
+					left = arr[i];
+					for (j = i + 1; j <= i + m; j++) left = max(left, arr[j]);
+					right = arr[i + k];
+					for (j = i + k - 1; j > i + m; j--) right = max(right, arr[j]);
+					t = min(left * right + con[i][i + m] + con[i + m + 1][i + k], t);
+				}
+				con[i][i + k] = t;
+			}
+		}
+		return con[0][arr.size() - 1];
+	}
+};
