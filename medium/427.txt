@@ -1,0 +1,27 @@
+class Solution {
+public:
+	int check(vector<vector<int>>& grid, int x, int y, int n) {
+		int counter = 0;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				counter += grid[x+i][y+j];
+		if (counter == 0) return 1; // False
+		if (counter == n * n) return 2; // True
+		return 0;	//Continue to split
+	}
+	Node* construct(vector<vector<int>>& grid) {
+		return help(grid, 0, 0, grid.size());
+	}
+	Node* help(vector<vector<int>>& grid, int x, int y, int n) {
+		int tag = check(grid, x, y, n);
+		if (tag)
+            return new Node((tag == 1 ? false : true), true, NULL, NULL, NULL, NULL);
+		n >>= 1;
+		Node* ans = new Node(false, false, NULL, NULL, NULL, NULL);
+		ans->topLeft = help(grid, x, y, n);
+		ans->topRight = help(grid, x, y + n, n);
+		ans->bottomLeft = help(grid, x + n, y, n);
+		ans->bottomRight = help(grid, x + n, y + n, n);
+		return ans;
+	}
+};
