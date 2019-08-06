@@ -1,0 +1,27 @@
+int con[40][40];
+class Solution {
+public:
+	int mctFromLeafValues(vector<int>& arr) {
+		for (int i = 0; i < arr.size(); i++)
+			for (int j = 0; j < arr.size(); j++)
+				con[i][j] = 0;
+		return help(arr, 0, arr.size() - 1);
+	}
+	int help(vector<int>& arr, int h, int t) {
+		if (h == t) return 0;
+		if (h == t - 1) return arr[h] * arr[t];
+		if (con[h][t]) return con[h][t];
+		int i, j, maxL, maxR, left, right, ans = 1 << 30;
+		for (i = h; i < t; i++) {
+			maxL = arr[h];
+			for (j = h + 1; j <= i; j++) maxL = max(maxL, arr[j]);
+			left = help(arr, h, i);
+			maxR = arr[t];
+			for (j = t - 1; j > i; j--) maxR = max(maxR, arr[j]);
+			right = help(arr, i + 1, t);
+			ans = min(left + right + maxL * maxR, ans);
+		}
+		con[h][t] = ans;
+		return ans;
+	}
+};
