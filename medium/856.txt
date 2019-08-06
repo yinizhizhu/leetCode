@@ -1,0 +1,35 @@
+class Solution {
+public:
+	int scoreOfParentheses(string str) {
+		queue<char> con;
+		for (int i = 0; i < str.size(); i++) {
+			if (str[i] == '(') {
+				if (str[i + 1] == '(') con.push('(');
+				else {
+					con.push('1');
+					i++;
+				}
+			}
+			else con.push(')');
+		}
+		string tmp = "";
+		for (; con.size(); con.pop()) tmp += con.front();
+		stack<int> num;
+		int a;
+		for (auto c : tmp) {
+			if (c == '(') num.push(-1);
+			else if (c == '1') num.push(1);
+			else {
+				a = num.top();
+				num.pop();
+				for (; num.top() != -1; num.pop())
+					a += num.top();
+				a <<= 1;
+				num.pop();
+				num.push(a);
+			}
+		}
+		for (a = 0; num.size(); num.pop()) a += num.top();
+		return a;
+	}
+};
