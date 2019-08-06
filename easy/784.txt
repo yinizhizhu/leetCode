@@ -1,0 +1,32 @@
+class Solution {
+public:
+	vector<string> ans;
+	vector<string> letterCasePermutation(string s) {
+		help(s, 0);
+		return ans;
+	}
+	void help(string& s, int step) {
+		cout << step << " - " << s << endl;
+		if (step >= s.size()) {
+			cout << s << endl;
+			ans.push_back(s);
+			return;
+		}
+		char c;
+		c = s[step];
+		if (c >= '0' && c <= '9') help(s, step + 1);
+		else {
+			help(s, step + 1);
+			if (c >= 'a' && c <= 'z') {
+				s[step] = 'A' - 'a' + c;
+				help(s, step + 1);
+				s[step] = c;
+			}
+			else {
+				s[step] = 'a' - 'A' + c;
+				help(s, step + 1);
+				s[step] = c;
+			}
+		}
+	}
+};
