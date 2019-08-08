@@ -1,0 +1,24 @@
+class Solution {
+public:
+	bool check(string& str, string & b) {
+		int i, j, n = str.size() - b.size();
+		for (i = 0; i <= n; i++) {
+			for (j = 0; j < b.size(); j++)
+				if (str[i + j] != b[j]) break;
+			if (j == b.size()) return true;
+		}
+		return false;
+	}
+	int repeatedStringMatch(string A, string B) {
+		int i, ans = 0;
+		ans += B.size() / A.size();
+		if (B.size() % A.size()) ans++;
+		else if (A[0] != B[0]) ans++;
+		string str = "";
+		for (i = 0; i < ans; i++) str += A;
+		if (check(str, B)) return ans;
+		str += A;
+		if (check(str, B)) return ans + 1;
+		return -1;
+	}
+};
