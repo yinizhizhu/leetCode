@@ -1,0 +1,16 @@
+class Solution {
+public:
+	int longestUnivaluePath(TreeNode* root) {
+		int ans = 0;
+		if (root) dfs(root, ans);
+		return ans;
+	}
+	int dfs(TreeNode* node, int& ans) {
+		int l = node->left ? dfs(node->left, ans) : 0;
+		int r = node->right ? dfs(node->right, ans) : 0;
+		int resl = node->left && node->left->val == node->val ? l + 1 : 0;
+		int resr = node->right && node->right->val == node->val ? r + 1 : 0;
+		ans = max(ans, resl + resr);
+		return max(resl, resr);
+	}
+};
