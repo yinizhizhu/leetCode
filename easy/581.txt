@@ -1,0 +1,12 @@
+int con[10001];
+class Solution {
+public:
+	int findUnsortedSubarray(vector<int>& nums) {
+		int i, h, t=nums.size();
+		for (i = 0; i < t; i++) con[i] = nums[i];
+		sort(con, con + t);
+		for (h = 0; h < t&&con[h] == nums[h]; h++);
+		for (t--; t >= h && con[t] == nums[t]; t--);
+		return (t - h + 1);
+	}
+};
