@@ -1,0 +1,19 @@
+class Solution {
+public:
+	int reachNumber(int target) {
+		target = abs(target);
+		int ans = 0, n;
+		for (; ; ans++) {
+			n = ans * (ans + 1);
+			n >>= 1;
+			if (n == target) return ans;
+			if (n > target) break;
+		}
+		int remain = ((ans*(ans + 1)) >> 1) - target;
+		if (remain % 2) {
+			if (ans % 2) return ans + 2;
+			return ans + 1;
+		}
+		return ans;
+	}
+};
