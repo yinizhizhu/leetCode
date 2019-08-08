@@ -1,0 +1,23 @@
+int con[10001];
+class Solution {
+public:
+	bool hasGroupsSizeX(vector<int>& deck) {
+		if (deck.size() < 2) return false;
+		memset(con, 0, sizeof(con));
+		for (auto p : deck) con[p] ++;
+		int ans = 10001, i, j;
+		vector<int> tmp;
+		for (i=0; i<10001; i++)
+			if (con[i]) {
+				ans = min(con[i], ans);
+				tmp.push_back(con[i]);
+			}
+		if (ans < 2) return false;
+		for (i = 2; i <= ans; i++) {
+			for (j = 0; j < tmp.size(); j++)
+				if (tmp[j] % i) break;
+			if (j == tmp.size()) return true;
+		}
+		return false;
+	}
+};
