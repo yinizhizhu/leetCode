@@ -1,0 +1,17 @@
+int con[25001];
+class Solution {
+public:
+	int findRadius(vector<int>& houses, vector<int>& heaters) {
+		sort(houses.begin(), houses.end());
+		sort(heaters.begin(), heaters.end());
+		int i, j, step, ans = 0;
+		for (j = 0, i = 0; j < houses.size(); j++) {
+			if (houses[j] <= heaters[i]) step = heaters[i] - houses[j];
+			else
+				for (step = abs(houses[j] - heaters[i]); i + 1 < heaters.size() && abs(houses[j] - heaters[i + 1]) <= step; i++)
+					step = abs(houses[j] - heaters[i + 1]);
+			ans = max(ans, step);
+		}
+		return ans;
+	}
+};
