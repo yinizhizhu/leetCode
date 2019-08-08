@@ -1,0 +1,39 @@
+//	 0		1	  2		3
+// north, east, south, west
+int dir[4][2] = {0, 1, 1, 0, 0, -1, -1, 0};
+class Solution {
+public:
+	unordered_set<long long> sets;
+	long long mapping(vector<int>& obs) {
+		long long ans = obs[0] + 30000;
+		return (ans * 100000 + obs[1] + 30000);
+	}
+	int dis(vector<int>& pos) {
+		return (pos[0] * pos[0] + pos[1] * pos[1]);
+	}
+	int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+		sets.clear();
+		int face = 0, tmp, i, ans = 0;
+		vector<int> pos(2, 0);
+		for (auto obs : obstacles) sets.insert(mapping(obs));
+		for (auto p : commands) {
+			if (p == -1) face = (face + 1) % 4;
+			else if (p == -2) face = (face ? (face - 1) : 3);
+			else {
+				vector<int> tmp(2, 0);
+				tmp[0] = pos[0];
+				tmp[1] = pos[1];
+				for (i = 1; i <= p; i++) {
+					tmp[0] += dir[face][0];
+					tmp[1] += dir[face][1];
+					if (sets.find(mapping(tmp)) != sets.end()) break;
+				}
+				i--;
+				pos[0] += i * dir[face][0];
+				pos[1] += i * dir[face][1];
+				ans = max(ans, dis(pos));
+			}
+		}
+		return ans;
+	}
+};
