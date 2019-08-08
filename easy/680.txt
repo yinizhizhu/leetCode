@@ -1,0 +1,16 @@
+class Solution {
+public:
+	bool validPalindrome(string s) {
+		return help(s, 0, s.size() - 1, true);
+	}
+	bool help(string& s, int h, int t, bool tag) {
+		for (; h < t; h++, t--)
+			if (s[h] != s[t]) {
+				if (tag) {
+					return help(s, h + 1, t, false) || help(s, h, t - 1, false);
+				}
+				else return false;
+			}
+		return true;
+	}
+};
