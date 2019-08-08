@@ -1,0 +1,15 @@
+class Solution {
+public:
+	bool square(int c) {
+		int ans = int(sqrt(c));
+		return (ans * ans == c);
+	}
+	bool judgeSquareSum(int c) {
+		int n = int(sqrt(c)), a;
+		for (int i = 0; i <= n; i++) {
+			a = c - i * i;
+			if (square(a)) return true;
+		}
+		return false;
+	}
+};
