@@ -28,3 +28,42 @@ public:
 		return false;
 	}
 };
+
+class Solution {
+public:
+	bool canCross(vector<int>& nums) {
+		if (nums[0] + 1 != nums[1]) return false;
+		if (nums.size() == 2) return true;
+		vector<unordered_set<int>> con(nums.size(), unordered_set<int>());
+		vector<int> tags(nums.size(), 0);
+		con[1].insert(1);
+		queue<int> q;
+		q.push(1);
+		tags[1] = 1;
+		int i, j, step, n;
+		for (; !q.empty(); ) {
+			n = q.size();
+			for (; n; n--) {
+				i = q.front();
+				q.pop();
+				if (con[i].size()) {
+					for (auto k : con[i]) {
+						step = k + nums[i];
+						for (j = i + 1; j < nums.size(); j++) {
+							if (nums[j] > step + 1) break;
+							if (nums[j] < step - 1) continue;
+							if (step - 1 == nums[j]) con[j].insert(k - 1);
+							if (step == nums[j]) con[j].insert(k);
+							if (step + 1 == nums[j]) con[j].insert(k + 1);
+							if (tags[j]) continue;
+							tags[j] = 1;
+							q.push(j);
+						}
+					}
+				}
+			}
+		}
+		if (con[nums.size() - 1].size()) return true;
+		return false;
+	}
+};
