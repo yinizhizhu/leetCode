@@ -1,0 +1,30 @@
+const int N = 1101;
+int con[N][N];
+class Solution {
+public:
+	bool canCross(vector<int>& stones) {
+		if (stones[0] + 1 != stones[1]) return false;
+		if (stones.size() <= 2) return true;
+		for (int i = 1; i < stones.size(); i++)
+			for (int j = 1; j < stones.size(); j++)
+				con[i][j] = 0;
+		con[0][1] = 1;
+		for (int i = 1; i < stones.size(); i++) {
+			for (int k = 0; k < i; k++) {
+				if (con[k][i] <= 0) continue;
+				else {
+					int tmp = con[k][i] + stones[i];
+					for (int j = i + 1; j < stones.size(); j++) {
+						if (stones[j] < tmp - 1) continue;
+						if (stones[j] > tmp + 1) break;
+						if (tmp - 1 == stones[j]) con[i][j] = tmp - 1 - stones[i];
+						if (tmp == stones[j]) con[i][j] = tmp - stones[i];
+						if (tmp + 1 == stones[j]) con[i][j] = tmp + 1 - stones[i];
+					}
+				}
+			}
+			if (con[i][stones.size() - 1]) return true;
+		}
+		return false;
+	}
+};
