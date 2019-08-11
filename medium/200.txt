@@ -1,0 +1,67 @@
+struct pos {
+	int x, y;
+	pos() : x(0), y(0) {}
+	pos(int a, int b) : x(a), y(b) {}
+};
+int dir[4][2] = { -1, 0, 1, 0, 0, 1, 0, -1 };
+class Solution {
+public:
+	int m, n;
+	int findRoot(vector<int>& set, int a) {
+		if (set[a] == -1) return a;
+		int r = set[a];
+		for (; set[r] != -1; r = set[r]);
+		set[a] = r;
+		return r;
+	}
+	bool checkPos(int x, int y) {
+		if (x >= 0 && x < m && y >= 0 && y < n) return true;
+		return false;
+	}
+	void merge(vector<int>& set, int x, int y) {
+		int r1 = findRoot(set, x);
+		int r2 = findRoot(set, y);
+        if (r1 != r2)
+		    set[r2] = r1;
+	}
+	int index(int x, int y) { return x * n + y; }
+	int numIslands(vector<vector<char>>& grid) {
+		m = grid.size();
+		if (m == 0) return 0;
+		n = grid[0].size();
+		if (n == 0) return 0;
+		vector<int> set(m*n, -1);
+		vector<vector<bool> > visited(m, vector<bool>(n, true));
+		queue<pos> con;
+		con.push(pos(0, 0));
+		visited[0][0] = false;
+		for (; con.size(); ) {
+			int num = con.size();
+			for (; num; num--) {
+				pos tmp = con.front();
+				con.pop();
+				for (int i = 0; i < 4; i++) {
+					int x = tmp.x + dir[i][0];
+					int y = tmp.y + dir[i][1];
+					if (checkPos(x, y) && visited[x][y]) {
+						con.push(pos(x, y));
+						visited[x][y] = false;
+						int cur = grid[x][y], curIndex = index(x, y);
+						for (int j = 0; j < 4; j++) {
+							int a = x + dir[j][0];
+							int b = y + dir[j][1];
+							if (checkPos(a, b) && cur == grid[a][b])
+								merge(set, curIndex, index(a, b));
+						}
+					}
+				}
+			}
+		}
+		int ans = 0;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+				if (set[index(i, j)] == -1 && grid[i][j] == '1')
+					ans++;
+		return ans;
+	}
+};
