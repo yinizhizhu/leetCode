@@ -1,0 +1,24 @@
+class Solution {
+public:
+	vector<int> help(vector<int>& A, vector<int>& B, int delta) {
+		vector<int> ans;
+		for (int i = 0, j = 0; i < A.size() && j < B.size();) {
+			if (A[i] - B[j] == delta) {
+				ans.push_back(A[i]);
+				ans.push_back(B[j]);
+				return ans;
+			}
+			else if (A[i] - B[j] < delta) i++;
+			else j++;
+		}
+		return ans;
+	}
+	vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
+		int sa = 0, sb = 0;
+		for (auto a : A) sa += a;
+		for (auto b : B) sb += b;
+		sort(A.begin(), A.end());
+		sort(B.begin(), B.end());
+		return help(A, B, (sa - sb) / 2);
+	}
+};
