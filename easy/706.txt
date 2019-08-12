@@ -1,0 +1,60 @@
+struct node {
+	int key, value;
+	node* nxt;
+	node(int k, int v) : key(k), value(v), nxt(NULL) {}
+};
+class MyHashMap {
+private:
+	int n;
+	vector<node*> con;
+public:
+	/** Initialize your data structure here. */
+	MyHashMap() {
+		n = 3000;
+		con.resize(n, NULL);
+	}
+
+	/** value will always be non-negative. */
+	void put(int k, int v) {
+		int i = k % n;
+		node *step = con[i];
+		for (; step; step = step->nxt)
+			if (step->key == k) {
+				step->value = v;
+				return;
+			}
+		node *tmp = new node(k, v);
+		tmp->nxt = con[i];
+		con[i] = tmp;
+	}
+
+	/** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+	int get(int k) {
+		node *step = con[k % n];
+		for (; step; step = step->nxt)
+			if (step->key == k)
+				return step->value;
+		return -1;
+	}
+
+	/** Removes the mapping of the specified value key if this map contains a mapping for the key */
+	void remove(int k) {
+		node *step = con[k % n], *pre=NULL;
+		for (; step; step = step->nxt) {
+			if (step->key == k)
+				break;
+			pre = step;
+		}
+		if (step) {
+			if (pre) {
+				pre->nxt = step->nxt;
+				delete step;
+			} 
+			else {
+				pre = step->nxt;
+				delete step;
+				con[k%n] = pre;
+			}
+		}
+	}
+};
