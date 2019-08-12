@@ -1,0 +1,47 @@
+class Solution(object):
+    def cmp_(self, a, b):
+        if (a[-1] == b[-1]):
+            if a[0] > b[0]:
+                return 1
+            elif a[0] < b[0]:
+                return -1
+            else:
+                return 0
+        if a[-1] > b[-1]:
+            return 1
+        elif a[-1] < b[-1]:
+            return -1
+        else:
+            return 0
+
+    def reorderLogFiles(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: List[str]
+        """
+        letter = []
+        digit = []
+        for log in logs:
+            words = log.split(' ')
+            if words[1][0] >= '0' and words[1][0] <= '9':
+                digit.append(words)
+            else:
+                together = words[1]
+                for word in words[2:]:
+                    together += ' '+word
+                words = words[:1]
+                words.append(together)
+                letter.append(words)
+        letter = sorted(letter, cmp=self.cmp_)
+        for i in xrange(len(letter)):
+            words = letter[i]
+            str = words[0] +' '+words[1]
+            letter[i] = str
+        for i in xrange(len(digit)):
+            words = digit[i]
+            str = words[0]
+            for p in words[1:]:
+                str += ' '+p
+            digit[i] = str
+        letter.extend(digit)
+        return letter
