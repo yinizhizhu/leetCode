@@ -1,0 +1,56 @@
+struct node {
+	int key;
+	node* nxt;
+	node(int k) : key(k), nxt(NULL) {}
+};
+class MyHashSet {
+private:
+	int n;
+	vector<node*> con;
+public:
+	/** Initialize your data structure here. */
+	MyHashSet() {
+		n = 3000;
+		con.resize(n, NULL);
+	}
+
+	void add(int k) {
+		int i = k % n;
+		node *step = con[i];
+		for (; step; step = step->nxt)
+			if (step->key == k)
+				return;
+		node *tmp = new node(k);
+		tmp->nxt = con[i];
+		con[i] = tmp;
+	}
+
+	/** Returns true if this set contains the specified element */
+	bool contains(int k) {
+		node *step = con[k % n];
+		for (; step; step = step->nxt)
+			if (step->key == k)
+				return true;
+		return false;
+	}
+
+	void remove(int k) {
+		node *step = con[k % n], *pre = NULL;
+		for (; step; step = step->nxt) {
+			if (step->key == k)
+				break;
+			pre = step;
+		}
+		if (step) {
+			if (pre) {
+				pre->nxt = step->nxt;
+				delete step;
+			}
+			else {
+				pre = step->nxt;
+				delete step;
+				con[k%n] = pre;
+			}
+		}
+	}
+};
