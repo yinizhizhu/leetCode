@@ -1,0 +1,41 @@
+class Solution {
+public:
+	int m, n;
+	int findRoot(vector<int>& con, int a) {
+		if (con[a] < 0) return a;
+		int ans = a;
+		for (; con[ans] >= 0; ans = con[ans]);
+		con[a] = ans;
+		return ans;
+	}
+	void merge(vector<int>& con, int a, int b) {
+		int ra = findRoot(con, a), rb = findRoot(con, b);
+		if (ra == rb) return;
+		con[rb] += con[ra];
+		con[ra] = rb;
+	}
+	bool check(vector<int>& a, vector<int>& b) {
+		bool ans = (a[0] == b[0]);
+		for (int i = 1; i < n; i++)
+			if (ans ^ (a[i] == b[i])) return false;
+		return true;
+	}
+	int maxEqualRowsAfterFlips(vector<vector<int>>& mat) {
+		m = mat.size(), n = mat[0].size();
+		if (m == 1) return 1;
+		vector<int> con(m, -1);
+		vector<bool> visited(m, true);
+		int i, j;
+		for (i = 0; i < m; i++)
+			if (visited[i])
+				for (j = i + 1; j < m; j++)
+					if (visited[j] && check(mat[i], mat[j])) {
+						merge(con, i, j);
+						visited[j] = false;
+					}
+		int ans = -1;
+		for (auto a : con) ans = min(ans, a);
+		return -ans;
+	}
+};
+
