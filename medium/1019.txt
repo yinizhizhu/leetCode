@@ -1,0 +1,18 @@
+class Solution {
+public:
+	vector<int> nextLargerNodes(ListNode* head) {
+		vector<int> con;
+		for (auto step = head; step; step = step->next)
+			con.push_back(step->val);
+		vector<int> ans(con.size(), 0);
+		stack<int> helper;
+		int i, n = con.size(), t;
+		for (int i = 0; i < n; i++) {
+			t = con[i];
+			for (; !helper.empty() && con[helper.top()] < t; helper.pop())
+				ans[helper.top()] = t;
+			helper.push(i);
+		}
+		return ans;
+	}
+};
