@@ -1,0 +1,17 @@
+class Solution {
+public:
+	string baseNeg2(int n) {
+		if (n == 0) return "0";
+		string ans = "";
+		int re;
+		for (; n;) {
+			re = n % -2;
+			n /= -2;
+			if (re) ans += '1';
+			else ans += '0';
+			if (re < 0) n++;
+		}
+		reverse(ans.begin(), ans.end());
+		return ans;
+	}
+};
