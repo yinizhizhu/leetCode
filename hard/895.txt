@@ -1,0 +1,38 @@
+class FreqStack {
+private:
+	vector<int> con;
+	unordered_map<int, int> counter;
+public:
+	FreqStack() {
+		con.clear();
+		counter.clear();
+	}
+
+	void push(int x) {
+		con.push_back(x);
+		++counter[x];
+	}
+
+	int findMax() {
+		int ans = 0;
+		auto iter = counter.begin();
+		for (; iter!=counter.end(); iter++)
+			if (iter->second > ans)
+				ans = iter->second;
+		return ans;
+	}
+
+	int pop() {
+		int maxN = findMax(), ans = -1;
+		for (int i = con.size() - 1; i >= 0; i--) {
+			if (counter[con[i]] == maxN) {
+				ans = con[i];
+				con.erase(con.begin() + i);
+				counter[ans]--;
+				if (counter[ans] == 0) counter.erase(ans);
+				break;
+			}
+		}
+		return ans;
+	}
+};
