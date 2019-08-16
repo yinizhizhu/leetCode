@@ -36,3 +36,24 @@ public:
 		return ans;
 	}
 };
+
+class FreqStack {
+public:
+	unordered_map<int, stack<int>> con;
+	unordered_map<int, int> counter;
+	int maxf = 0;
+	FreqStack() {
+	}
+	void push(int x) {
+		counter[x]++;
+		maxf = max(maxf, counter[x] - 1);
+		con[counter[x] - 1].push(x);
+	}
+	int pop() {
+		int v = con[maxf].top();
+		con[maxf].pop();
+		if (con[maxf].empty()) maxf--;
+		counter[v] = counter[v] - 1;
+		return v;
+	}
+};
