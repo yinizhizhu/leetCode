@@ -45,15 +45,15 @@ public:
 	FreqStack() {
 	}
 	void push(int x) {
-		counter[x]++;
-		maxf = max(maxf, counter[x] - 1);
-		con[counter[x] - 1].push(x);
+		int t = counter[x]++;
+		maxf = max(maxf, t);
+		con[t].push(x);
 	}
 	int pop() {
 		int v = con[maxf].top();
 		con[maxf].pop();
+		counter[v]--;
 		if (con[maxf].empty()) maxf--;
-		counter[v] = counter[v] - 1;
 		return v;
 	}
 };
