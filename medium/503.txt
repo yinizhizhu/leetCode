@@ -1,0 +1,24 @@
+class Solution {
+public:
+	vector<int> nextGreaterElements(vector<int>& nums) {
+		int i, n = nums.size(), t;
+		if (n == 0) return vector<int>();
+		vector<int> ans(n, -1);
+		stack<int> con;
+		for (i = 0; i < n; i++) {
+			t = nums[i];
+			for (; !con.empty() && nums[con.top()] < t; con.pop())
+				ans[con.top()] = t;
+			con.push(i);
+		}
+		for (; !con.empty(); con.pop()) i = con.top();
+		int step = n+1;
+		for (; step; i = (i + 1) % n, step--) {
+			t = nums[i];
+			for (; !con.empty() && nums[con.top()] < t; con.pop())
+				ans[con.top()] = t;
+			con.push(i);
+		}
+		return ans;
+	}
+};
