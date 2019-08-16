@@ -1,0 +1,27 @@
+class Solution {
+public:
+	int depth;
+	void getDepth(TreeNode *root, int d) {
+		if (root) {
+			depth = max(depth, d);
+			getDepth(root->left, d + 1);
+			getDepth(root->right, d + 1);
+		}
+	}
+	TreeNode *help(TreeNode *root, int d) {
+		if (root) {
+			if (d == depth) return root;
+			TreeNode *left = help(root->left, d + 1);
+			TreeNode *right = help(root->right, d + 1);
+			if (left && right) return root;
+			if (left) return left;
+			if (right) return right;
+		}
+		return NULL;
+	}
+	TreeNode* subtreeWithAllDeepest(TreeNode* root) {
+		depth = 0;
+		getDepth(root, 1);
+		return help(root, 1);
+	}
+};
