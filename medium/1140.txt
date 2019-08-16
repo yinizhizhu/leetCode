@@ -1,0 +1,23 @@
+const int N = 101;
+int dp[N][N], sum[N];
+class Solution {
+public:
+	int dfs(int n, int i, int m) {
+		if (i > n) return 0;
+		if (dp[i][m]) return dp[i][m];
+		int ans = 0, x, t, tmp = sum[n] - sum[i - 1];
+		for (x = 1; x <= 2 * m; x++) {
+			t = tmp - dfs(n, i + x, max(m, x));
+			if (t > ans) ans = t;
+		}
+		dp[i][m] = ans;
+		return ans;
+	}
+	int stoneGameII(vector<int>& piles) {
+		int n = piles.size(), i, j;
+		sum[1] = piles[0], sum[0] = 0;
+		for (i = 1; i < n; i++)	sum[i + 1] = sum[i] + piles[i];
+		memset(dp, 0, sizeof(dp));
+		return dfs(n, 1, 1);
+	}
+};
