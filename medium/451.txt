@@ -1,0 +1,27 @@
+typedef pair<char, int> two;
+bool cmp(two& a, two& b) {
+	if (a.second == b.second)
+		return a.first < b.first;
+	return a.second > b.second;
+}
+class Solution {
+public:
+	string frequencySort(string s) {
+		unordered_map<char, int> counter;
+		for (auto c : s)
+			counter[c]++;
+		vector<two> con;
+		for (auto iter = counter.begin(); iter != counter.end(); iter++)
+			con.push_back(two(iter->first, iter->second));
+		sort(con.begin(), con.end(), cmp);
+		string ans = "";
+		char c;
+		int n;
+		for (auto t : con) {
+			c = t.first;
+			n = t.second;
+			for (; n; n--) ans += c;
+		}
+		return ans;
+	}
+};
