@@ -1,0 +1,20 @@
+bool cmp(pair<int, int>& a, pair<int, int>& b) {
+	return a.first > b.first;
+}
+class Solution {
+public:
+	int largestValsFromLabels(vector<int>& values, vector<int>& labels, int num_wanted, int use_limit) {
+		vector <pair< int, int >> con;
+		for (int i = 0; i < values.size(); i++) con.push_back(pair<int, int>(values[i], labels[i]));
+		sort(con.begin(), con.end(), cmp);
+		unordered_map<int, int> counter;
+		int ans = 0;
+		for (int i = 0; num_wanted && i < con.size(); i++) {
+			counter[con[i].second]++;
+			if (counter[con[i].second] > use_limit) continue;
+			ans += con[i].first;
+			num_wanted--;
+		}
+		return ans;
+	}
+};
