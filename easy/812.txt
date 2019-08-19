@@ -1,0 +1,17 @@
+class Solution {
+public:
+	double largestTriangleArea(vector<vector<int>>& points) {
+		double ans = 0, t;
+		int i, j, k, n = points.size();
+		for (i = 0; i < n - 2; i++)
+			for (j = i + 1; j < n - 1; j++)
+				for (k = j + 1; k < n; k++) {
+					t = abs(points[i][0] * (points[j][1] - points[k][1])
+						+ points[j][0] * (points[k][1] - points[i][1])
+						+ points[k][0] * (points[i][1] - points[j][1]));
+					t /= 2.0;
+					ans = max(t, ans);
+				}
+		return ans;
+	}
+};
