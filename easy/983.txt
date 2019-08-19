@@ -1,0 +1,27 @@
+const int N = 366;
+class Solution {
+public:
+	int con[N];
+	void show(int d) {
+		for (int i = 1; i <= d; i++)
+			cout << con[i] << " ";
+		cout << endl;
+	}
+	int mincostTickets(vector<int>& days, vector<int>& costs) {
+		int i, j, n = days.size(), d, c;
+		con[0] = 0;
+		for (i = 1, j = 0; j < days.size(); j++, i++) {
+			d = days[j];
+			for (; i < d; i++) con[i] = con[i - 1];
+			c = con[i - 1] + costs[0];
+			if (i - 7 >= 0) c = min(con[i - 7] + costs[1], c);
+			else c = min(c, costs[1]);
+			if (i - 30 >= 0) c = min(con[i - 30] + costs[2], c);
+			else c = min(c, costs[2]);
+			con[i] = c;
+			cout << "I=" << i << ":";
+			show(d);
+		}
+		return con[d];
+	}
+};
