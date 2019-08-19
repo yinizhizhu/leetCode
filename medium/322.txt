@@ -1,0 +1,21 @@
+class Solution {
+public:
+	int coinChange(vector<int>& coins, int amount) {
+		if (amount == 0) return 0;
+		int i, t;
+		vector<int> con(amount + 1, 0);
+		for (auto c : coins)
+			if (c <= amount) con[c] = 1;
+		for (i = 1; i <= amount; i++) {
+			t = -1;
+			for (auto c : coins)
+				if (i - c >= 0 && con[i - c])
+					t = (t == -1 ? con[i - c] : min(t, con[i - c]));
+			if (t != -1) {
+				if (con[i]) con[i] = min(con[i], t + 1);
+				else con[i] = t + 1;
+			}
+		}
+		return (con[amount] ? con[amount] : -1);
+	}
+};
