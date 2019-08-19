@@ -1,0 +1,24 @@
+class Solution {
+public:
+	int surfaceArea(vector<vector<int>>& grid) {
+		int i, j, n = grid.size(), ans = 0;
+		for (i = 0; i < n; i++)
+			for (j = 0; j < n; j++)
+				if (grid[i][j])
+					ans++;
+		ans <<= 1;
+		for (i = 0; i < n; i++) {
+			ans += grid[i][0];
+			for (j = 0; j < n - 1; j++)
+				ans += abs(grid[i][j] - grid[i][j + 1]);
+			ans += grid[i][j];
+		}
+		for (j = 0; j < n; j++) {
+			ans += grid[0][j];
+			for (i = 0; i < n - 1; i++)
+				ans += abs(grid[i][j] - grid[i + 1][j]);
+			ans += grid[i][j];
+		}
+		return ans;
+	}
+};
