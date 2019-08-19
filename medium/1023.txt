@@ -1,0 +1,20 @@
+class Solution {
+public:
+	int judge(char c) { return (c >= 'A' && c <= 'Z'); }
+	bool check(string& a, string& b) {
+		int i = a.size() - 1, j = b.size() - 1;
+		for (; i >= 0 && j >= 0; i--) {
+			if (a[i] == b[j]) j--;
+			else if (judge(a[i])) return false;
+		}
+		for (; i >= 0; i--)
+			if (judge(a[i])) return false;
+		return (j < 0);
+	}
+	vector<bool> camelMatch(vector<string>& queries, string pattern) {
+		vector<bool> ans;
+		for (auto query : queries)
+			ans.push_back(check(query, pattern));
+		return ans;
+	}
+};
