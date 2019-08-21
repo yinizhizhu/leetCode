@@ -1,0 +1,26 @@
+class Solution {
+public:
+	vector<int> con;
+	Solution() {
+		con.resize(10, -1);
+		con[2] = con[5] = con[6] = con[9] = 0;
+		con[3] = con[4] = con[7] = 1;
+
+	}
+	bool check(int n) {
+		int c;
+		bool tag = false;
+		for (; n; n /= 10) {
+			c = n % 10;
+			if (con[c] == 1) return false;
+			if (con[c] == 0) tag = true;
+		}
+		return tag;
+	}
+	int rotatedDigits(int N) {
+		int ans = 0;
+		for (int i = 1; i <= N; i++)
+			ans += check(i);
+		return ans;
+	}
+};
