@@ -1,0 +1,16 @@
+class Solution {
+public:
+	int subarrayBitwiseORs(vector<int>& A) {
+		unordered_set<int> sums;
+		unordered_set<int> all;
+		int i = A.size() - 1, t;
+		for (; i >= 0; i--) {
+			t = A[i];
+			unordered_set<int> sums2 = { t };
+			for (const auto j : sums) sums2.insert(j | t);
+			for (const auto j : sums2) all.insert(j);
+			sums = sums2;
+		}
+		return all.size();
+	}
+};
