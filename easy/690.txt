@@ -1,0 +1,21 @@
+class Solution {
+public:
+	int getImportance(vector<Employee*> employees, int id) {
+		vector<Employee*> con(2000, NULL);
+		for (auto e : employees) con[e->id] = e;
+		int n, ans = 0;
+		queue<Employee*> q;
+		if (con[id]) q.push(con[id]);
+		for (; !q.empty(); ) {
+			n = q.size();
+			for (; n; n--) {
+				Employee* tmp = q.front();
+				q.pop();
+				ans += tmp->importance;
+				for (auto i : tmp->subordinates)
+					if (con[i]) q.push(con[i]);
+			}
+		}
+		return ans;
+	}
+};
