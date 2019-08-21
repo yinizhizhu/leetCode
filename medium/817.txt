@@ -1,0 +1,17 @@
+const int N = 10000;
+bool con[N];
+class Solution {
+public:
+	int numComponents(ListNode* head, vector<int>& G) {
+		memset(con, false, sizeof(con));
+		for (auto g : G) con[g] = true;
+		int ans = 0, tag = false;
+		for (; head; ) {
+			for (; head && con[head->val]; head = head->next) tag = true;
+			ans += tag;
+			tag = false;
+			for (; head && !con[head->val]; head = head->next);
+		}
+		return ans;
+	}
+};
