@@ -1,0 +1,41 @@
+int dir[4][2] = { 1, 0, -1, 0, 0, 1, 0, -1 };
+class Solution {
+public:
+	int r, c;
+	bool exist(vector<vector<char>>& board, string word) {
+		r = board.size();
+		if (r == 0) return false;
+		c = board[0].size();
+		if (c == 0) return false;
+		if (word.size() == 0) return false;
+		vector<vector<bool>> visited(r, vector<bool>(c, true));
+		for (int i = 0; i < r; i++)
+			for (int j = 0; j < c; j++)
+				if (board[i][j] == word[0]) {
+					visited[i][j] = false;
+					if (search(pair<int, int>(i, j), 1, word, board, visited))
+						return true;
+					visited[i][j] = true;
+				}
+		return false;
+	}
+	bool check(int x, int y) {
+		return (x >= 0 && x < r && y >= 0 && y < c);
+	}
+	bool search(pair<int, int> start, int step, string& word,
+		vector<vector<char>>& board, vector<vector<bool>>& visited) {
+		if (step == word.size()) return true;
+		int i, x, y;
+		for (i = 0; i < 4; i++) {
+			x = start.first + dir[i][0];
+			y = start.second + dir[i][1];
+			if (check(x, y) && visited[x][y] && board[x][y] == word[step]) {
+				visited[x][y] = false;
+				if (search(pair<int, int>(x, y), step + 1, word, board, visited))
+					return true;
+				visited[x][y] = true;
+			}
+		}
+		return false;
+	}
+};
