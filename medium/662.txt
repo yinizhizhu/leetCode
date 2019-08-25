@@ -1,0 +1,21 @@
+class Solution {
+public:
+	int widthOfBinaryTree(TreeNode* root) {
+		if (!root) return 0;
+		int ans = 0;
+		queue<pair<TreeNode*, int>> q;
+		q.push({ root, 1 });
+		for (; !q.empty();) {
+			if (q.size() == 1) q.front().second = 1;
+			int left = q.front().second, right = left, n = q.size();
+			for (; n; n--, q.pop()) {
+				auto tmp = q.front().first;
+				right = q.front().second;
+				if (tmp->left) q.push({ tmp->left, right << 1 });
+				if (tmp->right) q.push({ tmp->right, (right << 1) + 1 });
+			}
+			ans = max(ans, right - left + 1);
+		}
+		return ans;
+	}
+};
