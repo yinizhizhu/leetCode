@@ -1,0 +1,45 @@
+class Solution {
+public:
+	vector<TreeNode*> generateTrees(int n) {
+		return help(1, n);
+	}
+	vector<TreeNode*> help(int h, int t) {
+		vector<TreeNode*> ans;
+		if (h > t) return ans;
+		if (h == t) {
+			TreeNode* tmp = new TreeNode(h);
+			ans.push_back(tmp);
+			return ans;
+		}
+		for (int m = h; m <= t; m++) {
+			vector<TreeNode*> left, right;
+			left = help(h, m-1);
+			right = help(m + 1, t);
+			if (left.size() == 0) {
+				for (auto r : right) {
+					TreeNode* tmp = new TreeNode(m);
+					tmp->right = r;
+					ans.push_back(tmp);
+				}
+			}
+			else if (right.size() == 0) {
+				for (auto l : left) {
+					TreeNode* tmp = new TreeNode(m);
+					tmp->left = l;
+					ans.push_back(tmp);
+				}
+			}
+			else {
+				for (auto l : left) {
+					for (auto r : right) {
+						TreeNode* tmp = new TreeNode(m);
+						tmp->left = l;
+						tmp->right = r;
+						ans.push_back(tmp);
+					}
+				}
+			}
+		}
+		return ans;
+	}
+};
