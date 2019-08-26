@@ -1,0 +1,23 @@
+class Solution {
+public:
+	long pre;
+	bool isValidBST(TreeNode* root) {
+		if (root) {
+			TreeNode* step = NULL;
+			for (step = root; step->left; step = step->left);
+			pre = long(step->val) - 1;
+			return help(root);
+		}
+		return true;
+	}
+	bool help(TreeNode* root) {
+		if (root) {
+			bool l = help(root->left);
+			if (!l || pre >= root->val)
+				return false;
+			pre = root->val;
+			return help(root->right);
+		}
+		return true;
+	}
+};
