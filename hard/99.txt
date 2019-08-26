@@ -1,0 +1,25 @@
+class Solution {
+public:
+	int step;
+	vector<int> con;
+	void recoverTree(TreeNode* root) {
+		get(root);
+		sort(con.begin(), con.end());
+		step = 0;
+		recover(root);
+	}
+	void get(TreeNode* root) {
+		if (root) {
+			get(root->left);
+			con.push_back(root->val);
+			get(root->right);
+		}
+	}
+	void recover(TreeNode* root) {
+		if (root) {
+			recover(root->left);
+			root->val = con[step++];
+			recover(root->right);
+		}
+	}
+};
