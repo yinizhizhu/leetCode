@@ -1,0 +1,24 @@
+class Solution {
+public:
+	int con1[26], con2[26];
+	bool check() {
+		for (int i = 0; i < 26; i++)
+			if (con1[i] < con2[i]) return false;
+		return true;
+	}
+	vector<string> wordSubsets(vector<string>& A, vector<string>& B) {
+		vector<string> ans;
+		memset(con2, 0, sizeof(con2));
+		for (auto b : B) {
+			vector<int> tmp(26, 0);
+			for (auto c : b) tmp[c - 'a']++;
+			for (int i = 0; i < 26; i++) con2[i] = max(con2[i], tmp[i]);
+		}
+		for (auto a : A) {
+			memset(con1, 0, sizeof(con1));
+			for (auto c : a) con1[c - 'a']++;
+			if (check()) ans.push_back(a);
+		}
+		return ans;
+	}
+};
