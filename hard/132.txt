@@ -1,0 +1,18 @@
+class Solution {
+public:
+	int minCut(string s) {
+		int i, n = s.size();
+		vector<vector<bool>> dp(n, vector<bool>(n, false));
+		vector<int> cut(n + 1, 0);
+		for (int i = n - 1; i >= 0; i--) {
+			cut[i] = INT_MAX;
+			for (int j = i; j < n; j++) {
+				if (s[i] == s[j] && (j - i <= 1 || dp[i + 1][j - 1] == 1)) {
+					dp[i][j] = true;
+					cut[i] = min(1 + cut[j + 1], cut[i]);
+				}
+			}
+		}
+		return cut[0] - 1;
+	}
+};

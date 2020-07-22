@@ -1,0 +1,19 @@
+class Solution {
+public:
+	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+		if (preorder.size() != inorder.size()) return NULL;
+		return help(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
+	}
+	TreeNode* help(vector<int>& pre, int ph, int pe, vector<int>& ino, int ih, int ie) {
+		if (ph > pe || ih > ie) return NULL;
+		int im = ih, tmp = pre[ph];
+		for (; im <= ie; im++)
+			if (tmp == ino[im])
+				break;
+		TreeNode* root = new TreeNode(tmp);
+		tmp = pe - ie + im;
+		root->left = help(pre, ph + 1, tmp, ino, ih, im - 1);
+		root->right = help(pre, tmp + 1, pe, ino, im + 1, ie);
+		return root;
+	}
+};

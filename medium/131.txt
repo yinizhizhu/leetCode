@@ -1,0 +1,33 @@
+class Solution {
+public:
+	vector<vector<string>> partition(string s) {
+		int i, j, x, y, n = s.size();
+		vector<vector<bool>> check(n, vector<bool>(n, false));
+		for (i = 0; i < n; i++) check[i][i] = true;
+		for (j = 1; j < n; j++) {
+			for (i = 0; i < n - j; i++) {
+				x = i + 1;
+				y = i + j - 1;
+				if (x <= y) {
+					if (check[x][y])
+						check[i][i + j] = (s[i] == s[i + j]);
+				}
+				else check[i][i + j] = (s[i] == s[i + j]);
+			}
+		}
+		vector<vector<string>> res;
+		vector<string> out;
+		helper(s, 0, out, res, check);
+		return res;
+	}
+	void helper(string s, int start, vector<string>& out,
+		vector<vector<string>>& res, vector<vector<bool>>& check) {
+		if (start == s.size()) { res.push_back(out); return; }
+		for (int i = start; i < s.size(); ++i) {
+			if (!check[start][i]) continue;
+			out.push_back(s.substr(start, i - start + 1));
+			helper(s, i + 1, out, res, check);
+			out.pop_back();
+		}
+	}
+};
