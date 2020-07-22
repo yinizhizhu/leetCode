@@ -1,0 +1,102 @@
+// DP & AC
+class Solution {
+public:
+	int index(char c) {
+		return (c - 'a' + 1);
+	}
+
+	void swap(int& a, int& b) {
+		a = a ^ b;
+		b = a ^ b;
+		a = a ^ b;
+	}
+
+	int distance(int p1, int p2, int n) {
+		int p = abs(p1 - p2);
+		if (p > (n >> 1)) return (n - p);
+		return p;
+	}
+
+	void show(vector<int> con) {
+		for (auto c : con)
+			cout << c << " ";
+		cout << endl;
+	}
+
+	int findRotateSteps(string ring, string key) {
+		vector<bool> tag(27, false);
+		for (auto k : key)
+			tag[index(k)] = true;
+
+		int i = 0, cur;
+		vector<vector<int>> con(27, vector<int>());
+		for (; i < ring.size(); i++) {
+			cur = index(ring[i]);
+			if (tag[cur]) con[cur].push_back(i);
+		}
+		con[0].push_back(0);
+
+		vector<vector<int>> ans(2, vector<int>());
+		ans[0].push_back(0);
+		int m = 0, n = 1;
+
+		int j = 0;
+		for (i = 0; j < key.size(); i = cur, j++) {
+			int n = (m + 1) % 2;
+			ans[n].clear();
+
+			cur = index(key[j]);
+			for (int x = 0; x < con[cur].size(); x++) {
+				int p2 = con[cur][x];
+				int tmp = distance(p2, con[i][0], ring.size()) + ans[m][0];
+				for (int y = 1; y < ans[m].size(); y++) {
+					int cost = distance(p2, con[i][y], ring.size());
+					if (cost + ans[m][y] < tmp)
+						tmp = cost + ans[m][y];
+				}
+				ans[n].push_back(tmp + 1);
+			}
+			swap(m, n);
+		}
+
+		n = ans[m][0];
+		for (j = 1; j < ans[m].size(); j++)
+			if (ans[m][j] < n)
+				n = ans[m][j];
+		return n;
+	}
+};
+
+//Naive (Depth Search) & TLE
+class Solution {
+public:
+	int ans;
+
+	int findRotateSteps(string ring, string key) {
+		ans = INT_MAX;
+		help(ring, key, 0, 0, 0);
+		return ans;
+	}
+
+	void help(string& ring, string& key, int cur, int p, int counter) {
+		if (p > ans)
+			return;
+		if (p == key.size()) {
+			ans = (ans > counter ? counter : ans);
+			return;
+		}
+		if (ring[cur] == key[p]) {
+			help(ring, key, cur, p + 1, counter + 1);
+			return;
+		}
+		int e = ring.size(), i = cur;
+		for (; e; e--, i = (i+1)%ring.size()) {
+			if (ring[i] == key[p]) {
+				int gap = abs(cur - i);
+				if (ring.size() >> 1 < gap)
+					gap = ring.size() - gap;
+				help(ring, key, i, p + 1, counter + gap + 1);
+			}
+		}
+	}
+};
